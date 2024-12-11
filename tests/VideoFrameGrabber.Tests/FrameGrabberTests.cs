@@ -1,11 +1,11 @@
-﻿namespace VideoFrameGrabber.UnitTests
+﻿namespace VideoFrameGrabber.Tests
 {
-    [TestClass]
     public class FrameGrabberTests
     {
-        [TestMethod]
-        public void TestMethod1()
+        [Fact]
+        public void Test1()
         {
+
         }
     }
 }
