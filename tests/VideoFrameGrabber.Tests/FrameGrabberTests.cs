@@ -2,15 +2,10 @@
 {
     public class FrameGrabberTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
+        [Fact]
         public void Test1()
         {
-            Assert.Pass();
+
         }
     }
 }
