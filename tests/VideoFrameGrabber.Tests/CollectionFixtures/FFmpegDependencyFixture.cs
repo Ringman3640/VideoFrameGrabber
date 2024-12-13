@@ -42,7 +42,6 @@ namespace VideoFrameGrabber.Tests.CollectionFixtures
         {
             if (InitializeFFmpegPath())
             {
-                RegisterFFmpegInEnvPath();
                 return;
             }
 
@@ -72,8 +71,6 @@ namespace VideoFrameGrabber.Tests.CollectionFixtures
             {
                 throw new InvalidOperationException("Failed to get FFmpeg executable path");
             }
-
-            RegisterFFmpegInEnvPath();
         }
 
         /// <summary>
@@ -171,22 +168,6 @@ namespace VideoFrameGrabber.Tests.CollectionFixtures
             string downloadedFFmpegZipPath = Path.Join(FFMPEG_DEPENDENCY_FOLDER, FFMPEG_DOWNLOAD_ZIP_NAME);
             ZipFile.ExtractToDirectory(downloadedFFmpegZipPath, FFMPEG_DEPENDENCY_FOLDER);
         }
-
-        private void RegisterFFmpegInEnvPath()
-        {
-            // Skip if FFmpegPath is not specified or if an ffmpeg installation already exists on
-            // PATH
-            if (AbsoluteFFmpegPath == "" || PathFindOnPathA("ffmpeg", IntPtr.Zero))
-            {
-                return;
-            }
-
-            // TODO: Delete RegisterFFmpegInEnvPath
-            // Keeping this here for know to demonstrate the usage for PathFindOnPathA
-        }
-
-        [DllImport("Shlwapi.dll")]
-        private static extern bool PathFindOnPathA(string pszPath, IntPtr ppszOtherDirs);
     }
 }
 
