@@ -1,7 +1,6 @@
 ﻿using System.IO.Compression;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 using VideoFrameGrabber.Tests.CollectionFixtures;
 
 namespace VideoFrameGrabber.Tests.CollectionFixtures
