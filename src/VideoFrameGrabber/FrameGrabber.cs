@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace VideoFrameGrabber
+﻿namespace VideoFrameGrabber
 {
     public class FrameGrabber
     {
+        private string ffmpegLocation;
+
+        public FrameGrabber(string ffmpegPath)
+        {
+            
+        }
 
     }
 }
