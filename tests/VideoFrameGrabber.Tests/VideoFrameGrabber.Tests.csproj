@@ -27,4 +27,14 @@
     <ProjectReference Include="..\..\src\VideoFrameGrabber\VideoFrameGrabber.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestResources\FakeFFmpeg\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestResources\FakeFFmpeg\ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
