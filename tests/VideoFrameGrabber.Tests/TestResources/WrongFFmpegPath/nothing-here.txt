@@ -1,0 +1,33 @@
+There is no ffmpeg executable in this directory.
+
+
+                                                                                
+                                 OOOOOOO                                        
+                           OOOOOOO     OOOOOOOOO                                
+                        OOOO                   OOOO                             
+                     OOOO                         OOO                           
+                    OO                              OOO                         
+        OOOOOOOOOO OO                  OOOOOOOOOOOOOOOOOOOOOO                   
+       OO        OOO               OOOOO                    OOOO                
+      OO        OO               OOO                           OOO              
+      O         O               OO                               O              
+     OO        OO               O                                O              
+     O        OO               OO                                O              
+     O        O                O                                 O              
+     O        O                OO                               OO              
+     O       OO                 O                             OOO               
+     O       O                  OO                          OOO                 
+     OO      O                   OOO                     OOOO                   
+      O      O                     OOOOOOOOOOOOOOOOOOOOOOO  OO                  
+      O      O                                               O                  
+      O      O                                               O                  
+      OO     OO                                          OOOOOOO                
+       O      O                   OOOO                         OOOO             
+       OO     OO                     OOO                          OO            
+        OO     OO                      OO                          OO           
+         OOOOOOOOO                     OO                           O           
+                 OO                    O                           OO           
+                   OO                 OOO                       OOOO            
+                    OOOO          OOOO  OOOOOOOOOOOOOOOOOOOOOOOOO               
+                       OOOOOOOOOOOO                                             
+                                                                                

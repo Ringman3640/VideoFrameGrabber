@@ -29,10 +29,14 @@
 
   <ItemGroup>
     <Folder Include="TestResources\FakeFFmpeg\" />
+    <Folder Include="TestResources\WrongFFmpegPath\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="TestResources\FakeFFmpeg\ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\WrongFFmpegPath\nothing-here.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
