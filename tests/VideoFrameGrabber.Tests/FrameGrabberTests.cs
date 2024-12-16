@@ -5,17 +5,22 @@ using VideoFrameGrabber.Tests.CollectionFixtures;
 namespace VideoFrameGrabber.Tests;
 
 [Collection("FFmpegDependency collection")]
-public class FrameGrabberTests : IClassFixture<FakeFFmpegDependencyFixture>
+public class FrameGrabberTests :
+    IClassFixture<FakeFFmpegDependencyFixture>,
+    IClassFixture<WrongFFmpegPathDependencyFixture>
 {
     private FFmpegDependencyFixture ffmpeg;
     private FakeFFmpegDependencyFixture fakeFfmpeg;
+    private WrongFFmpegPathDependencyFixture wrongFfmpeg;
 
     public FrameGrabberTests(
         FFmpegDependencyFixture ffmpegFixture,
-        FakeFFmpegDependencyFixture fakeFfmpegFixture)
+        FakeFFmpegDependencyFixture fakeFfmpegFixture,
+        WrongFFmpegPathDependencyFixture wrongFfmpegPathFixture)
     {
         ffmpeg = ffmpegFixture;
         fakeFfmpeg = fakeFfmpegFixture;
+        wrongFfmpeg = wrongFfmpegPathFixture;
     }
 
     [Fact]
@@ -61,6 +66,20 @@ public class FrameGrabberTests : IClassFixture<FakeFFmpegDependencyFixture>
     }
 
     [Fact]
+    public void Constructor_WrongAbsoluteFilePathArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(wrongFfmpeg.AbsoluteFilePath);
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
     public void Constructor_RelativeFilePathArgumentValid_Succeeds()
     {
         FrameGrabber? grabber = null;
@@ -82,6 +101,20 @@ public class FrameGrabberTests : IClassFixture<FakeFFmpegDependencyFixture>
         try
         {
             grabber = new(fakeFfmpeg.RelativePath);
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_WrongRelativeFilePathArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(wrongFfmpeg.RelativeFilePath);
         }
         catch { }
 
