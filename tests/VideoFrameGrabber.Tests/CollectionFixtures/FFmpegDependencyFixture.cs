@@ -10,7 +10,7 @@ namespace VideoFrameGrabber.Tests.CollectionFixtures
     /// </summary>
     public class FFmpegDependencyFixture
     {
-        private const string FFMPEG_DEPENDENCY_FOLDER = "./test-resources/ffmpeg-dp";
+        private const string FFMPEG_DEPENDENCY_FOLDER = "./TestResources/FullFFmpeg";
         private const string FFMPEG_DOWNLOAD_URL = "https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-full_build.zip";
         private const string FFMPEG_DOWNLOAD_ZIP_NAME = "downloaded-ffmpeg.zip";
 
