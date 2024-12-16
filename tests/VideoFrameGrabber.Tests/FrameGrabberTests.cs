@@ -2,118 +2,117 @@
 using VideoFrameGrabber.Tests.ClassFixtures;
 using VideoFrameGrabber.Tests.CollectionFixtures;
 
-namespace VideoFrameGrabber.Tests
+namespace VideoFrameGrabber.Tests;
+
+[Collection("FFmpegDependency collection")]
+public class FrameGrabberTests : IClassFixture<FakeFFmpegDependencyFixture>
 {
-    [Collection("FFmpegDependency collection")]
-    public class FrameGrabberTests : IClassFixture<FakeFFmpegDependencyFixture>
+    private FFmpegDependencyFixture ffmpeg;
+    private FakeFFmpegDependencyFixture fakeFfmpeg;
+
+    public FrameGrabberTests(
+        FFmpegDependencyFixture ffmpegFixture,
+        FakeFFmpegDependencyFixture fakeFfmpegFixture)
     {
-        private FFmpegDependencyFixture ffmpeg;
-        private FakeFFmpegDependencyFixture fakeFfmpeg;
+        ffmpeg = ffmpegFixture;
+        fakeFfmpeg = fakeFfmpegFixture;
+    }
 
-        public FrameGrabberTests(
-            FFmpegDependencyFixture ffmpegFixture,
-            FakeFFmpegDependencyFixture fakeFfmpegFixture)
+    [Fact]
+    public void Constructor_EnvPathArgumentValid_Succeeds()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            ffmpeg = ffmpegFixture;
-            fakeFfmpeg = fakeFfmpegFixture;
+            grabber = new("ffmpeg");
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_EnvPathArgumentValid_Succeeds()
+        grabber.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_AbsoluteFilePathArgumentValid_Succeeds()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new("ffmpeg");
-            }
-            catch { }
-
-            grabber.Should().NotBeNull();
+            grabber = new(ffmpeg.AbsolutePath);
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_AbsoluteFilePathArgumentValid_Succeeds()
+        grabber.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_AbsoluteFilePathArgumentInvalid_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new(ffmpeg.AbsolutePath);
-            }
-            catch { }
-
-            grabber.Should().NotBeNull();
+            grabber = new(fakeFfmpeg.AbsolutePath);
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_AbsoluteFilePathArgumentInvalid_Fails()
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_RelativeFilePathArgumentValid_Succeeds()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new(fakeFfmpeg.AbsolutePath);
-            }
-            catch { }
-
-            grabber.Should().BeNull();
+            grabber = new(ffmpeg.RelativePath);
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_RelativeFilePathArgumentValid_Succeeds()
+        grabber.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_RelativeFilePathArgumentInvalid_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new(ffmpeg.RelativePath);
-            }
-            catch { }
-
-            grabber.Should().NotBeNull();
+            grabber = new(fakeFfmpeg.RelativePath);
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_RelativeFilePathArgumentInvalid_Fails()
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_NullArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new(fakeFfmpeg.RelativePath);
-            }
-            catch { }
-
-            grabber.Should().BeNull();
+            grabber = new(null);
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_NullArgument_Fails()
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_EmptyStringArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
         {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new(null);
-            }
-            catch { }
-
-            grabber.Should().BeNull();
+            grabber = new("");
         }
+        catch { }
 
-        [Fact]
-        public void Constructor_EmptyStringArgument_Fails()
-        {
-            FrameGrabber? grabber = null;
-
-            try
-            {
-                grabber = new("");
-            }
-            catch { }
-
-            grabber.Should().BeNull();
-        }
+        grabber.Should().BeNull();
     }
 }
