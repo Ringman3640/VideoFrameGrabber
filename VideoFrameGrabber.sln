@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoFrameGrabber", "src\VideoFrameGrabber\VideoFrameGrabber.csproj", "{E785F3FA-6770-4AB0-8801-8DEECC0A98C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoFrameGrabber.Tests", "tests\VideoFrameGrabber.Tests\VideoFrameGrabber.Tests.csproj", "{0C595F01-4DD0-4D69-BA86-7C29CF7AC0A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoFrameGrabber.Tests", "tests\VideoFrameGrabber.Tests\VideoFrameGrabber.Tests.csproj", "{0C595F01-4DD0-4D69-BA86-7C29CF7AC0A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoFrameGrabber.Sandbox", "src\VideoFrameGrabber.Sandbox\VideoFrameGrabber.Sandbox.csproj", "{A4FC8BCC-192D-4E47-B5E6-FA6B905FC1B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0C595F01-4DD0-4D69-BA86-7C29CF7AC0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C595F01-4DD0-4D69-BA86-7C29CF7AC0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C595F01-4DD0-4D69-BA86-7C29CF7AC0A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4FC8BCC-192D-4E47-B5E6-FA6B905FC1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4FC8BCC-192D-4E47-B5E6-FA6B905FC1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4FC8BCC-192D-4E47-B5E6-FA6B905FC1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4FC8BCC-192D-4E47-B5E6-FA6B905FC1B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
