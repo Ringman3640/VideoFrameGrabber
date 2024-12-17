@@ -44,7 +44,7 @@ public class FrameGrabberTests :
 
         try
         {
-            grabber = new(ffmpeg.AbsolutePath);
+            grabber = new(ffmpeg.AbsoluteFilePath);
         }
         catch { }
 
@@ -58,7 +58,7 @@ public class FrameGrabberTests :
 
         try
         {
-            grabber = new(fakeFfmpeg.AbsolutePath);
+            grabber = new(fakeFfmpeg.AbsoluteFilePath);
         }
         catch { }
 
@@ -86,7 +86,7 @@ public class FrameGrabberTests :
 
         try
         {
-            grabber = new(ffmpeg.RelativePath);
+            grabber = new(ffmpeg.RelativeFilePath);
         }
         catch { }
 
@@ -100,7 +100,7 @@ public class FrameGrabberTests :
 
         try
         {
-            grabber = new(fakeFfmpeg.RelativePath);
+            grabber = new(fakeFfmpeg.RelativeFilePath);
         }
         catch { }
 
@@ -115,6 +115,90 @@ public class FrameGrabberTests :
         try
         {
             grabber = new(wrongFfmpeg.RelativeFilePath);
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_AbsoluteFolderPathArgument_Succeeds()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(ffmpeg.AbsoluteFolderPath);
+        }
+        catch { }
+
+        grabber.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_AbsoluteFolderPathArgumentInvalid_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(fakeFfmpeg.AbsoluteFolderPath);
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_WrongAbsoluteFolderPathArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(wrongFfmpeg.AbsoluteFolderPath);
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_RelativeFolderPathArgument_Succeeds()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(ffmpeg.RelativeFolderPath);
+        }
+        catch { }
+
+        grabber.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_RelativeFolderPathArgumentInvalid_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(fakeFfmpeg.RelativeFolderPath);
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_WrongRelativeFolderPathArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new(wrongFfmpeg.RelativeFolderPath);
         }
         catch { }
 
