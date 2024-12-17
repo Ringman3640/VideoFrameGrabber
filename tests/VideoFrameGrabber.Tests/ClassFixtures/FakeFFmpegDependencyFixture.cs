@@ -8,14 +8,25 @@ public class FakeFFmpegDependencyFixture
     private const string FAKE_FFMPEG_DEPENDENCY_FOLDER = "./TestResources/FakeFFmpeg";
 
     /// <summary>
-    /// Gets a absolute file path to a fake FFmpeg executable.
+    /// Gets an absolute file path to a fake FFmpeg executable.
     /// </summary>
-    public string AbsolutePath { get; private set; }
+    public string AbsoluteFilePath { get; private set; }
 
     /// <summary>
     /// Gets a relative file path from the base executable directory to a fake FFmpeg executable.
     /// </summary>
-    public string RelativePath { get; private set; }
+    public string RelativeFilePath { get; private set; }
+
+    /// <summary>
+    /// Gets an absolute path to a folder containing a fake FFmpeg executable.
+    /// </summary>
+    public string AbsoluteFolderPath { get; private set; }
+
+    /// <summary>
+    /// Gets a relative path from the base executable directory to a folder containing a fake FFmpeg
+    /// executable.
+    /// </summary>
+    public string RelativeFolderPath { get; private set; }
 
     /// <summary>
     /// Initializes a <see cref="FakeFFmpegDependencyFixture"/> instance used to provide absolute
@@ -33,10 +44,12 @@ public class FakeFFmpegDependencyFixture
     public FakeFFmpegDependencyFixture()
     {
         string relativeUnformattedPath = Path.Join(FAKE_FFMPEG_DEPENDENCY_FOLDER, "./ffmpeg.exe");
-        AbsolutePath = Path.GetFullPath(relativeUnformattedPath);
-        RelativePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsolutePath);
+        AbsoluteFilePath = Path.GetFullPath(relativeUnformattedPath);
+        RelativeFilePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFilePath);
+        AbsoluteFolderPath = Path.GetFullPath(FAKE_FFMPEG_DEPENDENCY_FOLDER);
+        RelativeFolderPath = FAKE_FFMPEG_DEPENDENCY_FOLDER;
 
-        if (!File.Exists(AbsolutePath))
+        if (!File.Exists(AbsoluteFilePath))
         {
             throw new InvalidOperationException("Failed to get fake FFmpeg executable path");
         }
