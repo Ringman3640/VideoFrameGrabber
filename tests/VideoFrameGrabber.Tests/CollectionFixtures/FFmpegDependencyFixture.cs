@@ -15,12 +15,23 @@ public class FFmpegDependencyFixture
     /// <summary>
     /// Gets a absolute file path to a local FFmpeg executable.
     /// </summary>
-    public string AbsolutePath { get; private set; } = "";
+    public string AbsoluteFilePath { get; private set; } = "";
 
     /// <summary>
     /// Gets a relative file path from the base executable directory to a local FFmpeg executable.
     /// </summary>
-    public string RelativePath { get; private set; } = "";
+    public string RelativeFilePath { get; private set; } = "";
+
+    /// <summary>
+    /// Gets an absolute path to a folder that contains a local FFmpeg executable.
+    /// </summary>
+    public string AbsoluteFolderPath { get; private set; } = "";
+
+    /// <summary>
+    /// Gets a relative path from the base executable directory to a folder that contains a local
+    /// FFmpeg executable.
+    /// </summary>
+    public string RelativeFolderPath { get; private set; } = "";
 
     /// <summary>
     /// Initializes an <see cref="FFmpegDependencyFixture"/> instance used to provide relative and
@@ -71,18 +82,19 @@ public class FFmpegDependencyFixture
     }
 
     /// <summary>
-    /// Attempts to initialize the <see cref="AbsolutePath"/> and
-    /// <see cref="RelativePath"/> variables with a valid path to a local FFmpeg executable.
+    /// Attempts to initialize the <see cref="AbsoluteFilePath"/>, <see cref="RelativeFilePath"/>,
+    /// <see cref="AbsoluteFolderPath"/>, and <see cref="RelativeFolderPath"/> variables with a
+    /// valid path to a local FFmpeg executable.
     /// </summary>
     /// <returns>
     /// <c>true</c> if an FFmpeg executable is successfully found. Otherwise returns <c>false</c>.
     /// </returns>
     /// <remarks>
     /// <para>
-    /// If an FFmpeg executbale program is successfully found, <see cref="AbsolutePath"/> will
-    /// contain an absolute path to the executable, and <see cref="RelativePath"/> will
+    /// If an FFmpeg executbale program is successfully found, <see cref="AbsoluteFilePath"/> will
+    /// contain an absolute path to the executable, and <see cref="RelativeFilePath"/> will
     /// contain a relative path to the same executable. If an FFmpeg executable is not found,
-    /// <see cref="AbsolutePath"/> and <see cref="RelativePath"/> will be an empty.
+    /// <see cref="AbsoluteFilePath"/> and <see cref="RelativeFilePath"/> will be an empty.
     /// </para>
     /// <para>
     /// This method relies on the <see cref="FFMPEG_DEPENDENCY_FOLDER"/> constant value.
@@ -92,7 +104,7 @@ public class FFmpegDependencyFixture
     {
         if (!Directory.Exists(FFMPEG_DEPENDENCY_FOLDER))
         {
-            AbsolutePath = "";
+            AbsoluteFilePath = "";
             return false;
         }
 
@@ -102,13 +114,15 @@ public class FFmpegDependencyFixture
             string potentialFFmpegPath = Path.GetFullPath(Path.Join(directory, "./bin/ffmpeg.exe"));
             if (File.Exists(potentialFFmpegPath))
             {
-                AbsolutePath = potentialFFmpegPath;
-                RelativePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsolutePath);
+                AbsoluteFilePath = potentialFFmpegPath;
+                RelativeFilePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFilePath);
+                AbsoluteFolderPath = Path.GetFullPath(directory);
+                RelativeFolderPath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFolderPath);
                 return true;
             }
         }
 
-        AbsolutePath = "";
+        AbsoluteFilePath = "";
         return false;
     }
 
