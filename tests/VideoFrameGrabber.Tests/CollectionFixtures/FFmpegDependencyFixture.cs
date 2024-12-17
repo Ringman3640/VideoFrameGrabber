@@ -116,7 +116,7 @@ public class FFmpegDependencyFixture
             {
                 AbsoluteFilePath = potentialFFmpegPath;
                 RelativeFilePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFilePath);
-                AbsoluteFolderPath = Path.GetFullPath(directory);
+                AbsoluteFolderPath = Path.GetDirectoryName(AbsoluteFilePath)!;
                 RelativeFolderPath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFolderPath);
                 return true;
             }
