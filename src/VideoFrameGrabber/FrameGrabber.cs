@@ -8,6 +8,27 @@ namespace VideoFrameGrabber
     {
         private readonly string ffmpegLocation;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FrameGrabber"/> class given a valid
+        /// FFmpeg executable file.
+        /// </summary>
+        /// <param name="ffmpegPath">
+        /// Path that leads to an FFmpeg executable. This can either be an absolute/relative path to
+        /// an FFmpeg executable file, or an absolute/relative path to a directory containing
+        /// <c>ffmpeg.exe</c>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="ffmpegPath"/> was <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="ffmpegPath"/> was an empty string (excluding whitespace).
+        /// </exception>
+        /// <exception cref="FileNotFoundException">
+        /// An FFmpeg executable could not be found from <paramref name="ffmpegPath"/>
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// The file found from <paramref name="ffmpegPath"/> is not a valid FFmpeg executable.
+        /// </exception>
         public FrameGrabber(string ffmpegPath)
         {
             if (ffmpegPath is null)
