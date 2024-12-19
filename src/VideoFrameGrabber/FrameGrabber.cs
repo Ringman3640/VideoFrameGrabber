@@ -20,20 +20,28 @@ namespace VideoFrameGrabber
                 throw new ArgumentException($"No FFmpeg path specified ({nameof(ffmpegPath)} was empty).");
             }
 
-            string? confirmedFFmpegLocation = CheckFFmpegInDirectoryPath(ffmpegPath)
-                ?? CheckFFmpegFromFilePath(ffmpegPath)
-                ?? null;
-
-            if (confirmedFFmpegLocation == null)
+            // If ffmpegPath is a directory path, check if ffmpeg.exe exists in the directory
+            if (Directory.Exists(ffmpegPath))
             {
-                throw new FileNotFoundException($"Could not find the FFmpeg file specified in {nameof(ffmpegPath)}");
+                string ffmpegPathInDirectory = Path.GetFullPath(ffmpegPath + "./ffmpeg.exe");
+                if (!File.Exists(ffmpegPathInDirectory))
+                {
+                    throw new FileNotFoundException($"Folder path specified in {nameof(ffmpegPath)} does not contain ffmpeg.exe.");
+                }
+                ffmpegPath = ffmpegPathInDirectory;
             }
-            if (!FFmpegValid(confirmedFFmpegLocation))
+            // Otherwise, ffmpegPath should point to an existing FFmpeg executable file
+            else if (!File.Exists(ffmpegPath))
+            {
+                throw new FileNotFoundException($"Could not find the FFmpeg file specified in {nameof(ffmpegPath)}.");
+            }
+
+            if (!FFmpegValid(ffmpegPath))
             {
                 throw new ArgumentException($"The file specified by {nameof(ffmpegPath)} is not a valid FFmpeg executable.");
             }
 
-            ffmpegLocation = Path.GetFullPath(confirmedFFmpegLocation);
+            ffmpegLocation = Path.GetFullPath(ffmpegPath);
         }
 
         private FrameGrabber(bool internalFlag, string exactPath)
@@ -55,27 +63,6 @@ namespace VideoFrameGrabber
             }
 
             return new FrameGrabber(true, foundFFmpegPath);
-        }
-
-        private string? CheckFFmpegInDirectoryPath(string suggestedPath)
-        {
-            if (!Directory.Exists(suggestedPath))
-            {
-                return null;
-            }
-
-            string ffmpegPathInDirectory = Path.GetFullPath(suggestedPath + "./ffmpeg.exe");
-            if (!File.Exists(ffmpegPathInDirectory))
-            {
-                throw new FileNotFoundException($"Folder path specified does not contain ffmpeg.exe");
-            }
-
-            return ffmpegPathInDirectory;
-        }
-
-        private string? CheckFFmpegFromFilePath(string suggestedPath)
-        {
-            return File.Exists(suggestedPath) ? suggestedPath : null;
         }
 
         /// <summary>
