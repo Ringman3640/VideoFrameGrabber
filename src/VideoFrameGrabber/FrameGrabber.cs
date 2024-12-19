@@ -65,7 +65,9 @@ namespace VideoFrameGrabber
         /// <remarks>
         /// This method attempts to find an FFmpeg executable from the system using the
         /// <a href="https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathfindonpatha">PathFindOnPathA</a>
-        /// Windows API method. An exception will be thrown if no FFmpeg executable if found or if
+        /// Windows API function, which searches for a given file in the system's standard
+        /// directories (like System32 and directories in PATH). An exception will be thrown if no
+        /// FFmpeg executable if found or if
         /// the found FFmpeg executable is not valid.
         /// </remarks>
         public static FrameGrabber FromSystem()
