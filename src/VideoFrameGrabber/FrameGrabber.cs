@@ -20,8 +20,7 @@ namespace VideoFrameGrabber
                 throw new ArgumentException($"No FFmpeg path specified ({nameof(ffmpegPath)} was empty).");
             }
 
-            string? confirmedFFmpegLocation = CheckFFmpegInEnvironmentPath(ffmpegPath)
-                ?? CheckFFmpegInDirectoryPath(ffmpegPath)
+            string? confirmedFFmpegLocation = CheckFFmpegInDirectoryPath(ffmpegPath)
                 ?? CheckFFmpegFromFilePath(ffmpegPath)
                 ?? null;
 
@@ -34,20 +33,22 @@ namespace VideoFrameGrabber
             ffmpegLocation = Path.GetFullPath(confirmedFFmpegLocation);
         }
 
-        private string? CheckFFmpegInEnvironmentPath(string suggestedPath)
+        private FrameGrabber(bool internalFlag, string exactPath)
         {
-            if (suggestedPath != "ffmpeg")
+            _ = internalFlag;
+            ValidateFFmpegFile(exactPath, "ffmpegPath");
+            ffmpegLocation = exactPath;
+        }
+
+        public static FrameGrabber FromSystem()
+        {
+            string? foundFFmpegPath = WinApiUtil.FindPathOfProgram("ffmpeg.exe");
+            if (foundFFmpegPath is null)
             {
-                return null;
+                throw new ArgumentException("Could not find shared ffmpeg.exe in system.");
             }
 
-            string? foundFFmpegFullPath = WinApiUtil.FindPathOfProgram("ffmpeg.exe");
-            if (foundFFmpegFullPath is null)
-            {
-                throw new ArgumentException("Could not find ffmpeg.exe in PATH variable.");
-            }
-
-            return foundFFmpegFullPath;
+            return new FrameGrabber(true, foundFFmpegPath);
         }
 
         private string? CheckFFmpegInDirectoryPath(string suggestedPath)

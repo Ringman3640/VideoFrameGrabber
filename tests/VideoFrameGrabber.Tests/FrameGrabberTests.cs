@@ -24,13 +24,13 @@ public class FrameGrabberTests :
     }
 
     [Fact]
-    public void Constructor_EnvPathArgumentValid_Succeeds()
+    public void FromSystem_Succeeds()
     {
         FrameGrabber? grabber = null;
 
         try
         {
-            grabber = new("ffmpeg");
+            grabber = FrameGrabber.FromSystem();
         }
         catch { }
 
