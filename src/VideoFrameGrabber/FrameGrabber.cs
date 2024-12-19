@@ -65,6 +65,21 @@ namespace VideoFrameGrabber
             ffmpegLocation = Path.GetFullPath(ffmpegPath);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FrameGrabber"/> class with a specified
+        /// exact path to an FFmpeg executable.
+        /// </summary>
+        /// <param name="internalFlag">
+        /// A value used to differentiate from constructing with <see cref="FrameGrabber(string)"/>.
+        /// This can either be true or false (value is not used).
+        /// </param>
+        /// <param name="exactPath">An exact FFmpeg path that will be used by the instance.</param>
+        /// <remarks>
+        /// This constructor is not intended for public use and should only be called internally
+        /// by constructor helper methods (like <see cref="FromSystem"/>). No checking is performed
+        /// on <paramref name="exactPath"/>, so the path provided must be validated before calling
+        /// this constructor.
+        /// </remarks>
         private FrameGrabber(bool internalFlag, string exactPath)
         {
             _ = internalFlag;
