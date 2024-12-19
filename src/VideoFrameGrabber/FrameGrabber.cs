@@ -56,10 +56,10 @@ namespace VideoFrameGrabber
         /// variable.
         /// </summary>
         /// <returns>A new <see cref="FrameGrabber"/> instance.</returns>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="FileNotFoundException">
         /// FFmpeg could not be found in the system.
         /// </exception>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="FormatException">
         /// The found FFmpeg executable is not valid.
         /// </exception>
         /// <remarks>
@@ -73,11 +73,11 @@ namespace VideoFrameGrabber
             string? foundFFmpegPath = WinApiUtil.FindPathOfProgram("ffmpeg.exe");
             if (foundFFmpegPath is null)
             {
-                throw new ArgumentException("Could not find a shared ffmpeg.exe in the system.");
+                throw new FileNotFoundException("Could not find a shared ffmpeg.exe in the system.");
             }
             if (!FFmpegValid(foundFFmpegPath))
             {
-                throw new ArgumentException($"The shared ffmpeg.exe in the system is not a valid FFmpeg executable.");
+                throw new FormatException($"The shared ffmpeg.exe in the system is not a valid FFmpeg executable.");
             }
 
             return new FrameGrabber(true, foundFFmpegPath);
