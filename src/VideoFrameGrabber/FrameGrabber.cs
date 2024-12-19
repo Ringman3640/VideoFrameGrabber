@@ -50,6 +50,24 @@ namespace VideoFrameGrabber
             ffmpegLocation = exactPath;
         }
 
+        /// <summary>
+        /// Attempts to create a new <see cref="FrameGrabber"/> instance using a shared FFmpeg
+        /// executable from the system, such as from System32 and from the PATH environment
+        /// variable.
+        /// </summary>
+        /// <returns>A new <see cref="FrameGrabber"/> instance.</returns>
+        /// <exception cref="ArgumentException">
+        /// FFmpeg could not be found in the system.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The found FFmpeg executable is not valid.
+        /// </exception>
+        /// <remarks>
+        /// This method attempts to find an FFmpeg executable from the system using the
+        /// <a href="https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathfindonpatha">PathFindOnPathA</a>
+        /// Windows API method. An exception will be thrown if no FFmpeg executable if found or if
+        /// the found FFmpeg executable is not valid.
+        /// </remarks>
         public static FrameGrabber FromSystem()
         {
             string? foundFFmpegPath = WinApiUtil.FindPathOfProgram("ffmpeg.exe");
