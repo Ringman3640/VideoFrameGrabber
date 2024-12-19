@@ -38,7 +38,7 @@ namespace VideoFrameGrabber
 
             if (!FFmpegValid(ffmpegPath))
             {
-                throw new ArgumentException($"The file specified by {nameof(ffmpegPath)} is not a valid FFmpeg executable.");
+                throw new FormatException($"The file specified by {nameof(ffmpegPath)} is not a valid FFmpeg executable.");
             }
 
             ffmpegLocation = Path.GetFullPath(ffmpegPath);
