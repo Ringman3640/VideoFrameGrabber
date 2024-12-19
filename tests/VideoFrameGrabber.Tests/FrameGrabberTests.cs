@@ -23,6 +23,7 @@ public class FrameGrabberTests :
         wrongFfmpeg = wrongFfmpegPathFixture;
     }
 
+    // T-1
     [Fact]
     public void FromSystem_Succeeds()
     {
@@ -37,6 +38,7 @@ public class FrameGrabberTests :
         grabber.Should().NotBeNull();
     }
 
+    // T-2
     [Fact]
     public void Constructor_AbsoluteFilePathArgumentValid_Succeeds()
     {
@@ -51,6 +53,7 @@ public class FrameGrabberTests :
         grabber.Should().NotBeNull();
     }
 
+    // T-3
     [Fact]
     public void Constructor_AbsoluteFilePathArgumentInvalid_Fails()
     {
@@ -65,6 +68,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-4
     [Fact]
     public void Constructor_WrongAbsoluteFilePathArgument_Fails()
     {
@@ -79,6 +83,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-5
     [Fact]
     public void Constructor_RelativeFilePathArgumentValid_Succeeds()
     {
@@ -93,6 +98,7 @@ public class FrameGrabberTests :
         grabber.Should().NotBeNull();
     }
 
+    // T-6
     [Fact]
     public void Constructor_RelativeFilePathArgumentInvalid_Fails()
     {
@@ -107,6 +113,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-7
     [Fact]
     public void Constructor_WrongRelativeFilePathArgument_Fails()
     {
@@ -121,6 +128,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-8
     [Fact]
     public void Constructor_AbsoluteFolderPathArgument_Succeeds()
     {
@@ -135,6 +143,7 @@ public class FrameGrabberTests :
         grabber.Should().NotBeNull();
     }
 
+    // T-9
     [Fact]
     public void Constructor_AbsoluteFolderPathArgumentInvalid_Fails()
     {
@@ -149,6 +158,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-10
     [Fact]
     public void Constructor_WrongAbsoluteFolderPathArgument_Fails()
     {
@@ -163,6 +173,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-11
     [Fact]
     public void Constructor_RelativeFolderPathArgument_Succeeds()
     {
@@ -177,6 +188,7 @@ public class FrameGrabberTests :
         grabber.Should().NotBeNull();
     }
 
+    // T-12
     [Fact]
     public void Constructor_RelativeFolderPathArgumentInvalid_Fails()
     {
@@ -191,6 +203,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-13
     [Fact]
     public void Constructor_WrongRelativeFolderPathArgument_Fails()
     {
@@ -205,6 +218,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-14
     [Fact]
     public void Constructor_NullArgument_Fails()
     {
@@ -219,6 +233,7 @@ public class FrameGrabberTests :
         grabber.Should().BeNull();
     }
 
+    // T-15
     [Fact]
     public void Constructor_EmptyStringArgument_Fails()
     {
