@@ -28,15 +28,17 @@ namespace VideoFrameGrabber
             {
                 throw new FileNotFoundException($"Could not find the FFmpeg file specified in {nameof(ffmpegPath)}");
             }
+            if (!FFmpegValid(confirmedFFmpegLocation))
+            {
+                throw new ArgumentException($"The file specified by {nameof(ffmpegPath)} is not a valid FFmpeg executable.");
+            }
 
-            ValidateFFmpegFile(confirmedFFmpegLocation, nameof(ffmpegPath));
             ffmpegLocation = Path.GetFullPath(confirmedFFmpegLocation);
         }
 
         private FrameGrabber(bool internalFlag, string exactPath)
         {
             _ = internalFlag;
-            ValidateFFmpegFile(exactPath, "ffmpegPath");
             ffmpegLocation = exactPath;
         }
 
@@ -45,7 +47,11 @@ namespace VideoFrameGrabber
             string? foundFFmpegPath = WinApiUtil.FindPathOfProgram("ffmpeg.exe");
             if (foundFFmpegPath is null)
             {
-                throw new ArgumentException("Could not find shared ffmpeg.exe in system.");
+                throw new ArgumentException("Could not find a shared ffmpeg.exe in the system.");
+            }
+            if (!FFmpegValid(foundFFmpegPath))
+            {
+                throw new ArgumentException($"The shared ffmpeg.exe in the system is not a valid FFmpeg executable.");
             }
 
             return new FrameGrabber(true, foundFFmpegPath);
@@ -73,28 +79,19 @@ namespace VideoFrameGrabber
         }
 
         /// <summary>
-        /// Performs a surface-level validation of an FFmpeg executable file givien its path.
+        /// Performs a surface-level validation of an FFmpeg executable file given its path.
         /// </summary>
         /// <param name="ffmpegPath">Path to the target file to validate.</param>
-        /// <param name="parameterName">
-        /// Name of the higher-level parameter name that contains <paramref name="ffmpegPath"/>.
-        /// Used to format exception messages.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="ffmpegPath"/> is not a valid FFmpeg executable file.
-        /// </exception>
+        /// <returns>
+        /// <c>true</c> if <paramref name="ffmpegPath"/> points to a valid FFmpeg executable file.
+        /// Otherwise returns <c>false</c>.
+        /// </returns>
         /// <remarks>
-        /// <para>
         /// This method only performs a surface-level validation of the given executable file.
         /// Specifically, it attempts to call the executable and checks if the first output line
         /// contains "ffmpeg".
-        /// </para>
-        /// <para>
-        /// If the executable cannot be called, or if the executable does not output the word
-        /// "ffmpeg" in the first line, a <see cref="ArgumentException"/> will be thrown.
-        /// </para>
         /// </remarks>
-        private void ValidateFFmpegFile(string ffmpegPath, string parameterName)
+        private static bool FFmpegValid(string ffmpegPath)
         {
             Process process = new Process();
             process.StartInfo.FileName = ffmpegPath;
@@ -108,12 +105,12 @@ namespace VideoFrameGrabber
                 string firstLineOutput = process.StandardError.ReadLine();
                 if (firstLineOutput.Contains("ffmpeg"))
                 {
-                    return;
+                    return true;
                 }
             }
             catch { }
 
-            throw new ArgumentException($"The file specified by {parameterName} is not a valid FFmpeg executable.");
+            return false;
         }
 
     }
