@@ -87,6 +87,26 @@ namespace VideoFrameGrabber
         }
 
         /// <summary>
+        /// DO NOT CALL THIS CONSTRUCTOR NO NO NO NO NO NO NEVER NO. This is the default constructor
+        /// for <see cref="FrameGrabber"/> that will ALWAYS throw an exception if called.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// You called this constructor. Do not call this constructor.
+        /// </exception>
+        /// <remarks>
+        /// This is the default constructor for <see cref="FrameGrabber"/>. It is marked private to
+        /// indicate that this constructor should not be called. This is because a
+        /// <see cref="FrameGrabber"/> instance NEEDS a path to FFmpeg to be in a valid state. Use
+        /// <see cref="FrameGrabber(string)"/> for general use or
+        /// <see cref="FrameGrabber(bool, string)"/> for internal instance construction.
+        /// </remarks>
+        /// <seealso cref="FrameGrabber(bool, string)"/>
+        private FrameGrabber()
+        {
+            throw new InvalidOperationException($"{nameof(FrameGrabber)} cannot be initialized with default constructor.");
+        }
+
+        /// <summary>
         /// Attempts to create a new <see cref="FrameGrabber"/> instance using a shared FFmpeg
         /// executable from the system, such as from System32 and from the PATH environment
         /// variable.
