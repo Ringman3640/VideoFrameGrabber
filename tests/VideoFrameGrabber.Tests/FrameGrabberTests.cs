@@ -247,4 +247,19 @@ public class FrameGrabberTests :
 
         grabber.Should().BeNull();
     }
+
+    // T-16
+    [Fact]
+    public void Constructor_WhitespaceStringArgument_Fails()
+    {
+        FrameGrabber? grabber = null;
+
+        try
+        {
+            grabber = new("       ");
+        }
+        catch { }
+
+        grabber.Should().BeNull();
+    }
 }
