@@ -1,24 +1,22 @@
 ﻿using FluentAssertions;
 using VideoFrameGrabber.Tests.ClassFixtures;
-using VideoFrameGrabber.Tests.CollectionFixtures;
+using VideoFrameGrabber.Tests.StaticDependencies;
 
 namespace VideoFrameGrabber.Tests;
 
-[Collection("FFmpegDependency collection")]
 public class FrameGrabberTests :
     IClassFixture<FakeFFmpegDependencyFixture>,
     IClassFixture<WrongFFmpegPathDependencyFixture>
 {
-    private FFmpegDependencyFixture ffmpeg;
+    private FFmpegDependency ffmpeg;
     private FakeFFmpegDependencyFixture fakeFfmpeg;
     private WrongFFmpegPathDependencyFixture wrongFfmpeg;
 
     public FrameGrabberTests(
-        FFmpegDependencyFixture ffmpegFixture,
         FakeFFmpegDependencyFixture fakeFfmpegFixture,
         WrongFFmpegPathDependencyFixture wrongFfmpegPathFixture)
     {
-        ffmpeg = ffmpegFixture;
+        ffmpeg = FFmpegDependency.Instance;
         fakeFfmpeg = fakeFfmpegFixture;
         wrongFfmpeg = wrongFfmpegPathFixture;
     }

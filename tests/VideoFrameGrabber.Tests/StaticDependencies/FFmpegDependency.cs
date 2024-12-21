@@ -1,16 +1,37 @@
 ﻿using System.IO.Compression;
 using System.Net;
 
-namespace VideoFrameGrabber.Tests.CollectionFixtures;
+namespace VideoFrameGrabber.Tests.StaticDependencies;
 
 /// <summary>
 /// Provides FFmpeg dependencies for xUnit tests.
 /// </summary>
-public class FFmpegDependencyFixture
+public class FFmpegDependency
 {
+    private static FFmpegDependency? _instance = null;
+    private static object instanceLock = new object();
+
     private const string FFMPEG_DEPENDENCY_FOLDER = "./TestResources/FullFFmpeg";
     private const string FFMPEG_DOWNLOAD_URL = "https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-full_build.zip";
     private const string FFMPEG_DOWNLOAD_ZIP_NAME = "downloaded-ffmpeg.zip";
+
+    /// <summary>
+    /// Gets the static global FFmpegDependency instance.
+    /// </summary>
+    /// <remarks>
+    /// This get operation blocks and may take a while if it needs to download FFmpeg.
+    /// </remarks>
+    public static FFmpegDependency Instance
+    {
+        get
+        {
+            lock (instanceLock)
+            {
+                _instance ??= new FFmpegDependency();
+                return _instance;
+            }
+        }
+    }
 
     /// <summary>
     /// Gets a absolute file path to a local FFmpeg executable.
@@ -34,19 +55,19 @@ public class FFmpegDependencyFixture
     public string RelativeFolderPath { get; private set; } = "";
 
     /// <summary>
-    /// Initializes an <see cref="FFmpegDependencyFixture"/> instance used to provide relative and
+    /// Initializes an <see cref="FFmpegDependency"/> instance used to provide relative and
     /// absolute paths to a local FFmpeg executable.
     /// </summary>
     /// <remarks>
-    /// Creating an <see cref="FFmpegDependencyFixture"/> will attempt to search for an FFmpeg
+    /// Creating an <see cref="FFmpegDependency"/> will attempt to search for an FFmpeg
     /// executable at a specified dependency folder. If FFmpeg cannot be found, it will download
     /// FFmpeg 7.1 binaries complied by gyan.dev on GitHub.
     /// </remarks>
     /// <exception cref="InvalidOperationException">
     /// A local FFmpeg executable cannot be found after attempting to download. Check
-    /// <see cref="FFmpegDependencyFixture"/> implementation.
+    /// <see cref="FFmpegDependency"/> implementation.
     /// </exception>
-    public FFmpegDependencyFixture()
+    private FFmpegDependency()
     {
         if (InitializeFFmpegPath())
         {
@@ -177,9 +198,3 @@ public class FFmpegDependencyFixture
         ZipFile.ExtractToDirectory(downloadedFFmpegZipPath, FFMPEG_DEPENDENCY_FOLDER);
     }
 }
-
-/// <summary>
-/// Provides <see cref="FFmpegDependencyFixture"/> as an xUnit collection.
-/// </summary>
-[CollectionDefinition("FFmpegDependency collection")]
-public class FFmpegDependencyCollection : ICollectionFixture<FFmpegDependencyFixture> { }
