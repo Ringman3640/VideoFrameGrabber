@@ -9,7 +9,7 @@ namespace VideoFrameGrabber.Tests.StaticDependencies;
 public class FFmpegDependency
 {
     private static FFmpegDependency? _instance = null;
-    private static object instanceLock = new object();
+    private static readonly object instanceLock = new();
 
     private const string FFMPEG_DEPENDENCY_FOLDER = "./TestResources/FullFFmpeg";
     private const string FFMPEG_DOWNLOAD_URL = "https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-full_build.zip";
@@ -27,7 +27,7 @@ public class FFmpegDependency
         {
             lock (instanceLock)
             {
-                _instance ??= new FFmpegDependency();
+                _instance ??= new();
                 return _instance;
             }
         }
