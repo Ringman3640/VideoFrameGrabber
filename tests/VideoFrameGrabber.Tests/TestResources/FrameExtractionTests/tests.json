@@ -1,0 +1,195 @@
+{
+  "_comment": "This file lists the frame extraction parameters used for FFmpeg to export test frames from videos.",
+  "Tests": [
+    {
+      "TestName": "FirstFrame",
+      "SeekTime": "00:00:00"
+    },
+    {
+      "TestName": "LastFrame",
+      "SeekTime": "99:99:99"
+    },
+    {
+      "TestName": "SeekOneSecond",
+      "SeekTime": "00:00:01"
+    },
+    {
+      "TestName": "SeekFiveSeconds",
+      "SeekTime": "00:00:05"
+    },
+    {
+      "TestName": "SeekTenSeconds",
+      "SeekTime": "00:00:10"
+    },
+    {
+      "TestName": "ScaleSmallSquare",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 10,
+        "Height": 10
+      }
+    },
+    {
+      "TestName": "ScaleMediumSquare",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 400,
+        "Height": 400
+      }
+    },
+    {
+      "TestName": "ScaleLargeSquare",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 1000,
+        "Height": 1000
+      }
+    },
+    {
+      "TestName": "ScaleThinLine",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 500,
+        "Height": 1
+      }
+    },
+    {
+      "TestName": "ScaleThickLine",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 500,
+        "Height": 50
+      }
+    },
+    {
+      "TestName": "CropSmallSquare",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 10,
+        "Height": 10,
+        "XPos": 0,
+        "YPos": 0
+      }
+    },
+    {
+      "TestName": "CropMediumSquare",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 400,
+        "Height": 400,
+        "XPos": 0,
+        "YPos": 0
+      }
+    },
+    {
+      "TestName": "CropLargeSquare",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 1000,
+        "Height": 1000,
+        "XPos": 0,
+        "YPos": 0
+      }
+    },
+    {
+      "TestName": "CropMediumSquareTopLeft",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 400,
+        "Height": 400,
+        "XPos": 0,
+        "YPos": 0
+      }
+    },
+    {
+      "TestName": "CropMediumSquareTopRight",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 400,
+        "Height": 400,
+        "XPos": 99999,
+        "YPos": 0
+      }
+    },
+    {
+      "TestName": "CropMediumSquareBottomLeft",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 1000,
+        "Height": 1000,
+        "XPos": 0,
+        "YPos": 99999
+      }
+    },
+    {
+      "TestName": "CropMediumSquareBottomRight",
+      "SeekTime": "00:00:00",
+      "CropInfo": {
+        "Width": 1000,
+        "Height": 1000,
+        "XPos": 99999,
+        "YPos": 99999
+      }
+    },
+    {
+      "TestName": "ScaleMediumSquareCropSmallSquareCentered",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 400,
+        "Height": 400
+      },
+      "CropInfo": {
+        "Width": 10,
+        "Height": 10,
+        "XPos": 195,
+        "YPos": 195
+      },
+      "ScaleFirst": true
+    },
+    {
+      "TestName": "ScaleLargeSquareCropMediumSquareCentered",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 1000,
+        "Height": 1000
+      },
+      "CropInfo": {
+        "Width": 400,
+        "Height": 400,
+        "XPos": 300,
+        "YPos": 300
+      },
+      "ScaleFirst": true
+    },
+    {
+      "TestName": "CropSmallSquareTopLeftScaleMediumSquare",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 400,
+        "Height": 400
+      },
+      "CropInfo": {
+        "Width": 10,
+        "Height": 10,
+        "XPos": 0,
+        "YPos": 0
+      },
+      "ScaleFirst": false
+    },
+    {
+      "TestName": "CropMediumSquareTopLeftScaleLargeSquare",
+      "SeekTime": "00:00:00",
+      "ScaleInfo": {
+        "Width": 1000,
+        "Height": 1000
+      },
+      "CropInfo": {
+        "Width": 400,
+        "Height": 400,
+        "XPos": 0,
+        "YPos": 0
+      },
+      "ScaleFirst": false
+    }
+  ]
+}
