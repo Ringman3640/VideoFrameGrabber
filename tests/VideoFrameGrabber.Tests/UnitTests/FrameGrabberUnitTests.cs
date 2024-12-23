@@ -53,32 +53,42 @@ public class FrameGrabberUnitTests :
 
     // T-3
     [Fact]
-    public void Constructor_AbsoluteFilePathArgumentInvalid_Fails()
+    public void Constructor_AbsoluteFilePathArgumentInvalid_ThrowsFormatException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(fakeFfmpeg.AbsoluteFilePath);
         }
-        catch { }
+        catch(Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FormatException>();
     }
 
     // T-4
     [Fact]
-    public void Constructor_WrongAbsoluteFilePathArgument_Fails()
+    public void Constructor_WrongAbsoluteFilePathArgument_ThrowsFileNotFoundException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(wrongFfmpeg.AbsoluteFilePath);
         }
-        catch { }
+        catch(Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FileNotFoundException>();
     }
 
     // T-5
@@ -98,32 +108,42 @@ public class FrameGrabberUnitTests :
 
     // T-6
     [Fact]
-    public void Constructor_RelativeFilePathArgumentInvalid_Fails()
+    public void Constructor_RelativeFilePathArgumentInvalid_ThrowsFormatException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(fakeFfmpeg.RelativeFilePath);
         }
-        catch { }
+        catch(Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FormatException>();
     }
 
     // T-7
     [Fact]
-    public void Constructor_WrongRelativeFilePathArgument_Fails()
+    public void Constructor_WrongRelativeFilePathArgument_ThrowsFileNotFoundException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(wrongFfmpeg.RelativeFilePath);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FileNotFoundException>();
     }
 
     // T-8
@@ -143,32 +163,42 @@ public class FrameGrabberUnitTests :
 
     // T-9
     [Fact]
-    public void Constructor_AbsoluteFolderPathArgumentInvalid_Fails()
+    public void Constructor_AbsoluteFolderPathArgumentInvalid_ThrowsFormatException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(fakeFfmpeg.AbsoluteFolderPath);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FormatException>();
     }
 
     // T-10
     [Fact]
-    public void Constructor_WrongAbsoluteFolderPathArgument_Fails()
+    public void Constructor_WrongAbsoluteFolderPathArgument_ThrowsFileNotFoundException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(wrongFfmpeg.AbsoluteFolderPath);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FileNotFoundException>();
     }
 
     // T-11
@@ -188,76 +218,101 @@ public class FrameGrabberUnitTests :
 
     // T-12
     [Fact]
-    public void Constructor_RelativeFolderPathArgumentInvalid_Fails()
+    public void Constructor_RelativeFolderPathArgumentInvalid_ThrowsFormatException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(fakeFfmpeg.RelativeFolderPath);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FormatException>();
     }
 
     // T-13
     [Fact]
-    public void Constructor_WrongRelativeFolderPathArgument_Fails()
+    public void Constructor_WrongRelativeFolderPathArgument_ThrowsFileNotFoundException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(wrongFfmpeg.RelativeFolderPath);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<FileNotFoundException>();
     }
 
     // T-14
     [Fact]
-    public void Constructor_NullArgument_Fails()
+    public void Constructor_NullArgument_ThrowsArgumentNullException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new(null);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<ArgumentNullException>();
     }
 
     // T-15
     [Fact]
-    public void Constructor_EmptyStringArgument_Fails()
+    public void Constructor_EmptyStringArgument_ThrowsArgumentException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new("");
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<ArgumentException>();
     }
 
     // T-16
     [Fact]
-    public void Constructor_WhitespaceStringArgument_Fails()
+    public void Constructor_WhitespaceStringArgument_ThrowsArgumentException()
     {
         FrameGrabber? grabber = null;
+        Exception? exception = null;
 
         try
         {
             grabber = new("       ");
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
         grabber.Should().BeNull();
+        exception.Should().BeOfType<ArgumentException>();
     }
 }
