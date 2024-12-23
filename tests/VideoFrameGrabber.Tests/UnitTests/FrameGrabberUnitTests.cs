@@ -2,9 +2,9 @@
 using VideoFrameGrabber.Tests.ClassFixtures;
 using VideoFrameGrabber.Tests.StaticDependencies;
 
-namespace VideoFrameGrabber.Tests;
+namespace VideoFrameGrabber.Tests.UnitTests;
 
-public class FrameGrabberTests :
+public class FrameGrabberUnitTests :
     IClassFixture<FakeFFmpegDependencyFixture>,
     IClassFixture<WrongFFmpegPathDependencyFixture>
 {
@@ -12,7 +12,7 @@ public class FrameGrabberTests :
     private FakeFFmpegDependencyFixture fakeFfmpeg;
     private WrongFFmpegPathDependencyFixture wrongFfmpeg;
 
-    public FrameGrabberTests(
+    public FrameGrabberUnitTests(
         FakeFFmpegDependencyFixture fakeFfmpegFixture,
         WrongFFmpegPathDependencyFixture wrongFfmpegPathFixture)
     {
