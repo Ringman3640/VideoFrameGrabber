@@ -180,8 +180,8 @@ namespace VideoFrameGrabber
             {
                 process.Start();
                 // FFmpeg outputs console outputs to standard error, not standard output
-                string firstLineOutput = process.StandardError.ReadLine();
-                if (firstLineOutput.Contains("ffmpeg"))
+                string? firstLineOutput = process.StandardError.ReadLine();
+                if (firstLineOutput?.Contains("ffmpeg") ?? false)
                 {
                     return true;
                 }
