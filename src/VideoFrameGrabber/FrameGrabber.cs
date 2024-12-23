@@ -143,6 +143,16 @@ namespace VideoFrameGrabber
 
         public byte[] ExtractFrame(string videoPath)
         {
+            if (videoPath is null)
+            {
+                throw new ArgumentNullException(nameof(videoPath));
+            }
+            videoPath = videoPath.Trim();
+            if (videoPath.Length == 0)
+            {
+                throw new ArgumentException($"{nameof(videoPath)} does not contain a path.");
+            }
+
             throw new NotImplementedException(nameof(ExtractFrame));
         }
 
