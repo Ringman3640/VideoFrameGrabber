@@ -35,7 +35,7 @@ namespace VideoFrameGrabber
             {
                 throw new ArgumentNullException(nameof(ffmpegPath));
             }
-            ffmpegPath.Trim();
+            ffmpegPath = ffmpegPath.Trim();
             if (ffmpegPath == "")
             {
                 throw new ArgumentException($"No FFmpeg path specified ({nameof(ffmpegPath)} was empty).");
