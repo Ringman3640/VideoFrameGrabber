@@ -315,4 +315,26 @@ public class FrameGrabberUnitTests :
         grabber.Should().BeNull();
         exception.Should().BeOfType<ArgumentException>();
     }
+
+    // T-17
+    [Theory]
+    [InlineData(null, typeof(ArgumentNullException))]
+    [InlineData("", typeof(ArgumentException))]
+    [InlineData("   ", typeof(ArgumentException))]
+    public void ExtractFrame_InvalidArgument_ThrowsException(string? argument, Type exceptionType)
+    {
+        FrameGrabber grabber = new(ffmpeg.AbsoluteFilePath);
+        Exception? exception = null;
+
+        try
+        {
+            _ = grabber.ExtractFrame(argument!);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        exception.Should().BeOfType(exceptionType);
+    }
 }
