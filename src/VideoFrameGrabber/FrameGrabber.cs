@@ -141,6 +141,11 @@ namespace VideoFrameGrabber
             return new FrameGrabber(true, foundFFmpegPath);
         }
 
+        public byte[] ExtractFrame(string videoPath)
+        {
+            throw new NotImplementedException(nameof(ExtractFrame));
+        }
+
         /// <summary>
         /// Performs a surface-level validation of an FFmpeg executable file given its path.
         /// </summary>
