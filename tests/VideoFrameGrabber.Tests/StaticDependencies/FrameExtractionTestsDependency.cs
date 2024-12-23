@@ -49,6 +49,9 @@ public class FrameExtractionTestsDependency
     [TestGroupProperty]
     public FrameExtractionTestGroup ContentWarningGameplay { get; private set; }
 
+    [TestGroupProperty]
+    public FrameExtractionTestGroup VerticalFallingSnow { get; private set; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FrameExtractionTestsDependency"/> class that
     /// initializes all of its properties.

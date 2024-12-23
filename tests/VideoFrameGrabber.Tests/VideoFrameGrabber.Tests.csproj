@@ -48,6 +48,9 @@
     <None Update="TestResources\FrameExtractionTests\tests.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestResources\FrameExtractionTests\VerticalFallingSnow\video.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestResources\WrongFFmpegPath\nothing-here.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
