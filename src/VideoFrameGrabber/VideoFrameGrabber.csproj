@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Cropping\" />
-    <Folder Include="Image Formatting\" />
+    <Folder Include="ImageFormatting\" />
     <Folder Include="Scaling\" />
   </ItemGroup>
 
