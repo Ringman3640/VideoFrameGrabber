@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents scaling dimension values to be applied as parameters to an FFmpeg operation.
     /// </summary>
-    public struct ScaleParameters
+    public readonly struct ScaleParameters
     {
         /// <summary>
         /// Gets the width component of the current <see cref="ScaleParameters"/> instance.
