@@ -11,5 +11,7 @@ namespace VideoFrameGrabber
         public IScaleProvider? Scaling { get; set; }
 
         public ICropProvider? Cropping { get; set; }
+
+        public ScaleCropOrder ModifierOrder { get; set; }
     }
 }
