@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0;net5.0</TargetFrameworks>
 	<Nullable>enable</Nullable>
 	<LangVersion>8.0</LangVersion>
   </PropertyGroup>
@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Cropping\" />
     <Folder Include="ImageFormatting\" />
-    <Folder Include="Scaling\" />
   </ItemGroup>
 
 </Project>
