@@ -29,6 +29,7 @@ public class MultiplyScalerUnitTests
         multiplyScaler!.Multiplier.Should().Be(multiplier);
     }
 
+    // T-2
     [Theory]
     [InlineData(0d)]
     [InlineData(-1d)]
@@ -58,7 +59,7 @@ public class MultiplyScalerUnitTests
         exception.Should().BeOfType<ArgumentOutOfRangeException>();
     }
 
-    // T-2
+    // T-3
     [Theory]
     [MemberData(nameof(GetMultiplierAndSizeValues))]
     public void GetScaleParameters_MultiplierAndInputSizeValues_ResultMatchesExpectedDimensions (
