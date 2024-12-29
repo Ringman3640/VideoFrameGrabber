@@ -5,6 +5,7 @@ namespace VideoFrameGrabber.Tests.UnitTests.Scaling;
 
 public class MultiplyScalerUnitTests
 {
+    // T-1
     [Theory]
     [MemberData(nameof(GetMultiplierValues))]
     public void Constructor_MultiplierValue_MultiplierMatchesValue(double multiplier)
@@ -17,6 +18,7 @@ public class MultiplyScalerUnitTests
         multiplyScaler.Multiplier.Should().Be(multiplier);
     }
 
+    // T-2
     [Theory]
     [MemberData(nameof(GetMultiplierAndSizeValues))]
     public void GetScaleParameters_MultiplierAndInputSizeValues_ResultMatchesExpectedDimensions (
