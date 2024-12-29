@@ -24,7 +24,7 @@ namespace VideoFrameGrabber.Scaling
         {
             if (multiplier <= 0)
             {
-                throw new ArgumentOutOfRangeException("The provided multiplier value must be positive (not zero or negative).");
+                throw new ArgumentOutOfRangeException(nameof(multiplier));
             }
 
             Multiplier = multiplier;

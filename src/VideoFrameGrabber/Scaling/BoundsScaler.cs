@@ -54,9 +54,13 @@ namespace VideoFrameGrabber.Scaling
         /// </remarks>
         public BoundsScaler(int widthBounds, int heightBounds)
         {
-            if (widthBounds <= 0 || heightBounds <= 0)
+            if (widthBounds <= 0)
             {
-                throw new ArgumentOutOfRangeException("Both bound values must be positive (not zero or negative).");
+                throw new ArgumentOutOfRangeException(nameof(widthBounds));
+            }
+            if (heightBounds <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(heightBounds));
             }
 
             WidthBounds = widthBounds;

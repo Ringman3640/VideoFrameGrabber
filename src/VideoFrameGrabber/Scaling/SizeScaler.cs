@@ -35,9 +35,14 @@ namespace VideoFrameGrabber.Scaling
         /// </exception>
         public SizeScaler(int width, int height)
         {
-            if (width <= 0 || height <= 0)
+            if (width <= 0)
             {
-                throw new ArgumentOutOfRangeException("The dimensions of the scale size must be positive (not zero or negative).");
+                throw new ArgumentOutOfRangeException(nameof(width));
+            }
+            if (height <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(height));
+
             }
 
             Width = width;
