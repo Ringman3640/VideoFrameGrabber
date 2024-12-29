@@ -86,7 +86,7 @@ public class FitBoundsScalerUnitTests
 
     /// <summary>
     /// Gets a set of trio <see cref="Size"/> values to test the
-    /// <see cref="BoundsScaler.GetScaleParameters(int, int)"/> method.
+    /// <see cref="FitBoundsScaler.GetScaleParameters(int, int)"/> method.
     /// </summary>
     public static IEnumerable<object[]> GetBoundsAndInputAndExpectedSizeValues()
     {
