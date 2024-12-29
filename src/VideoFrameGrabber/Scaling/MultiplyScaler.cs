@@ -1,4 +1,6 @@
-﻿namespace VideoFrameGrabber.Scaling
+﻿using System;
+
+namespace VideoFrameGrabber.Scaling
 {
     /// <summary>
     /// Represents a scaler that multiplies the size of an image by a specified multiplier.
@@ -15,15 +17,22 @@
         /// multiplier value.
         /// </summary>
         /// <param name="multiplier">The multiplier value to apply for scaling operations.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="multiplier"/> was zero or negative.
+        /// </exception>
         public MultiplyScaler(double multiplier)
         {
-            Multiplier = multiplier;        
+            if (multiplier <= 0)
+            {
+                throw new ArgumentOutOfRangeException("The provided multiplier value must be positive (not zero or negative).");
+            }
+
+            Multiplier = multiplier;
         }
 
         /// <remarks>
         /// If the result of a multiply operation results in an overload, the result is capped to
-        /// <see cref="int.MaxValue"/> or <see cref="int.MinValue"/> (depending on the sign of
-        /// <see cref="Multiplier"/>. This is applied to both dimensions of the result
+        /// <see cref="int.MaxValue"/> This is applied to both dimensions of the result
         /// <see cref="ScaleParameters"/> independently, which may cause differences between the
         /// input and output aspect ratio sizes if only one dimension overflows.
         /// </remarks>
@@ -40,7 +49,7 @@
             }
             catch
             {
-                outputWidth = Multiplier < 0 ? double.MinValue : double.MaxValue;
+                outputWidth = double.MaxValue;
             }
 
             double outputHeight;
@@ -53,7 +62,7 @@
             }
             catch
             {
-                outputHeight = Multiplier < 0 ? double.MinValue : double.MaxValue;
+                outputHeight = double.MaxValue;
             }
 
             return new ScaleParameters(
