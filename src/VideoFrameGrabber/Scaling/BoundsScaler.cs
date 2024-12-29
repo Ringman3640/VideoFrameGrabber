@@ -15,7 +15,12 @@ namespace VideoFrameGrabber.Scaling
     /// If scaling occurs, <see cref="BoundsScaler"/> attempts to maintain the aspect ratio of the
     /// image.
     /// </para>
+    /// <para>
+    /// To make an image take up as much space as possible within the bounding rectangle, use
+    /// <see cref="FitBoundsScaler"/>.
+    /// </para>
     /// </remarks>
+    /// <seealso cref="FitBoundsScaler"/>
     public class BoundsScaler : IScaleProvider
     {
         /// <summary>
