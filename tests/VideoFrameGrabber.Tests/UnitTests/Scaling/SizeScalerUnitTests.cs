@@ -12,11 +12,15 @@ public class SizeScalerUnitTests
     {
         SizeScaler? scaler = null;
 
-        scaler = new(width, height);
+        try
+        {
+            scaler = new(width, height);
+        }
+        catch { }
 
         scaler.Should().NotBeNull();
-        scaler.Width.Should().Be(width);
-        scaler.Height.Should().Be(height);
+        scaler!.Width.Should().Be(width);
+        scaler!.Height.Should().Be(height);
     }
 
     // T-2
@@ -56,11 +60,15 @@ public class SizeScalerUnitTests
         SizeScaler scaler = new(width, height);
         ScaleParameters? scaleParameters = null;
 
-        scaleParameters = scaler.GetScaleParameters(0, 0);
+        try
+        {
+            scaleParameters = scaler.GetScaleParameters(0, 0);
+        }
+        catch { }
 
         scaleParameters.Should().NotBeNull();
-        scaleParameters.Value.Width.Should().Be(width);
-        scaleParameters.Value.Height.Should().Be(height);
+        scaleParameters!.Value.Width.Should().Be(width);
+        scaleParameters!.Value.Height.Should().Be(height);
     }
 
     // T-4
@@ -71,11 +79,15 @@ public class SizeScalerUnitTests
         SizeScaler scaler = new(width, height);
         ScaleParameters? scaleParameters = null;
 
-        scaleParameters = scaler.GetScaleParameters(int.MaxValue, int.MaxValue);
+        try
+        {
+            scaleParameters = scaler.GetScaleParameters(int.MaxValue, int.MaxValue);
+        }
+        catch { }
 
         scaleParameters.Should().NotBeNull();
-        scaleParameters.Value.Width.Should().Be(width);
-        scaleParameters.Value.Height.Should().Be(height);
+        scaleParameters!.Value.Width.Should().Be(width);
+        scaleParameters!.Value.Height.Should().Be(height);
     }
 
     // T-5
@@ -86,11 +98,15 @@ public class SizeScalerUnitTests
         SizeScaler scaler = new(width, height);
         ScaleParameters? scaleParameters = null;
 
-        scaleParameters = scaler.GetScaleParameters(int.MinValue, int.MinValue);
+        try
+        {
+            scaleParameters = scaler.GetScaleParameters(int.MinValue, int.MinValue);
+        }
+        catch { }
 
         scaleParameters.Should().NotBeNull();
-        scaleParameters.Value.Width.Should().Be(width);
-        scaleParameters.Value.Height.Should().Be(height);
+        scaleParameters!.Value.Width.Should().Be(width);
+        scaleParameters!.Value.Height.Should().Be(height);
     }
 
     /// <summary>
