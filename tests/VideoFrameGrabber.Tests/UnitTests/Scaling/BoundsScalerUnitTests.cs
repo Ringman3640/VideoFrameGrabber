@@ -43,7 +43,7 @@ public class BoundsScalerUnitTests
     [InlineData(-1, 1)]
     [InlineData(-99999, 99999)]
     [InlineData(int.MinValue, int.MaxValue)]
-    public void Constructor_NegativeAndZeroBoundsValues_ThrowsArgumentException(
+    public void Constructor_NegativeAndZeroBoundsValues_ThrowsArgumentOutOfRangeException(
         int width,
         int height
     )
@@ -62,7 +62,7 @@ public class BoundsScalerUnitTests
 
         scaler.Should().BeNull();
         exception.Should().NotBeNull();
-        exception.Should().BeOfType<ArgumentException>();
+        exception.Should().BeOfType<ArgumentOutOfRangeException>();
     }
 
     // T-3

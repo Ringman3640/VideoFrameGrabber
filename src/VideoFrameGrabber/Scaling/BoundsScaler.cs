@@ -45,7 +45,7 @@ namespace VideoFrameGrabber.Scaling
         /// </summary>
         /// <param name="widthBounds">The pixel width of the bounds.</param>
         /// <param name="heightBounds">The pixel height of the bounds.</param>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="widthBounds"/> or <paramref name="heightBounds"/> was zero or negative.
         /// </exception>
         /// <remarks>
@@ -56,7 +56,7 @@ namespace VideoFrameGrabber.Scaling
         {
             if (widthBounds <= 0 || heightBounds <= 0)
             {
-                throw new ArgumentException("Both bound values must be positive (not zero or negative).");
+                throw new ArgumentOutOfRangeException("Both bound values must be positive (not zero or negative).");
             }
 
             WidthBounds = widthBounds;
