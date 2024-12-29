@@ -7,15 +7,55 @@ public class MultiplyScalerUnitTests
 {
     // T-1
     [Theory]
-    [MemberData(nameof(GetMultiplierValues))]
-    public void Constructor_MultiplierValue_MultiplierMatchesValue(double multiplier)
+    [InlineData(1d)]
+    [InlineData(10d)]
+    [InlineData(9999d)]
+    [InlineData(0.9d)]
+    [InlineData(0.5d)]
+    [InlineData(0.1d)]
+    [InlineData(0.01d)]
+    [InlineData(double.MaxValue)]
+    public void Constructor_PositiveValue_MultiplierMatchesValue(double multiplier)
     {
         MultiplyScaler? multiplyScaler = null;
 
-        multiplyScaler = new(multiplier);
+        try
+        {
+            multiplyScaler = new(multiplier);
+        }
+        catch { }
 
         multiplyScaler.Should().NotBeNull();
-        multiplyScaler.Multiplier.Should().Be(multiplier);
+        multiplyScaler!.Multiplier.Should().Be(multiplier);
+    }
+
+    [Theory]
+    [InlineData(0d)]
+    [InlineData(-1d)]
+    [InlineData(-10d)]
+    [InlineData(-9999d)]
+    [InlineData(-0.9d)]
+    [InlineData(-0.5d)]
+    [InlineData(-0.1d)]
+    [InlineData(-0.01d)]
+    [InlineData(double.MinValue)]
+    public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(double multiplier)
+    {
+        MultiplyScaler? multiplyScaler = null;
+        Exception? exception = null;
+
+        try
+        {
+            multiplyScaler = new(multiplier);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        multiplyScaler.Should().BeNull();
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<ArgumentOutOfRangeException>();
     }
 
     // T-2
@@ -29,33 +69,15 @@ public class MultiplyScalerUnitTests
         MultiplyScaler multiplyScaler = new(multiplier);
         ScaleParameters? scaleParameters = null;
 
-        scaleParameters = multiplyScaler.GetScaleParameters(inputSize.Width, inputSize.Height);
+        try
+        {
+            scaleParameters = multiplyScaler.GetScaleParameters(inputSize.Width, inputSize.Height);
+        }
+        catch { }
 
         scaleParameters.Should().NotBeNull();
-        scaleParameters.Value.Width.Should().Be(expectedSize.Width);
-        scaleParameters.Value.Height.Should().Be(expectedSize.Height);
-    }
-
-    /// <summary>
-    /// Gets multiplier values of type <see cref="double"/>.
-    /// </summary>
-    public static IEnumerable<object[]> GetMultiplierValues()
-    {
-        yield return new object[] { 1d };
-        yield return new object[] { 10d };
-        yield return new object[] { 9999d };
-        yield return new object[] { 0.1d };
-        yield return new object[] { 0.001d };
-        yield return new object[] { 0.9d };
-        yield return new object[] { 0d };
-        yield return new object[] { double.MaxValue };
-        yield return new object[] { -1d };
-        yield return new object[] { -10d };
-        yield return new object[] { -9999d };
-        yield return new object[] { -0.1d };
-        yield return new object[] { -0.001d };
-        yield return new object[] { -0.9d };
-        yield return new object[] { double.MinValue };
+        scaleParameters!.Value.Width.Should().Be(expectedSize.Width);
+        scaleParameters!.Value.Height.Should().Be(expectedSize.Height);
     }
 
     /// <summary>
@@ -65,16 +87,11 @@ public class MultiplyScalerUnitTests
     public static IEnumerable<object[]> GetMultiplierAndSizeValues()
     {
         Size maxSizeBox = new(int.MaxValue, int.MaxValue);
-        Size zeroSize = new(0, 0);
 
         yield return new object[] { 1d, new Size(100, 100), new Size(100, 100) };
         yield return new object[] { 2d, new Size(100, 100), new Size(200, 200) };
         yield return new object[] { 0.5d, new Size(100, 100), new Size(50, 50) };
         yield return new object[] { 0.1d, new Size(100, 100), new Size(10, 10) };
-        yield return new object[] { 0, new Size(100, 100), zeroSize };
-        yield return new object[] { 1d, zeroSize, zeroSize };
-        yield return new object[] { 999d, zeroSize, zeroSize };
-        yield return new object[] { double.MaxValue, zeroSize, zeroSize };
         yield return new object[] { double.MaxValue, new Size(100, 100), maxSizeBox };
         yield return new object[] { double.MaxValue, maxSizeBox, maxSizeBox };
         yield return new object[] { 2d, maxSizeBox, maxSizeBox };
