@@ -17,16 +17,16 @@ public class MultiplyScalerUnitTests
     [InlineData(double.MaxValue)]
     public void Constructor_PositiveValue_MultiplierMatchesValue(double multiplier)
     {
-        MultiplyScaler? multiplyScaler = null;
+        MultiplyScaler? scaler = null;
 
         try
         {
-            multiplyScaler = new(multiplier);
+            scaler = new(multiplier);
         }
         catch { }
 
-        multiplyScaler.Should().NotBeNull();
-        multiplyScaler!.Multiplier.Should().Be(multiplier);
+        scaler.Should().NotBeNull();
+        scaler!.Multiplier.Should().Be(multiplier);
     }
 
     // T-2
@@ -42,19 +42,19 @@ public class MultiplyScalerUnitTests
     [InlineData(double.MinValue)]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(double multiplier)
     {
-        MultiplyScaler? multiplyScaler = null;
+        MultiplyScaler? scaler = null;
         Exception? exception = null;
 
         try
         {
-            multiplyScaler = new(multiplier);
+            scaler = new(multiplier);
         }
         catch (Exception except)
         {
             exception = except;
         }
 
-        multiplyScaler.Should().BeNull();
+        scaler.Should().BeNull();
         exception.Should().NotBeNull();
         exception.Should().BeOfType<ArgumentOutOfRangeException>();
     }
@@ -67,12 +67,12 @@ public class MultiplyScalerUnitTests
         Size inputSize,
         Size expectedSize
     ) {
-        MultiplyScaler multiplyScaler = new(multiplier);
+        MultiplyScaler scaler = new(multiplier);
         ScaleParameters? scaleParameters = null;
 
         try
         {
-            scaleParameters = multiplyScaler.GetScaleParameters(inputSize.Width, inputSize.Height);
+            scaleParameters = scaler.GetScaleParameters(inputSize.Width, inputSize.Height);
         }
         catch { }
 

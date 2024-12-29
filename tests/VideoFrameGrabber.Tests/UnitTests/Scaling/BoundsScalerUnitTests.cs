@@ -15,17 +15,17 @@ public class BoundsScalerUnitTests
         int width,
         int height
     ) {
-        BoundsScaler? boundsScaler = null;
+        BoundsScaler? scaler = null;
 
         try
         {
-            boundsScaler = new(width, height);
+            scaler = new(width, height);
         }
         catch { }
 
-        boundsScaler.Should().NotBeNull();
-        boundsScaler!.WidthBounds.Should().Be(width);
-        boundsScaler!.HeightBounds.Should().Be(height);
+        scaler.Should().NotBeNull();
+        scaler!.WidthBounds.Should().Be(width);
+        scaler!.HeightBounds.Should().Be(height);
     }
 
     // T-2
@@ -48,19 +48,19 @@ public class BoundsScalerUnitTests
         int height
     )
     {
-        BoundsScaler? boundsScaler = null;
+        BoundsScaler? scaler = null;
         Exception? exception = null;
 
         try
         {
-            boundsScaler = new(width, height);
+            scaler = new(width, height);
         }
         catch (Exception except)
         {
             exception = except;
         }
 
-        boundsScaler.Should().BeNull();
+        scaler.Should().BeNull();
         exception.Should().NotBeNull();
         exception.Should().BeOfType<ArgumentException>();
     }
@@ -73,12 +73,12 @@ public class BoundsScalerUnitTests
         Size inputSize,
         Size expectedSize
     ) {
-        BoundsScaler boundsScaler = new(boundsSize.Width, boundsSize.Height);
+        BoundsScaler scaler = new(boundsSize.Width, boundsSize.Height);
         ScaleParameters? scaleParameters = null;
 
         try
         {
-            scaleParameters = boundsScaler.GetScaleParameters(inputSize.Width, inputSize.Height);
+            scaleParameters = scaler.GetScaleParameters(inputSize.Width, inputSize.Height);
         }
         catch { }
 
