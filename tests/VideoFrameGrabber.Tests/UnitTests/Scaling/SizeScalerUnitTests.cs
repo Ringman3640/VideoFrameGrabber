@@ -8,7 +8,7 @@ public class SizeScalerUnitTests
     // T-1
     [Theory]
     [MemberData(nameof(GetWidthHeightValues))]
-    public void Constructor_SizeValues_WidthAndHeightMatchSizeValues(int width, int height)
+    public void Constructor_ValidSizeValues_WidthAndHeightMatchSizeValues(int width, int height)
     {
         SizeScaler? scaler = null;
 
@@ -20,6 +20,35 @@ public class SizeScalerUnitTests
     }
 
     // T-2
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(100, 0)]
+    [InlineData(0, 100)]
+    [InlineData(-1, 100)]
+    [InlineData(100, -1)]
+    [InlineData(int.MinValue, int.MaxValue)]
+    [InlineData(int.MaxValue, int.MinValue)]
+    [InlineData(int.MinValue, int.MinValue)]
+    public void Constructor_ZeroOrNegativeValues_ThrowsArgumentOutOfRangeException(int width, int height)
+    {
+        SizeScaler? scaler = null;
+        Exception? exception = null;
+
+        try
+        {
+            scaler = new(width, height);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        scaler.Should().BeNull();
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<ArgumentOutOfRangeException>();
+    }
+
+    // T-3
     [Theory]
     [MemberData(nameof(GetWidthHeightValues))]
     public void GetScaleParameters_ZeroSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
@@ -34,7 +63,7 @@ public class SizeScalerUnitTests
         scaleParameters.Value.Height.Should().Be(height);
     }
 
-    // T-3
+    // T-4
     [Theory]
     [MemberData(nameof(GetWidthHeightValues))]
     public void GetScaleParameters_MaximumSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
@@ -49,7 +78,7 @@ public class SizeScalerUnitTests
         scaleParameters.Value.Height.Should().Be(height);
     }
 
-    // T-4
+    // T-5
     [Theory]
     [MemberData(nameof(GetWidthHeightValues))]
     public void GetScaleParameters_MinimumSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
@@ -69,14 +98,13 @@ public class SizeScalerUnitTests
     /// </summary>
     public static IEnumerable<object[]> GetWidthHeightValues()
     {
-        yield return new object[] { 0, 0 };
         yield return new object[] { 1, 1 };
         yield return new object[] { 1000, 1000 };
-        yield return new object[] { -1, -1 };
-        yield return new object[] { -1000, -1000 };
+        yield return new object[] { 1, 99999 };
+        yield return new object[] { 99999, 1 };
+        yield return new object[] { 99999, 99999 };
+        yield return new object[] { int.MaxValue, 1 };
+        yield return new object[] { 1, int.MaxValue };
         yield return new object[] { int.MaxValue, int.MaxValue };
-        yield return new object[] { int.MinValue, int.MinValue };
-        yield return new object[] { int.MinValue, int.MaxValue };
-        yield return new object[] { int.MaxValue, int.MinValue };
     }
 }
