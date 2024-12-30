@@ -5,6 +5,7 @@ namespace VideoFrameGrabber.Tests.UnitTests.Scaling;
 
 public  class HeightScalerUnitTests
 {
+    // T-1
     [Theory]
     [InlineData(1)]
     [InlineData(100)]
@@ -24,6 +25,7 @@ public  class HeightScalerUnitTests
         scaler!.Height.Should().Be(height);
     }
 
+    // T-2
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -49,6 +51,7 @@ public  class HeightScalerUnitTests
         exception.Should().BeOfType<ArgumentOutOfRangeException>();
     }
 
+    // T-3
     [Theory]
     [MemberData(nameof(GetHeightAndInputAndExpectedValues))]
     public void GetScaleParameters_HeightAndInputSizeValues_ResultMatchesExpectedSize(
