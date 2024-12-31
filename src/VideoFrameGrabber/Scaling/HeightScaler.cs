@@ -13,7 +13,7 @@ namespace VideoFrameGrabber.Scaling
     /// <see cref="int.MaxValue"/>. Since a dimension of an image cannot exceed
     /// <see cref="int.MaxValue"/>, the width value would be clamped down in this scenario.
     /// </remarks>
-    public class HeightScaler
+    public class HeightScaler : IScaleProvider
     {
         /// <summary>
         /// Gets the height pixel length that will be applied to the image.
