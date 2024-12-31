@@ -8,20 +8,24 @@
         /// <summary>
         /// Gets the width component of the current <see cref="ScaleParameters"/> instance.
         /// </summary>
+        public int Width
+        {
+            get;
 #if NET5_0_OR_GREATER
-        public int Width { get; init; }
-#else
-        public int Width { get; }
+            init;
 #endif
+        }
 
-    /// <summary>
-    /// Gets the height component value of the current <see cref="ScaleParameters"/> instance.
-    /// </summary>
+        /// <summary>
+        /// Gets the height component value of the current <see cref="ScaleParameters"/> instance.
+        /// </summary>
+        public int Height
+        {
+            get;
 #if NET5_0_OR_GREATER
-        public int Height { get; init; }
-#else
-        public int Height { get; }
+            init;
 #endif
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScaleParameters"/> structure to a specified
