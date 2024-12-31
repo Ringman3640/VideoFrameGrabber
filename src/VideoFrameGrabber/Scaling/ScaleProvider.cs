@@ -1,7 +1,8 @@
 ﻿namespace VideoFrameGrabber.Scaling
 {
     /// <summary>
-    /// Provides fuctionality for an object to return a <see cref="ScaleParameters"/> instance.
+    /// Provides scaling functionality by creating <see cref="ScaleParameters"/> values.This is an
+    /// abstract class.
     /// </summary>
     public abstract class ScaleProvider
     {
