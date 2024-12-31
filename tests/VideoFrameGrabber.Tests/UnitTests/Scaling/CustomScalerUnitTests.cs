@@ -112,7 +112,7 @@ public class CustomScalerUnitTests
         {
             (int inWidth, int inHeight) =>
             {
-                return new ScaleParameters(0, 0);
+                return new ScaleParameters(1, 1);
             }
         };
 
