@@ -8,38 +8,46 @@
         /// <summary>
         /// Gets the width of the crop frame.
         /// </summary>
+        public int Width
+        {
+            get;
 #if NET5_0_OR_GREATER
-        public int Width { get; init; }
-#else
-        public int Width { get; }
+            init;
 #endif
+        }
 
         /// <summary>
         /// Gets the height of the crop frame.
         /// </summary>
+        public int Height
+        {
+            get;
 #if NET5_0_OR_GREATER
-        public int Height { get; init; }
-#else
-        public int Height { get; }
+            init;
 #endif
+        }
 
         /// <summary>
         /// Gets the X component of the crop frame's offset coordinate.
         /// </summary>
+        public int X
+        {
+            get;
 #if NET5_0_OR_GREATER
-        public int X { get; init; }
-#else
-        public int X { get; }
+            init;
 #endif
+        }
 
         /// <summary>
         /// Gets the Y component of the crop frame's offset coordinate.
         /// </summary>
+        public int Y
+        {
+            get;
 #if NET5_0_OR_GREATER
-        public int Y { get; init; }
-#else
-        public int Y { get; }
+            init;
 #endif
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CropParameters"/> structure to a specified
