@@ -13,7 +13,7 @@ namespace VideoFrameGrabber.Scaling
     /// This class is immutable.
     /// </para>
     /// </remarks>
-    public class SizeScaler : IScaleProvider
+    public class SizeScaler : ScaleProvider
     {
         /// <summary>
         /// Gets the pixel width component that this <see cref="SizeScaler"/> provides.
@@ -49,9 +49,10 @@ namespace VideoFrameGrabber.Scaling
             Height = height;
         }
 
-        public ScaleParameters GetScaleParameters(int inputWidth, int inputHeight)
+        protected override void PerformScale(ref int width, ref int height)
         {
-            return new ScaleParameters(Width, Height);
+            width = Width;
+            height = Height;
         }
     }
 }

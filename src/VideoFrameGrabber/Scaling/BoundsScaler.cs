@@ -21,7 +21,7 @@ namespace VideoFrameGrabber.Scaling
     /// </para>
     /// </remarks>
     /// <seealso cref="FitBoundsScaler"/>
-    public class BoundsScaler : IScaleProvider
+    public class BoundsScaler : ScaleProvider
     {
         /// <summary>
         /// Gets the pixel width of the bounds size.
@@ -68,49 +68,36 @@ namespace VideoFrameGrabber.Scaling
             BoundsAspectRatio = widthBounds / heightBounds;
         }
 
-        public ScaleParameters GetScaleParameters(int inputWidth, int inputHeight)
+        protected override void PerformScale(ref int width, ref int height)
         {
-            if (inputWidth <= WidthBounds && inputHeight <= HeightBounds)
+            if (width <= WidthBounds && height <= HeightBounds)
             {
                 // No shrinking needed, input is within bounds
-                return new ScaleParameters(inputWidth, inputHeight);
+                return;
             }
 
-            int outputWidth;
-            int outputHeight;
-            double inputAspectRatio = (double)inputWidth / inputHeight;
-            
+            double inputAspectRatio = (double)width / height;
+
             if (inputAspectRatio > BoundsAspectRatio)
             {
                 // Case: Input size is wider than bounds size, set input width to bounds width and
                 // adjust input height to keep aspect ratio
-                outputWidth = WidthBounds;
-                outputHeight = (int)(outputWidth / inputAspectRatio);
+                width = WidthBounds;
+                height = (int)(width / inputAspectRatio);
             }
             else if (inputAspectRatio < BoundsAspectRatio)
             {
                 // Case: Iput size is taller than bounds size, set input height to bounds height and
                 // adjust input width to keep aspect ratio
-                outputHeight = HeightBounds;
-                outputWidth = (int)(outputHeight * inputAspectRatio);
+                height = HeightBounds;
+                width = (int)(height * inputAspectRatio);
             }
             else
             {
                 // Case: Aspect ratios are the same, just shrink input size to bounds size
-                outputWidth = WidthBounds;
-                outputHeight = HeightBounds;
+                width = WidthBounds;
+                height = HeightBounds;
             }
-
-            if (outputWidth <= 0)
-            {
-                outputWidth = 1;
-            }
-            if (outputHeight <= 0)
-            {
-                outputHeight = 1;
-            }
-
-            return new ScaleParameters(outputWidth, outputHeight);
         }
     }
 }

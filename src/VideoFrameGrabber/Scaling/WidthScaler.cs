@@ -13,7 +13,7 @@ namespace VideoFrameGrabber.Scaling
     /// <see cref="int.MaxValue"/>. Since a dimension of an image cannot exceed
     /// <see cref="int.MaxValue"/>, the height value would be clamped down in this scenario.
     /// </remarks>
-    public class WidthScaler : IScaleProvider
+    public class WidthScaler : ScaleProvider
     {
         /// <summary>
         /// Gets the width pixel length that will be applied to the image.
@@ -38,27 +38,25 @@ namespace VideoFrameGrabber.Scaling
             Width = length;
         }
 
-        public ScaleParameters GetScaleParameters(int inputWidth, int inputHeight)
+        protected override void PerformScale(ref int width, ref int height)
         {
-            double outHeight;
-            double heightMultiplier = (double)inputHeight / inputWidth;
+            double largeHeight;
+            double heightMultiplier = (double)height / width;
 
             try
             {
                 checked
                 {
-                    outHeight = Width * heightMultiplier;
+                    largeHeight = Width * heightMultiplier;
                 }
             }
             catch
             {
-                outHeight = int.MaxValue;
+                largeHeight = int.MaxValue;
             }
 
-            return new ScaleParameters(
-                Width,
-                outHeight > int.MaxValue ? int.MaxValue : (int)outHeight
-            );
+            width = Width;
+            height = largeHeight > int.MaxValue ? int.MaxValue : (int)largeHeight;
         }
     }
 }

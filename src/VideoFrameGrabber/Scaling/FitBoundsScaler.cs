@@ -22,7 +22,7 @@ namespace VideoFrameGrabber.Scaling
     /// </para>
     /// </remarks>
     /// <seealso cref="BoundsScaler"/>
-    public class FitBoundsScaler : IScaleProvider
+    public class FitBoundsScaler : ScaleProvider
     {
         /// <summary>
         /// Gets the pixel width of the bounds size.
@@ -69,43 +69,30 @@ namespace VideoFrameGrabber.Scaling
             BoundsAspectRatio = widthBounds / heightBounds;
         }
 
-        public ScaleParameters GetScaleParameters(int inputWidth, int inputHeight)
+        protected override void PerformScale(ref int width, ref int height)
         {
-            int outWidth;
-            int outHeight;
-            double inputAspectRatio = (double)inputWidth / inputHeight;
+            double inputAspectRatio = (double)width / height;
 
             if (inputAspectRatio > BoundsAspectRatio)
             {
                 // Case: Input size is wider than bounds size, set output width to bounds width and
                 // adjust output height to keep aspect ratio
-                outWidth = WidthBounds;
-                outHeight = (int)(outWidth / inputAspectRatio);
+                width = WidthBounds;
+                height = (int)(width / inputAspectRatio);
             }
             else if (inputAspectRatio < BoundsAspectRatio)
             {
                 // Case: Iput size is taller than bounds size, set output height to bounds height and
                 // adjust output width to keep aspect ratio
-                outHeight = HeightBounds;
-                outWidth = (int)(outHeight * inputAspectRatio);
+                height = HeightBounds;
+                width = (int)(height * inputAspectRatio);
             }
             else
             {
                 // Case: Aspect ratios are the same, just set input size to bounds size
-                outWidth = WidthBounds;
-                outHeight = HeightBounds;
+                width = WidthBounds;
+                height = HeightBounds;
             }
-
-            if (outWidth <= 0)
-            {
-                outWidth = 1;
-            }
-            if (outHeight <= 0)
-            {
-                outHeight = 1;
-            }
-
-            return new ScaleParameters(outWidth, outHeight);
         }
     }
 }

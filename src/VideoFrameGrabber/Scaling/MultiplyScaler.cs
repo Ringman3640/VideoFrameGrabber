@@ -5,7 +5,13 @@ namespace VideoFrameGrabber.Scaling
     /// <summary>
     /// Represents a scaler that multiplies the size of an image by a specified multiplier.
     /// </summary>
-    public class MultiplyScaler : IScaleProvider
+    /// <remarks>
+    /// If the result of a multiply operation results in an overload, the result is capped to
+    /// <see cref="int.MaxValue"/> This is applied to both dimensions of the result
+    /// <see cref="ScaleParameters"/> independently, which may cause differences between the input
+    /// and output aspect ratio sizes if only one dimension overflows.
+    /// </remarks>
+    public class MultiplyScaler : ScaleProvider
     {
         /// <summary>
         /// Gets the multiplier value that is applied in <see cref="GetScaleParameters(int, int)"/>.
@@ -30,45 +36,36 @@ namespace VideoFrameGrabber.Scaling
             Multiplier = multiplier;
         }
 
-        /// <remarks>
-        /// If the result of a multiply operation results in an overload, the result is capped to
-        /// <see cref="int.MaxValue"/> This is applied to both dimensions of the result
-        /// <see cref="ScaleParameters"/> independently, which may cause differences between the
-        /// input and output aspect ratio sizes if only one dimension overflows.
-        /// </remarks>
-        /// <inheritdoc cref="IScaleProvider.GetScaleParameters(int, int)"/>
-        public ScaleParameters GetScaleParameters(int inputWidth, int inputHeight)
+        protected override void PerformScale(ref int width, ref int height)
         {
-            double outputWidth;
+            double largeWidth;
             try
             {
                 checked
                 {
-                    outputWidth = inputWidth * Multiplier;
+                    largeWidth = width * Multiplier;
                 }
             }
             catch
             {
-                outputWidth = double.MaxValue;
+                largeWidth = double.MaxValue;
             }
 
-            double outputHeight;
+            double largeHeight;
             try
             {
                 checked
                 {
-                    outputHeight = inputHeight * Multiplier;
+                    largeHeight = height * Multiplier;
                 }
             }
             catch
             {
-                outputHeight = double.MaxValue;
+                largeHeight = double.MaxValue;
             }
 
-            return new ScaleParameters(
-                outputWidth > int.MaxValue ? int.MaxValue : (int)outputWidth,
-                outputHeight > int.MaxValue ? int.MaxValue : (int)outputHeight
-            );
+            width = largeWidth > int.MaxValue ? int.MaxValue : (int)largeWidth;
+            height = largeHeight > int.MaxValue ? int.MaxValue : (int)largeHeight;
         }
     }
 }

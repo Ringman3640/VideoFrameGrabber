@@ -95,7 +95,6 @@ public class BoundsScalerUnitTests
     {
         int max = int.MaxValue;
 
-        yield return new object[] { new Size(100, 100), new Size(0, 0), new Size(0, 0) };
         yield return new object[] { new Size(100, 100), new Size(10, 10), new Size(10, 10) };
         yield return new object[] { new Size(100, 100), new Size(100, 100), new Size(100, 100) };
         yield return new object[] { new Size(max, max), new Size(max, max), new Size(max, max) };

@@ -23,7 +23,7 @@ namespace VideoFrameGrabber
         /// <summary>
         /// Gets or sets the scaling modifier that should be applied to an extracted image frame.
         /// </summary>
-        public IScaleProvider? Scaling { get; set; }
+        public ScaleProvider? Scaling { get; set; }
 
         /// <summary>
         /// Gets or sets the cropping modifier that should be applied to an extracted image frame.

@@ -5,7 +5,7 @@ namespace VideoFrameGrabber.Scaling
     /// <summary>
     /// Represents a scaler that uses a custom scaling function to produce a scale value.
     /// </summary>
-    public class CustomScaler : IScaleProvider
+    public class CustomScaler : ScaleProvider
     {
         /// <summary>
         /// Gets the user-defined function that performs the scaling operation.
@@ -30,13 +30,11 @@ namespace VideoFrameGrabber.Scaling
             ScaleFunction = scaleFunction;
         }
 
-        public ScaleParameters GetScaleParameters(int inputWidth, int inputHeight)
+        protected override void PerformScale(ref int width, ref int height)
         {
-            ScaleParameters result = ScaleFunction(inputWidth, inputHeight);
-            return new ScaleParameters(
-                result.Width <= 0 ? 1 : result.Width,
-                result.Height <= 0 ? 1 : result.Height
-            );
+            ScaleParameters result = ScaleFunction(width, height);
+            width = result.Width;
+            height = result.Height;
         }
     }
 }
