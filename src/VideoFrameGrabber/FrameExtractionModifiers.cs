@@ -28,7 +28,7 @@ namespace VideoFrameGrabber
         /// <summary>
         /// Gets or sets the cropping modifier that should be applied to an extracted image frame.
         /// </summary>
-        public ICropProvider? Cropping { get; set; }
+        public CropProvider? Cropping { get; set; }
 
         /// <summary>
         /// Indicates the order of scaling and cropping applied to an extracted image frame.
