@@ -1,7 +1,7 @@
 ﻿namespace VideoFrameGrabber.Cropping
 {
     /// <summary>
-    /// Provides cropping functionality by creating <see cref="CropParameters"/> values.This is an
+    /// Provides cropping functionality by creating <see cref="CropParameters"/> values. This is an
     /// abstract class.
     /// </summary>
     public abstract class CropProvider
