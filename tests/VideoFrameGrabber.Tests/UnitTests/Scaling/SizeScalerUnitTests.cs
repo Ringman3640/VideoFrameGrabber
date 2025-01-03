@@ -8,7 +8,7 @@ public class SizeScalerUnitTests
 {
     // T-1
     [Theory]
-    [MemberData(nameof(GetWidthHeightValues))]
+    [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void Constructor_ValidSizeValues_WidthAndHeightMatchSizeValues(int width, int height)
     {
         CommonTests.ConstructorTests.CorrectlyInitializes(
@@ -22,14 +22,8 @@ public class SizeScalerUnitTests
 
     // T-2
     [Theory]
-    [InlineData(0, 0)]
-    [InlineData(100, 0)]
-    [InlineData(0, 100)]
-    [InlineData(-1, 100)]
-    [InlineData(100, -1)]
-    [InlineData(int.MinValue, int.MaxValue)]
-    [InlineData(int.MaxValue, int.MinValue)]
-    [InlineData(int.MinValue, int.MinValue)]
+    [ClassData(typeof(CommonTestValues.IntPairs.ContainsZero))]
+    [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
     public void Constructor_ZeroOrNegativeValues_ThrowsArgumentOutOfRangeException(int width, int height)
     {
         CommonTests.ConstructorTests.ThrowsException(
@@ -40,7 +34,7 @@ public class SizeScalerUnitTests
 
     // T-3
     [Theory]
-    [MemberData(nameof(GetWidthHeightValues))]
+    [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void GetScaleParameters_ZeroSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
     {
         CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
@@ -52,7 +46,7 @@ public class SizeScalerUnitTests
 
     // T-4
     [Theory]
-    [MemberData(nameof(GetWidthHeightValues))]
+    [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void GetScaleParameters_MaximumSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
     {
         CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
@@ -64,7 +58,7 @@ public class SizeScalerUnitTests
 
     // T-5
     [Theory]
-    [MemberData(nameof(GetWidthHeightValues))]
+    [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void GetScaleParameters_MinimumSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
     {
         CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
@@ -72,20 +66,5 @@ public class SizeScalerUnitTests
             inputSize: new Size(int.MinValue, int.MinValue),
             expectedSize: new Size(width, height)
         );
-    }
-
-    /// <summary>
-    /// Gets test data that specifies width and height values.
-    /// </summary>
-    public static IEnumerable<object[]> GetWidthHeightValues()
-    {
-        yield return new object[] { 1, 1 };
-        yield return new object[] { 1000, 1000 };
-        yield return new object[] { 1, 99999 };
-        yield return new object[] { 99999, 1 };
-        yield return new object[] { 99999, 99999 };
-        yield return new object[] { int.MaxValue, 1 };
-        yield return new object[] { 1, int.MaxValue };
-        yield return new object[] { int.MaxValue, int.MaxValue };
     }
 }

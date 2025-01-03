@@ -8,10 +8,7 @@ public class WidthScalerUnitTests
 {
     // T-1
     [Theory]
-    [InlineData(1)]
-    [InlineData(100)]
-    [InlineData(99999)]
-    [InlineData(int.MaxValue)]
+    [ClassData(typeof(CommonTestValues.SingleInts.AllPositive))]
     public void Constructor_ValidWidthValue_WidthMatchesValue(int width)
     {
         CommonTests.ConstructorTests.CorrectlyInitializes(
@@ -25,10 +22,7 @@ public class WidthScalerUnitTests
     // T-2
     [Theory]
     [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(-100)]
-    [InlineData(-99999)]
-    [InlineData(int.MinValue)]
+    [ClassData(typeof(CommonTestValues.SingleInts.AllNegative))]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(int width)
     {
         CommonTests.ConstructorTests.ThrowsException(

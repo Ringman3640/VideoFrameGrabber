@@ -8,10 +8,7 @@ public class BoundsScalerUnitTests
 {
     // T-1
     [Theory]
-    [InlineData(1, 1)]
-    [InlineData(100, 100)]
-    [InlineData(99999, 99999)]
-    [InlineData(int.MaxValue, int.MaxValue)]
+    [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void Constructor_PositiveBoundsValues_WidthAndHeightBoundsMatchValues(
         int width,
         int height
@@ -27,19 +24,8 @@ public class BoundsScalerUnitTests
 
     // T-2
     [Theory]
-    [InlineData(0, 0)]
-    [InlineData(-100, -100)]
-    [InlineData(-1, -1)]
-    [InlineData(-99999, -99999)]
-    [InlineData(int.MinValue, int.MinValue)]
-    [InlineData(100, -100)]
-    [InlineData(1, -1)]
-    [InlineData(99999, -99999)]
-    [InlineData(int.MaxValue, int.MinValue)]
-    [InlineData(-100, 100)]
-    [InlineData(-1, 1)]
-    [InlineData(-99999, 99999)]
-    [InlineData(int.MinValue, int.MaxValue)]
+    [ClassData(typeof(CommonTestValues.IntPairs.ContainsZero))]
+    [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
     public void Constructor_NegativeAndZeroBoundsValues_ThrowsArgumentOutOfRangeException(
         int width,
         int height

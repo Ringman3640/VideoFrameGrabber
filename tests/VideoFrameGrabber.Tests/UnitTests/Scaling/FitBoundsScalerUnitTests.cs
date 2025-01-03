@@ -8,12 +8,7 @@ public class FitBoundsScalerUnitTests
 {
     // T-1
     [Theory]
-    [InlineData(1, 1)]
-    [InlineData(10, 10)]
-    [InlineData(99999, 99999)]
-    [InlineData(int.MaxValue, 1)]
-    [InlineData(1, int.MaxValue)]
-    [InlineData(int.MaxValue, int.MaxValue)]
+    [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void Constructor_ValidBoundValues_WidthAndHeightBoundsMatchValues(
         int width,
         int height
@@ -29,15 +24,8 @@ public class FitBoundsScalerUnitTests
 
     // T-2
     [Theory]
-    [InlineData(1, 0)]
-    [InlineData(0, 1)]
-    [InlineData(0, 0)]
-    [InlineData(-1, 1)]
-    [InlineData(1, -1)]
-    [InlineData(-1, -1)]
-    [InlineData(int.MinValue, 1)]
-    [InlineData(1, int.MinValue)]
-    [InlineData(int.MinValue, int.MinValue)]
+    [ClassData(typeof(CommonTestValues.IntPairs.ContainsZero))]
+    [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
     public void Constructor_ZeroOrNegativeValues_ThrowsArgumentOutOfRangeException(
         int width,
         int height

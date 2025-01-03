@@ -8,10 +8,7 @@ public  class HeightScalerUnitTests
 {
     // T-1
     [Theory]
-    [InlineData(1)]
-    [InlineData(100)]
-    [InlineData(99999)]
-    [InlineData(int.MaxValue)]
+    [ClassData(typeof(CommonTestValues.SingleInts.AllPositive))]
     public void Constructor_ValidHeightValue_HeightMatchesValue(int height)
     {
         CommonTests.ConstructorTests.CorrectlyInitializes(
@@ -25,10 +22,7 @@ public  class HeightScalerUnitTests
     // T-2
     [Theory]
     [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(-100)]
-    [InlineData(-99999)]
-    [InlineData(int.MinValue)]
+    [ClassData(typeof(CommonTestValues.SingleInts.AllNegative))]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(int height)
     {
         CommonTests.ConstructorTests.ThrowsException(
