@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using VideoFrameGrabber.Scaling;
+using VideoFrameGrabber.Tests.Utilities;
 
 namespace VideoFrameGrabber.Tests.UnitTests.Scaling;
 
@@ -17,17 +18,13 @@ public class FitBoundsScalerUnitTests
         int width,
         int height
     ) {
-        FitBoundsScaler? scaling = null;
-
-        try
-        {
-            scaling = new(width, height);
-        }
-        catch { }
-
-        scaling.Should().NotBeNull();
-        scaling!.WidthBounds.Should().Be(width);
-        scaling!.HeightBounds.Should().Be(height);
+        CommonTests.ConstructorTests.CorrectlyInitializes(
+            constructInstance: () => new FitBoundsScaler(width, height),
+            checks: [
+                (scaler) => scaler.WidthBounds == width,
+                (scaler) => scaler.HeightBounds == height
+            ]
+        );
     }
 
     // T-2
@@ -45,21 +42,10 @@ public class FitBoundsScalerUnitTests
         int width,
         int height
     ) {
-        FitBoundsScaler? scaling = null;
-        Exception? exception = null;
-
-        try
-        {
-            scaling = new(width, height);
-        }
-        catch (Exception except)
-        {
-            exception = except;
-        }
-
-        scaling.Should().BeNull();
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<ArgumentOutOfRangeException>();
+        CommonTests.ConstructorTests.ThrowsException(
+            constructInstance: () => new FitBoundsScaler(width, height),
+            exceptionType: typeof(ArgumentOutOfRangeException)
+        );
     }
 
     // T-3
@@ -82,6 +68,13 @@ public class FitBoundsScalerUnitTests
         scaleParameters.Should().NotBeNull();
         scaleParameters!.Value.Width.Should().Be(expectedSize.Width);
         scaleParameters!.Value.Height.Should().Be(expectedSize.Height);
+
+        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+            scaler: new FitBoundsScaler(boundsSize.Width, boundsSize.Height),
+            inputWidth: inputSize.Width,
+            inputHeight: inputSize.Height,
+            expectedSize: expectedSize
+        );
     }
 
     /// <summary>

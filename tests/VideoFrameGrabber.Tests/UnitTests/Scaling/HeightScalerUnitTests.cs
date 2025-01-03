@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using VideoFrameGrabber.Scaling;
+using VideoFrameGrabber.Tests.Utilities;
 
 namespace VideoFrameGrabber.Tests.UnitTests.Scaling;
 
@@ -13,16 +14,12 @@ public  class HeightScalerUnitTests
     [InlineData(int.MaxValue)]
     public void Constructor_ValidHeightValue_HeightMatchesValue(int height)
     {
-        HeightScaler? scaler = null;
-
-        try
-        {
-            scaler = new(height);
-        }
-        catch { }
-
-        scaler.Should().NotBeNull();
-        scaler!.Height.Should().Be(height);
+        CommonTests.ConstructorTests.CorrectlyInitializes(
+            constructInstance: () => new HeightScaler(height),
+            checks: [
+                (scaler) => scaler.Height == height
+            ]
+        );
     }
 
     // T-2
@@ -34,21 +31,10 @@ public  class HeightScalerUnitTests
     [InlineData(int.MinValue)]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(int height)
     {
-        HeightScaler? scaler = null;
-        Exception? exception = null;
-
-        try
-        {
-            scaler = new(height);
-        }
-        catch (Exception except)
-        {
-            exception = except;
-        }
-
-        scaler.Should().BeNull();
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<ArgumentOutOfRangeException>();
+        CommonTests.ConstructorTests.ThrowsException(
+            constructInstance: () => new HeightScaler(height),
+            exceptionType: typeof(ArgumentOutOfRangeException)
+        );
     }
 
     // T-3
@@ -58,20 +44,15 @@ public  class HeightScalerUnitTests
         int height,
         Size inputSize,
         Size expectedSize
-    )
-    {
+    ) {
         HeightScaler scaler = new(height);
-        ScaleParameters? scaleParameters = null;
 
-        try
-        {
-            scaleParameters = scaler.GetScaleParameters(inputSize.Width, inputSize.Height);
-        }
-        catch { }
-
-        scaleParameters.Should().NotBeNull();
-        scaleParameters!.Value.Width.Should().Be(expectedSize.Width);
-        scaleParameters!.Value.Height.Should().Be(expectedSize.Height);
+        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+            scaler: scaler,
+            inputWidth: inputSize.Width,
+            inputHeight: inputSize.Height,
+            expectedSize: expectedSize
+        );
     }
 
     /// <summary>

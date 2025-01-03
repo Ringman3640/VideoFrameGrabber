@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using VideoFrameGrabber.Scaling;
+using VideoFrameGrabber.Tests.Utilities;
 
 namespace VideoFrameGrabber.Tests.UnitTests.Scaling;
 
@@ -10,35 +11,20 @@ public class CustomScalerUnitTests
     [MemberData(nameof(GetScaleFunctionValues))]
     public void Constructor_ValidScaleFunction_Succeeds(Func<int, int, ScaleParameters> scaleFunction)
     {
-        CustomScaler? scaler = null;
-
-        try
-        {
-            scaler = new(scaleFunction);
-        }
-        catch { }
-
-        scaler.Should().NotBeNull();
+        CommonTests.ConstructorTests.CorrectlyInitializes(
+            constructInstance: () => new CustomScaler(scaleFunction),
+            checks: []
+        );
     }
 
     // T-2
     [Fact]
     public void Constructor_NullValue_ThrowsArgumentNullException()
     {
-        CustomScaler? scaler = null;
-        Exception? exception = null;
-
-        try
-        {
-            scaler = new(null!);
-        }
-        catch (Exception except)
-        {
-            exception = except;
-        }
-
-        scaler.Should().BeNull();
-        exception.Should().NotBeNull().And.BeOfType<ArgumentNullException>();
+        CommonTests.ConstructorTests.ThrowsException(
+            constructInstance: () => new CustomScaler(null!),
+            exceptionType: typeof(ArgumentNullException)
+        );
     }
 
     // T-3
@@ -49,57 +35,46 @@ public class CustomScalerUnitTests
     ) {
         int inputWidth = 100;
         int inputHeight = 100;
-        CustomScaler scaler = new(scaleFunction);
         ScaleParameters expectedResult = scaleFunction(inputWidth, inputHeight);
-        ScaleParameters? scaleParameters = null;
 
-        try
-        {
-            scaleParameters = scaler.GetScaleParameters(inputWidth, inputHeight);
-        }
-        catch { }
-
-        scaleParameters.Should().NotBeNull();
-        scaleParameters!.Value.Width.Should().Be(expectedResult.Width);
-        scaleParameters!.Value.Height.Should().Be(expectedResult.Height);
+        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+            scaler: new CustomScaler(scaleFunction),
+            inputWidth: inputWidth,
+            inputHeight: inputHeight,
+            expectedScale: expectedResult
+        );
     }
 
     [Fact]
     public void GetScaleParameters_SquareInputSizeWithScaleFunctionReturningZeroScale_ReturnsOneByOneScale()
     {
+        CustomScaler scaler = new((inWidth, inHeight) => new ScaleParameters(0, 0));
         int inputWidth = 100;
         int inputHeight = 100;
-        CustomScaler scaler = new((inWidth, inHeight) => new ScaleParameters(0, 0));
-        ScaleParameters? scaleParameters = null;
+        ScaleParameters expectedResult = new(1, 1);
 
-        try
-        {
-            scaleParameters = scaler.GetScaleParameters(inputWidth, inputHeight);
-        }
-        catch { }
-
-        scaleParameters.Should().NotBeNull();
-        scaleParameters!.Value.Width.Should().Be(1);
-        scaleParameters!.Value.Height.Should().Be(1);
+        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+            scaler: scaler,
+            inputWidth: inputWidth,
+            inputHeight: inputHeight,
+            expectedScale: expectedResult
+        );
     }
 
     [Fact]
     public void GetScaleParameters_SquareInputSizeWithScaleFunctionReturningNegativeScale_ReturnsOneByOneScale()
     {
+        CustomScaler scaler = new((inWidth, inHeight) => new ScaleParameters(-1, -1));
         int inputWidth = 100;
         int inputHeight = 100;
-        CustomScaler scaler = new((inWidth, inHeight) => new ScaleParameters(-1, -1));
-        ScaleParameters? scaleParameters = null;
+        ScaleParameters expectedResult = new(1, 1);
 
-        try
-        {
-            scaleParameters = scaler.GetScaleParameters(inputWidth, inputHeight);
-        }
-        catch { }
-
-        scaleParameters.Should().NotBeNull();
-        scaleParameters!.Value.Width.Should().Be(1);
-        scaleParameters!.Value.Height.Should().Be(1);
+        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+            scaler: scaler,
+            inputWidth: inputWidth,
+            inputHeight: inputHeight,
+            expectedScale: expectedResult
+        );
     }
 
     /// <summary>
