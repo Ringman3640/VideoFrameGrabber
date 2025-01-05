@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Data;
 
 namespace VideoFrameGrabber.Tests.Utilities;
 
@@ -226,6 +227,121 @@ public static class CommonTestValues
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// Exposes static methods that provide a variable number of integer test values.
+    /// </summary>
+    /// <remarks>
+    /// These methods rely on the data values provided by <see cref="SingleInts"/>. The values are
+    /// staggered, so that each test value set does not consist of the exact same value. However,
+    /// the methods do not iterate every permutation as that would result in fucking massive test
+    /// value sets. Like, that shit is exponential; that is just overkill for unit tests. Skibidi.
+    /// </remarks>
+    public static class VariableInts
+    {
+        /// <summary>
+        /// Gets a variable set of positive <see cref="int"/> test values. Does not include zero.
+        /// </summary>
+        /// <param name="count">The amount of <see cref="int"/> per test value set.</param>
+        /// <returns>An <see cref="IEnumerable"/> set of the test values.</returns>
+        public static IEnumerable<object[]> AllPositive(int count)
+        {
+            List<int> dataSet = SingleInts.PositiveIntDataSet;
+
+            foreach (object[] testValueSet in DataSetToEnumerable(dataSet, count))
+            {
+                yield return testValueSet;
+            }
+        }
+
+        /// <summary>
+        /// Gets a variable set of positive <see cref="int"/> test values. Includes zero.
+        /// </summary>
+        /// <inheritdoc cref="AllPositive(int)"/>
+        public static IEnumerable<object[]> AllPositiveWithZero(int count)
+        {
+            List<int> dataSet = [0, .. SingleInts.PositiveIntDataSet];
+
+            foreach (object[] testValueSet in DataSetToEnumerable(dataSet, count))
+            {
+                yield return testValueSet;
+            }
+        }
+
+        /// <summary>
+        /// Gets a variable set of negative <see cref="int"/> test values. Does not include zero.
+        /// </summary>
+        /// <inheritdoc cref="AllPositive(int)"/>
+        public static IEnumerable<object[]> AllNegative(int count)
+        {
+            List<int> dataSet = SingleInts.NegativeIntDataSet;
+
+            foreach (object[] testValueSet in DataSetToEnumerable(dataSet, count))
+            {
+                yield return testValueSet;
+            }
+        }
+
+        /// <summary>
+        /// Gets a variable set of negative <see cref="int"/> test values. Includes zero.
+        /// </summary>
+        /// <inheritdoc cref="AllPositive(int)"/>
+        public static IEnumerable<object[]> AllNegativeWithZero(int count)
+        {
+            List<int> dataSet = [0, .. SingleInts.NegativeIntDataSet];
+
+            foreach (object[] testValueSet in DataSetToEnumerable(dataSet, count))
+            {
+                yield return testValueSet;
+            }
+        }
+
+        /// <summary>
+        /// Gets a variable set of positive and negative <see cref="int"/> test values. Does not
+        /// include zero.
+        /// </summary>
+        /// <inheritdoc cref="AllPositive(int)"/>
+        public static IEnumerable<object[]> Mixed(int count)
+        {
+            List<int> dataSet = [.. SingleInts.PositiveIntDataSet, .. SingleInts.NegativeIntDataSet];
+
+            foreach (object[] testValueSet in DataSetToEnumerable(dataSet, count))
+            {
+                yield return testValueSet;
+            }
+        }
+
+        /// <summary>
+        /// Gets a variable set of positive and negative <see cref="int"/> test values. Includes zero.
+        /// </summary>
+        /// <inheritdoc cref="AllPositive(int)"/>
+        public static IEnumerable<object[]> MixedWithZero(int count)
+        {
+            List<int> dataSet = [0, .. SingleInts.PositiveIntDataSet, .. SingleInts.NegativeIntDataSet];
+
+            foreach (object[] testValueSet in DataSetToEnumerable(dataSet, count))
+            {
+                yield return testValueSet;
+            }
+        }
+
+        private static IEnumerable<object[]> DataSetToEnumerable(List<int> dataSet, int count)
+        {
+            for (int i = 0; i < dataSet.Count; ++i)
+            {
+                int dataSetIdx = i;
+                object[] testValueSet = new object[count];
+
+                for (int j = 0; j < count; ++j)
+                {
+                    testValueSet[j] = dataSet[dataSetIdx];
+                    dataSetIdx = (dataSetIdx + 1) % dataSet.Count;
+                }
+
+                yield return testValueSet;
+            }
         }
     }
 
