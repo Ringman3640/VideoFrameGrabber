@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using VideoFrameGrabber.Cropping;
 using VideoFrameGrabber.Scaling;
 using VideoFrameGrabber.Tests.UnitTests.Scaling;
 
@@ -130,6 +131,87 @@ public static class CommonTests
                 inputSize.Height,
                 expectedScale.Width,
                 expectedScale.Height
+            );
+        }
+    }
+
+    /// <summary>
+    /// Represents a set of tests for <see cref="CropProvider'"/> operations.
+    /// </summary>
+    public class CropProvider
+    {
+        public static void GetsCorrectCropParameters(
+            Cropping.CropProvider cropper,
+            int inputWidth,
+            int inputHeight,
+            int expectedWidth,
+            int expectedHeight,
+            int expectedOffsetX,
+            int expectedOffsetY
+        ) {
+            CropParameters? cropParameters = null;
+
+            try
+            {
+                cropParameters = cropper.GetCropParameters(inputWidth, inputHeight);
+            }
+            catch { }
+
+            cropParameters.Should().NotBeNull();
+            cropParameters!.Value.Width.Should().Be(expectedWidth);
+            cropParameters!.Value.Height.Should().Be(expectedHeight);
+            cropParameters!.Value.X.Should().Be(expectedOffsetX);
+            cropParameters!.Value.Y.Should().Be(expectedOffsetY);
+        }
+
+        public static void GetsCorrectCropParameters(
+            Cropping.CropProvider cropper,
+            int inputWidth,
+            int inputHeight,
+            int expectedWidth,
+            int expectedHeight
+        ) {
+            GetsCorrectCropParameters(
+                cropper: cropper,
+                inputWidth: inputWidth,
+                inputHeight: inputHeight,
+                expectedWidth: expectedWidth,
+                expectedHeight: expectedHeight,
+                expectedOffsetX: 0,
+                expectedOffsetY: 0
+            );
+        }
+
+        public static void GetsCorrectCropParameters(
+            Cropping.CropProvider cropper,
+            Size inputSize,
+            Size expectedSize,
+            Size expectedOffset
+        ) {
+            GetsCorrectCropParameters(
+                cropper: cropper,
+                inputWidth: inputSize.Width,
+                inputHeight: inputSize.Height,
+                expectedWidth: expectedSize.Width,
+                expectedHeight: expectedSize.Height,
+                expectedOffsetX: expectedOffset.Width,
+                expectedOffsetY: expectedOffset.Height
+            );
+        }
+
+        public static void GetsCorrectCropParameters(
+            Cropping.CropProvider cropper,
+            Size inputSize,
+            CropParameters expectedCrop
+        ) {
+            GetsCorrectCropParameters(
+                cropper: cropper,
+                inputWidth: inputSize.Width,
+                inputHeight: inputSize.Height,
+                expectedWidth: expectedCrop.Width,
+                expectedHeight: expectedCrop.Height,
+                expectedOffsetX: expectedCrop.X,
+                expectedOffsetY: expectedCrop.Y
             );
         }
     }
