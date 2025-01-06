@@ -30,13 +30,13 @@ public static class CommonTestValues
         /// Gets a list of common negative <see cref="int"/> test values (not including zero).
         /// </summary>
         public static List<int> NegativeIntDataSet { get; } = [
-            1,
-            2,
-            10,
-            1000,
-            9999999,
-            int.MaxValue - 1,
-            int.MaxValue
+            -1,
+            -2,
+            -10,
+            -1000,
+            -9999999,
+            int.MinValue + 1,
+            int.MinValue
         ];
 
         /// <summary>
