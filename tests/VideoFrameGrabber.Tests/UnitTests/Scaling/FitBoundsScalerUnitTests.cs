@@ -13,7 +13,7 @@ public class FitBoundsScalerUnitTests
         int width,
         int height
     ) {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new FitBoundsScaler(width, height),
             checks: [
                 (scaler) => scaler.WidthBounds == width,
@@ -30,7 +30,7 @@ public class FitBoundsScalerUnitTests
         int width,
         int height
     ) {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new FitBoundsScaler(width, height),
             exceptionType: typeof(ArgumentOutOfRangeException)
         );
@@ -57,7 +57,7 @@ public class FitBoundsScalerUnitTests
         scaleParameters!.Value.Width.Should().Be(expectedSize.Width);
         scaleParameters!.Value.Height.Should().Be(expectedSize.Height);
 
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new FitBoundsScaler(boundsSize.Width, boundsSize.Height),
             inputWidth: inputSize.Width,
             inputHeight: inputSize.Height,

@@ -11,7 +11,7 @@ public class CustomScalerUnitTests
     [MemberData(nameof(GetScaleFunctionValues))]
     public void Constructor_ValidScaleFunction_Succeeds(Func<int, int, ScaleParameters> scaleFunction)
     {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new CustomScaler(scaleFunction),
             checks: []
         );
@@ -21,7 +21,7 @@ public class CustomScalerUnitTests
     [Fact]
     public void Constructor_NullValue_ThrowsArgumentNullException()
     {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new CustomScaler(null!),
             exceptionType: typeof(ArgumentNullException)
         );
@@ -37,7 +37,7 @@ public class CustomScalerUnitTests
         int inputHeight = 100;
         ScaleParameters expectedResult = scaleFunction(inputWidth, inputHeight);
 
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new CustomScaler(scaleFunction),
             inputWidth: inputWidth,
             inputHeight: inputHeight,
@@ -53,7 +53,7 @@ public class CustomScalerUnitTests
         int inputHeight = 100;
         ScaleParameters expectedResult = new(1, 1);
 
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: scaler,
             inputWidth: inputWidth,
             inputHeight: inputHeight,
@@ -69,7 +69,7 @@ public class CustomScalerUnitTests
         int inputHeight = 100;
         ScaleParameters expectedResult = new(1, 1);
 
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: scaler,
             inputWidth: inputWidth,
             inputHeight: inputHeight,

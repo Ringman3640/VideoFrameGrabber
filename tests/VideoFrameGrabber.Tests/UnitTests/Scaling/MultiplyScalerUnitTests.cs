@@ -18,7 +18,7 @@ public class MultiplyScalerUnitTests
     [InlineData(double.MaxValue)]
     public void Constructor_PositiveValue_MultiplierMatchesValue(double multiplier)
     {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new MultiplyScaler(multiplier),
             checks: [
                 (scaler) => scaler.Multiplier == multiplier
@@ -39,7 +39,7 @@ public class MultiplyScalerUnitTests
     [InlineData(double.MinValue)]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(double multiplier)
     {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new MultiplyScaler(multiplier),
             exceptionType: typeof(ArgumentOutOfRangeException)
         );
@@ -53,7 +53,7 @@ public class MultiplyScalerUnitTests
         Size inputSize,
         Size expectedSize
     ) {
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new MultiplyScaler(multiplier),
             inputWidth: inputSize.Width,
             inputHeight: inputSize.Height,

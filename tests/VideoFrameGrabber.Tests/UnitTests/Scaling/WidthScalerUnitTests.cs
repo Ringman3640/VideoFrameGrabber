@@ -11,7 +11,7 @@ public class WidthScalerUnitTests
     [ClassData(typeof(CommonTestValues.SingleInts.AllPositive))]
     public void Constructor_ValidWidthValue_WidthMatchesValue(int width)
     {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new WidthScaler(width),
             checks: [
                 (scaler) => scaler.Width == width
@@ -25,7 +25,7 @@ public class WidthScalerUnitTests
     [ClassData(typeof(CommonTestValues.SingleInts.AllNegative))]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(int width)
     {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new WidthScaler(width),
             exceptionType: typeof(ArgumentOutOfRangeException)
         );
@@ -39,7 +39,7 @@ public class WidthScalerUnitTests
         Size inputSize,
         Size expectedSize
     ) {
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new WidthScaler(width),
             inputWidth: inputSize.Width,
             inputHeight: inputSize.Height,

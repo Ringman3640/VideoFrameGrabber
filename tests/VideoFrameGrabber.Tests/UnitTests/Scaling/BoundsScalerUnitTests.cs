@@ -13,7 +13,7 @@ public class BoundsScalerUnitTests
         int width,
         int height
     ) {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new BoundsScaler(width, height),
             checks: [
                 (scaler) => scaler.WidthBounds == width,
@@ -30,7 +30,7 @@ public class BoundsScalerUnitTests
         int width,
         int height
     ) {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new BoundsScaler(width, height),
             exceptionType: typeof(ArgumentOutOfRangeException)
         );
@@ -44,7 +44,7 @@ public class BoundsScalerUnitTests
         Size inputSize,
         Size expectedSize
     ) {
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new BoundsScaler(boundsSize.Width, boundsSize.Height),
             inputSize: inputSize,
             expectedSize: expectedSize

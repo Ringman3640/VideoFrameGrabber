@@ -11,7 +11,7 @@ public  class HeightScalerUnitTests
     [ClassData(typeof(CommonTestValues.SingleInts.AllPositive))]
     public void Constructor_ValidHeightValue_HeightMatchesValue(int height)
     {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new HeightScaler(height),
             checks: [
                 (scaler) => scaler.Height == height
@@ -25,7 +25,7 @@ public  class HeightScalerUnitTests
     [ClassData(typeof(CommonTestValues.SingleInts.AllNegative))]
     public void Constructor_ZeroOrNegativeValue_ThrowsArgumentOutOfRangeException(int height)
     {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new HeightScaler(height),
             exceptionType: typeof(ArgumentOutOfRangeException)
         );
@@ -41,7 +41,7 @@ public  class HeightScalerUnitTests
     ) {
         HeightScaler scaler = new(height);
 
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: scaler,
             inputWidth: inputSize.Width,
             inputHeight: inputSize.Height,

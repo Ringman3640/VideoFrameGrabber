@@ -10,19 +10,9 @@ namespace VideoFrameGrabber.Tests.Utilities;
 public static class CommonTests
 {
     /// <summary>
-    /// Gets tests related to instance construction.
-    /// </summary>
-    public static ConstructorTests Constructor { get; } = new ConstructorTests();
-
-    /// <summary>
-    /// Gets tests related to <see cref="ScaleProvider"/> instances.
-    /// </summary>
-    public static ScaleProviderTests Scaler { get; } = new ScaleProviderTests();
-
-    /// <summary>
     /// Represents a set of tests for instance construction.
     /// </summary>
-    public class ConstructorTests
+    public class Constructor
     {
         public static void CorrectlyInitializes<T>(Func<T> constructInstance, Func<T, bool>[] checks)
         {
@@ -61,12 +51,12 @@ public static class CommonTests
     }
 
     /// <summary>
-    /// Represents a set of tests for <see cref="ScaleProvider"/> operations.
+    /// Represents a set of tests for <see cref="Scaling.ScaleProvider"/> operations.
     /// </summary>
-    public class ScaleProviderTests
+    public class ScaleProvider
     {
         public static void GetsCorrectScaleParameters(
-            ScaleProvider scaler,
+            Scaling.ScaleProvider scaler,
             int inputWidth,
             int inputHeight,
             int expectedWidth,
@@ -86,7 +76,7 @@ public static class CommonTests
         }
 
         public static void GetsCorrectScaleParameters(
-            ScaleProvider scaler,
+            Scaling.ScaleProvider scaler,
             int inputWidth,
             int inputHeight,
             Size expectedSize
@@ -101,7 +91,7 @@ public static class CommonTests
         }
 
         public static void GetsCorrectScaleParameters(
-            ScaleProvider scaler,
+            Scaling.ScaleProvider scaler,
             Size inputSize,
             Size expectedSize
         ) {
@@ -115,7 +105,7 @@ public static class CommonTests
         }
 
         public static void GetsCorrectScaleParameters(
-            ScaleProvider scaler,
+            Scaling.ScaleProvider scaler,
             int inputWidth,
             int inputHeight,
             ScaleParameters expectedScale
@@ -130,7 +120,7 @@ public static class CommonTests
         }
 
         public static void GetsCorrectScaleParameters(
-            ScaleProvider scaler,
+            Scaling.ScaleProvider scaler,
             Size inputSize,
             ScaleParameters expectedScale
         ) {

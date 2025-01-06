@@ -11,7 +11,7 @@ public class SizeScalerUnitTests
     [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void Constructor_ValidSizeValues_WidthAndHeightMatchSizeValues(int width, int height)
     {
-        CommonTests.ConstructorTests.CorrectlyInitializes(
+        CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new SizeScaler(width, height),
             checks: [
                 (scaler) => scaler.Width == width,
@@ -26,7 +26,7 @@ public class SizeScalerUnitTests
     [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
     public void Constructor_ZeroOrNegativeValues_ThrowsArgumentOutOfRangeException(int width, int height)
     {
-        CommonTests.ConstructorTests.ThrowsException(
+        CommonTests.Constructor.ThrowsException(
             constructInstance: () => new SizeScaler(width, height),
             exceptionType: typeof(ArgumentOutOfRangeException)
         );
@@ -37,7 +37,7 @@ public class SizeScalerUnitTests
     [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void GetScaleParameters_ZeroSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
     {
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new SizeScaler(width, height),
             inputSize: new Size(0, 0),
             expectedSize: new Size(width, height)
@@ -49,7 +49,7 @@ public class SizeScalerUnitTests
     [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void GetScaleParameters_MaximumSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
     {
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new SizeScaler(width, height),
             inputSize: new Size(int.MaxValue, int.MaxValue),
             expectedSize: new Size(width, height)
@@ -61,7 +61,7 @@ public class SizeScalerUnitTests
     [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void GetScaleParameters_MinimumSize_ReturnedScaleParametersMatchConstructedSizeValues(int width, int height)
     {
-        CommonTests.ScaleProviderTests.GetsCorrectScaleParameters(
+        CommonTests.ScaleProvider.GetsCorrectScaleParameters(
             scaler: new SizeScaler(width, height),
             inputSize: new Size(int.MinValue, int.MinValue),
             expectedSize: new Size(width, height)
