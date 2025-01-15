@@ -1,12 +1,24 @@
-﻿namespace VideoFrameGrabber.Cropping
+﻿using System;
+
+namespace VideoFrameGrabber.Cropping
 {
     /// <summary>
     /// Provides cropping functionality by creating <see cref="CropParameters"/> values. This is an
     /// abstract class.
     /// </summary>
     public abstract class CropProvider
-
     {
+        /// <summary>
+        /// Gets the smallest allowed size for a crop dimension (height or width value).
+        /// </summary>
+        /// <remarks>
+        /// This is the minimum value allowed for a dimension value in an FFmpeg crop filter. If a
+        /// value less than this is input, an error will be thrown by FFmpeg. This value is not
+        /// explicitly stated in the documentation, but was instead pulled from general testing
+        /// using the crop filter.
+        /// </remarks>
+        public static int MinimumCropDimensionSize { get; } = 2;
+
         /// <summary>
         /// Gets a <see cref="CropParameters"/> instance given the width and height of an input
         /// image.
@@ -19,21 +31,18 @@
         /// </returns>
         public CropParameters GetCropParameters(int inputWidth, int inputHeight)
         {
-            int width = inputWidth <= 0 ? 1 : inputWidth;
-            int height = inputHeight <= 0 ? 1 : inputHeight;
+            int width = Math.Max(inputWidth, MinimumCropDimensionSize);
+            int height = Math.Max(inputHeight, MinimumCropDimensionSize);
             int x = 0;
             int y = 0;
 
             PerformCrop(ref width, ref height, ref x, ref y);
 
-            if (width <= 0)
-            {
-                width = 1;
-            }
-            if (height <= 0)
-            {
-                height = 1;
-            }
+            // It would be better to use Math.Clamp here but it's not supported in .NET framework
+            width = Math.Max(width, MinimumCropDimensionSize);
+            width = Math.Min(width, inputWidth);
+            height = Math.Max(height, MinimumCropDimensionSize);
+            height = Math.Min(height, inputHeight);
 
             return new CropParameters(width, height, x, y);
         }
