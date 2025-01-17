@@ -202,6 +202,22 @@ public static class CommonTests
         public static void GetsCorrectCropParameters(
             Cropping.CropProvider cropper,
             Size inputSize,
+            Size expectedSize
+        ) {
+            GetsCorrectCropParameters(
+                cropper: cropper,
+                inputWidth: inputSize.Width,
+                inputHeight: inputSize.Height,
+                expectedWidth: expectedSize.Width,
+                expectedHeight: expectedSize.Height,
+                expectedOffsetX: 0,
+                expectedOffsetY: 0
+            );
+        }
+
+        public static void GetsCorrectCropParameters(
+            Cropping.CropProvider cropper,
+            Size inputSize,
             CropParameters expectedCrop
         ) {
             GetsCorrectCropParameters(

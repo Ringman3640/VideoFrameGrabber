@@ -68,5 +68,121 @@ namespace VideoFrameGrabber.Cropping
         /// </para>
         /// </remarks>
         protected abstract void PerformCrop(ref int width, ref int height, ref int x, ref int y);
+
+        /// <summary>
+        /// Gets the calculated offset values for a crop rectangle for a given
+        /// a <see cref="CropAlign"/> value.
+        /// </summary>
+        /// <param name="cropWidth">The width of the crop rectangle.</param>
+        /// <param name="cropHeight">The height of the crop rectangle.</param>
+        /// <param name="inputWidth">The width of the original image.</param>
+        /// <param name="inputHeight">The height of the original image.</param>
+        /// <param name="align">
+        /// The <see cref="CropAlign"/> enum that indicates how the crop rectangle should be aligned
+        /// within the original image.
+        /// </param>
+        /// <returns>
+        /// A <see cref="CropOffset"/> that contains the calculated offset values.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This method is only intended to be used by derived <see cref="CropProvider"/> classes.
+        /// It is only marked internal to make it accessible for testing.
+        /// </para>
+        /// </remarks>
+        internal static CropOffset GetCropOffsetFromAlign(
+            int cropWidth,
+            int cropHeight,
+            int inputWidth,
+            int inputHeight,
+            CropAlign align)
+        {
+            int xOffset;
+            int yOffset;
+            int availableWidth = Math.Max(0, inputWidth - cropWidth);
+            int availableHeight = Math.Max(0, inputHeight - cropHeight);
+
+            switch (align)
+            {
+                case (CropAlign.TopLeft):
+                    xOffset = 0;
+                    yOffset = 0;
+                    break;
+
+                case (CropAlign.TopCenter):
+                    xOffset = availableWidth / 2;
+                    yOffset = 0;
+                    break;
+
+                case (CropAlign.TopRight):
+                    xOffset = availableWidth;
+                    yOffset = 0;
+                    break;
+
+                case (CropAlign.CenterLeft):
+                    xOffset = 0;
+                    yOffset = availableHeight / 2;
+                    break;
+
+                case (CropAlign.Center):
+                    xOffset = availableWidth / 2;
+                    yOffset = availableHeight / 2;
+                    break;
+
+                case (CropAlign.CenterRight):
+                    xOffset = availableWidth;
+                    yOffset = availableHeight / 2;
+                    break;
+
+                case (CropAlign.BottomLeft):
+                    xOffset = 0;
+                    yOffset = availableHeight;
+                    break;
+
+                case (CropAlign.BottomCenter):
+                    xOffset = availableWidth / 2;
+                    yOffset = availableHeight;
+                    break;
+
+                case (CropAlign.BottomRight):
+                    xOffset = availableWidth;
+                    yOffset = availableHeight;
+                    break;
+
+                default:
+                    throw new InvalidOperationException($"The {Enum.GetName(align.GetType(), align)}" +
+                        $" CropAlign value does not have a corresponding implementation.");
+            }
+
+            return new CropOffset(xOffset, yOffset);
+        }
+
+        /// <summary>
+        /// Represents a set of offset values for crop rectangle of a crop operation.
+        /// </summary>
+        internal struct CropOffset
+        {
+            /// <summary>
+            /// The horizontal offset component of the crop rectangle.
+            /// </summary>
+            public int X { get; }
+
+            /// <summary>
+            /// The vertical offset component of the crop rectangle.
+            /// </summary>
+            public int Y { get; }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CropOffset"/> struct with the specified
+            /// X and Y offset values.
+            /// </summary>
+            /// <param name="x">The X component of the offset.</param>
+            /// <param name="y">The Y component of the offset.</param>
+            public CropOffset(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+        }
     }
 }
