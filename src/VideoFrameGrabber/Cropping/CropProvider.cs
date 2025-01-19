@@ -86,6 +86,18 @@ namespace VideoFrameGrabber.Cropping
         /// </returns>
         /// <remarks>
         /// <para>
+        /// Regardless of the values of <paramref name="align"/>, if the crop rectangle along any
+        /// dimension is larger than the original image, the offset along that dimension will be
+        /// zero.
+        /// </para>
+        /// <para>
+        /// For example, if <paramref name="cropWidth"/> is <c>1000</c> and if
+        /// <paramref name="inputWidth"/> is <c>500</c>, the the X value of the returned
+        /// <see cref="CropOffset"/> will be <c>0</c>, regardless of the value of
+        /// <paramref name="align"/>. This is because the crop rectangle width extends beyond the
+        /// dimensions of the original image.
+        /// </para>
+        /// <para>
         /// This method is only intended to be used by derived <see cref="CropProvider"/> classes.
         /// It is only marked internal to make it accessible for testing.
         /// </para>
