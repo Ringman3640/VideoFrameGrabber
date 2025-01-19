@@ -162,7 +162,7 @@ namespace VideoFrameGrabber.Cropping
                     break;
 
                 default:
-                    throw new InvalidOperationException($"The {Enum.GetName(align.GetType(), align)}" +
+                    throw new NotImplementedException($"The {Enum.GetName(align.GetType(), align)}" +
                         $" CropAlign value does not have a corresponding implementation.");
             }
 
