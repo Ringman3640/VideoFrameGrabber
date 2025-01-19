@@ -116,6 +116,11 @@ namespace VideoFrameGrabber.Cropping
 
             switch (align)
             {
+                case (CropAlign.None):
+                    xOffset = 0;
+                    yOffset = 0;
+                    break;
+
                 case (CropAlign.TopLeft):
                     xOffset = 0;
                     yOffset = 0;
