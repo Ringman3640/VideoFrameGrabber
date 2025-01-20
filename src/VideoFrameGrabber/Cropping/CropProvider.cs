@@ -177,7 +177,7 @@ namespace VideoFrameGrabber.Cropping
         /// <summary>
         /// Represents a set of offset values for crop rectangle of a crop operation.
         /// </summary>
-        internal struct CropOffset
+        internal readonly struct CropOffset
         {
             /// <summary>
             /// The horizontal offset component of the crop rectangle.
