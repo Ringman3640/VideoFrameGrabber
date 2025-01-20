@@ -140,6 +140,28 @@ public static class CommonTests
     /// </summary>
     public class CropProvider
     {
+        public static void GetsCorrectOffsetValuesFromAlign(
+            CropAlign align,
+            int cropWidth,
+            int cropHeight,
+            int inputWidth,
+            int inputHeight,
+            int expectedX,
+            int expectedY
+        ) {
+            Cropping.CropProvider.CropOffset? cropOffset = null;
+
+            try
+            {
+                cropOffset = Cropping.CropProvider.GetCropOffsetFromAlign(cropWidth, cropHeight, inputWidth, inputHeight, align);
+            }
+            catch { }
+
+            cropOffset.Should().NotBeNull();
+            cropOffset!.Value.X.Should().Be(expectedX);
+            cropOffset!.Value.Y.Should().Be(expectedY);
+        }
+
         public static void GetsCorrectCropParameters(
             Cropping.CropProvider cropper,
             int inputWidth,
