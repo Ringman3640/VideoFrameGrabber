@@ -9,10 +9,19 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
     // T-1
     [Theory]
     [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
-    public void Constructor_PositiveSizeValues_SizeValuesMatch(
+    public void Constructor_ValidSizeValues_SizeValuesMatch(
         int width,
         int height
     ) {
+        if (width < CropProvider.MinimumCropDimensionSize)
+        {
+            width = CropProvider.MinimumCropDimensionSize;
+        }
+        if (height < CropProvider.MinimumCropDimensionSize)
+        {
+            height = CropProvider.MinimumCropDimensionSize;
+        }
+
         CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new SizeCropper(width, height),
             checks: [
@@ -38,12 +47,21 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
     // T-3
     [Theory]
     [MemberData(nameof(GetVariablePositiveInts), parameters: 4)]
-    public void Constructor_PositiveSizeAndOffsetValues_SizeAndOffsetValuesMatch(
+    public void Constructor_ValidSizeAndOffsetValues_SizeAndOffsetValuesMatch(
         int width,
         int height,
         int x,
         int y
     ) {
+        if (width < CropProvider.MinimumCropDimensionSize)
+        {
+            width = CropProvider.MinimumCropDimensionSize;
+        }
+        if (height < CropProvider.MinimumCropDimensionSize)
+        {
+            height = CropProvider.MinimumCropDimensionSize;
+        }
+
         CommonTests.Constructor.CorrectlyInitializes(
             constructInstance: () => new SizeCropper(width, height, x, y),
             checks: [
@@ -72,11 +90,11 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
 
     // T-5
     [Theory]
-    [InlineData(1, 1, CropAlign.Center)]
-    [InlineData(1, 1, CropAlign.TopLeft)]
-    [InlineData(1, 1, CropAlign.TopRight)]
-    [InlineData(1, 1, CropAlign.BottomLeft)]
-    [InlineData(1, 1, CropAlign.BottomRight)]
+    [InlineData(100, 100, CropAlign.Center)]
+    [InlineData(100, 100, CropAlign.TopLeft)]
+    [InlineData(100, 100, CropAlign.TopRight)]
+    [InlineData(100, 100, CropAlign.BottomLeft)]
+    [InlineData(100, 100, CropAlign.BottomRight)]
     public void Constructor_PositiveSizeAndCropAlignValues_SizeAndAlignValuesMatchAndOffsetIsZero(
         int width,
         int height,
