@@ -6,6 +6,7 @@ namespace VideoFrameGrabber.Tests.UnitTests.Cropping;
 
 public class SizeCropperUnitTests : CropProviderUnitTestBase
 {
+    // T-1
     [Theory]
     [ClassData(typeof(CommonTestValues.IntPairs.AllPositive))]
     public void Constructor_PositiveSizeValues_SizeValuesMatch(
@@ -21,6 +22,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-2
     [Theory]
     [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
     public void Constructor_ZeroOrNegativeSizeValues_ThrowsArgumentOutOfRangeException(
@@ -33,6 +35,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-3
     [Theory]
     [MemberData(nameof(GetVariablePositiveInts), parameters: 4)]
     public void Constructor_PositiveSizeAndOffsetValues_SizeAndOffsetValuesMatch(
@@ -52,6 +55,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-4
     [Theory]
     [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
     [MemberData(nameof(AppendIntPairsContainingZero), parameters: new int[] { 1, 1 })]
@@ -68,6 +72,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-5
     [Theory]
     [MemberData(nameof(GetVariableNegativeWithZeroInts), parameters: 4)]
     public void Constructor_ZeroOrNegativeSizeAndOffsetValues_ThrowsArgumentOutOfRangeException(
@@ -82,6 +87,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-6
     [Theory]
     [InlineData(1, 1, CropAlign.Center)]
     [InlineData(1, 1, CropAlign.TopLeft)]
@@ -105,9 +111,10 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-7
     [Theory]
     [MemberData(nameof(GetPositiveCropSizeAndInputSizeValues))]
-    public void GetCropParameters_PositiveSizeAndInputValues_ResultMatchesCropSize(
+    public void GetCropParameters_PositiveCropSizeAndInputSizeValues_ResultMatchesCropSize(
         Size cropSize,
         Size inputSize
     ) {
@@ -118,9 +125,10 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-8
     [Theory]
     [MemberData(nameof(GetPositiveCropSizeAndInputSizeAndOffsetValues))]
-    public void GetCropParameters_PositiveSizeAndOffsetAndInputValues_ResultMatchesCropSize(
+    public void GetCropParameters_PositiveCropSizeAndOffsetAndInputSizeValues_ResultMatchesCropSize(
         Size cropSize,
         Size inputSize,
         int xOffset,
@@ -133,14 +141,22 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
+    // T-9
     [Theory]
     [MemberData(nameof(GetPositiveCropSizeAndInputSizeAndCropAlignValues))]
-    public void GetCropParameters_PositiveSizeAndCropAlignAndInputValues_ResultMatchesCropSize(
+    public void GetCropParameters_PositiveCropSizeAndCropAlignAndInputValues_ResultMatchesCropSizeAndExpectedOffsetFromCropProvider(
         Size cropSize,
         Size inputSize,
         CropAlign align
     ) {
-        throw new NotImplementedException();
+        CropProvider.CropOffset expectedOffset = CropProvider.GetCropOffsetFromAlign(
+            cropSize.Width, cropSize.Height, inputSize.Width, inputSize.Height, align);
+
+        CommonTests.CropProvider.GetsCorrectCropParameters(
+            cropper: new SizeCropper(cropSize.Width, cropSize.Height, align),
+            inputSize: inputSize,
+            expectedCrop: new CropParameters(cropSize.Width, cropSize.Height, expectedOffset.X, expectedOffset.Y)
+        );
     }
 
     public static IEnumerable<object[]> GetPositiveCropSizeAndInputSizeValues()
@@ -166,10 +182,24 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
 
     public static IEnumerable<object[]> GetPositiveCropSizeAndInputSizeAndCropAlignValues()
     {
-        yield return new object[] { new Size(100, 100), new Size(1000, 1000), CropAlign.TopLeft };
-        yield return new object[] { new Size(100, 100), new Size(1000, 1000), CropAlign.TopRight };
-        yield return new object[] { new Size(100, 100), new Size(1000, 1000), CropAlign.Center };
-        yield return new object[] { new Size(100, 100), new Size(1000, 1000), CropAlign.BottomLeft };
-        yield return new object[] { new Size(100, 100), new Size(1000, 1000), CropAlign.BottomRight };
+        List<Size[]> cropSizesAndInputSizes =
+        [
+            [new Size(100, 100), new Size(500, 500)],
+            [new Size(1, 100), new Size(500, 500)],
+            [new Size(100, 1), new Size(500, 500)],
+            [new Size(1, 1), new Size(500, 500)],
+            [new Size(1, 500), new Size(500, 500)],
+            [new Size(500, 1), new Size(500, 500)],
+            [new Size(500, 500), new Size(500, 500)],
+            [new Size(500, 500), new Size(520, 520)],
+        ];
+
+        foreach (Size[] sizes in cropSizesAndInputSizes)
+        {
+            foreach (CropAlign align in (CropAlign[])Enum.GetValues(typeof(CropAlign)))
+            {
+                yield return new object[] { sizes[0], sizes[1], align };
+            }
+        }
     }
 }
