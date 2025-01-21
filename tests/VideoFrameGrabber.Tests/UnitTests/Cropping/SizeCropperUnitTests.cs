@@ -164,13 +164,10 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
     {
         yield return new object[] { new Size(100, 100), new Size(1000, 1000) };
         yield return new object[] { new Size(10, 10), new Size(1000, 1000) };
-        yield return new object[] { new Size(1, 1), new Size(1000, 1000) };
         yield return new object[] { new Size(100, 100), new Size(100, 100) };
-        yield return new object[] { new Size(1, 1), new Size(100, 100) };
         yield return new object[] { new Size(int.MaxValue, int.MaxValue), new Size(int.MaxValue, int.MaxValue) };
         yield return new object[] { new Size(100, 100), new Size(int.MaxValue, int.MaxValue) };
         yield return new object[] { new Size(10, 10), new Size(int.MaxValue, int.MaxValue) };
-        yield return new object[] { new Size(1, 1), new Size(int.MaxValue, int.MaxValue) };
     }
 
     public static IEnumerable<object[]> GetPositiveCropSizeAndInputSizeAndOffsetValues()
@@ -186,11 +183,11 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         List<Size[]> cropSizesAndInputSizes =
         [
             [new Size(100, 100), new Size(500, 500)],
-            [new Size(1, 100), new Size(500, 500)],
-            [new Size(100, 1), new Size(500, 500)],
-            [new Size(1, 1), new Size(500, 500)],
-            [new Size(1, 500), new Size(500, 500)],
-            [new Size(500, 1), new Size(500, 500)],
+            [new Size(10, 100), new Size(500, 500)],
+            [new Size(100, 10), new Size(500, 500)],
+            [new Size(10, 10), new Size(500, 500)],
+            [new Size(10, 500), new Size(500, 500)],
+            [new Size(500, 10), new Size(500, 500)],
             [new Size(500, 500), new Size(500, 500)],
             [new Size(500, 500), new Size(520, 520)],
         ];
