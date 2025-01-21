@@ -136,7 +136,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         int yOffset
     ) {
         CommonTests.CropProvider.GetsCorrectCropParameters(
-            cropper: new SizeCropper(cropSize.Width, cropSize.Height),
+            cropper: new SizeCropper(cropSize.Width, cropSize.Height, xOffset, yOffset),
             inputSize: inputSize,
             expectedCrop: new CropParameters(cropSize.Width, cropSize.Height, xOffset, yOffset)
         );
