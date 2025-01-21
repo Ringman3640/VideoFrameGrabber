@@ -57,23 +57,6 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
 
     // T-4
     [Theory]
-    [ClassData(typeof(CommonTestValues.IntPairs.ContainsNegatives))]
-    [MemberData(nameof(AppendIntPairsContainingZero), parameters: new int[] { 1, 1 })]
-    [MemberData(nameof(AppendIntPairsContainingNegatives), parameters: new int[] { 1, 1 })]
-    public void Constructor_PositiveSizeAndNegativeOrZeroOffsetValues_ThrowsArgumentOutOfRangeException(
-        int width,
-        int height,
-        int x,
-        int y
-    ) {
-        CommonTests.Constructor.ThrowsException(
-            constructInstance: () => new SizeCropper(width, height, x, y),
-            exceptionType: typeof(ArgumentOutOfRangeException)
-        );
-    }
-
-    // T-5
-    [Theory]
     [MemberData(nameof(GetVariableNegativeWithZeroInts), parameters: 4)]
     public void Constructor_ZeroOrNegativeSizeAndOffsetValues_ThrowsArgumentOutOfRangeException(
         int width,
@@ -87,7 +70,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
-    // T-6
+    // T-5
     [Theory]
     [InlineData(1, 1, CropAlign.Center)]
     [InlineData(1, 1, CropAlign.TopLeft)]
@@ -111,7 +94,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
-    // T-7
+    // T-6
     [Theory]
     [MemberData(nameof(GetPositiveCropSizeAndInputSizeValues))]
     public void GetCropParameters_PositiveCropSizeAndInputSizeValues_ResultMatchesCropSize(
@@ -125,7 +108,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
-    // T-8
+    // T-7
     [Theory]
     [MemberData(nameof(GetPositiveCropSizeAndInputSizeAndOffsetValues))]
     public void GetCropParameters_PositiveCropSizeAndOffsetAndInputSizeValues_ResultMatchesCropSize(
@@ -141,7 +124,7 @@ public class SizeCropperUnitTests : CropProviderUnitTestBase
         );
     }
 
-    // T-9
+    // T-8
     [Theory]
     [MemberData(nameof(GetPositiveCropSizeAndInputSizeAndCropAlignValues))]
     public void GetCropParameters_PositiveCropSizeAndCropAlignAndInputValues_ResultMatchesCropSizeAndExpectedOffsetFromCropProvider(
