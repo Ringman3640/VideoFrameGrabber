@@ -25,12 +25,21 @@ namespace VideoFrameGrabber.Cropping
         /// </exception>
         public CustomCropper(Func<int, int, CropParameters> cropFunction)
         {
-            throw new NotImplementedException();
+            if (cropFunction is null)
+            {
+                throw new ArgumentNullException(nameof(cropFunction));
+            }
+
+            CropFunction = cropFunction;
         }
 
         protected override void PerformCrop(ref int width, ref int height, ref int x, ref int y)
         {
-            throw new NotImplementedException();
+            CropParameters result = CropFunction(width, height);
+            width = result.Width;
+            height = result.Height;
+            x = result.X;
+            y = result.Y;
         }
     }
 }
