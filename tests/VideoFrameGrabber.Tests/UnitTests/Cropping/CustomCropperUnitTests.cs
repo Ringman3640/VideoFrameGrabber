@@ -59,7 +59,13 @@ public class CustomCropperUnitTests
         Size inputSize,
         Func<int, int, CropParameters> cropFunction
     ) {
-        CropParameters expectedCropParameters = cropFunction(inputSize.Width, inputSize.Height);
+        CropParameters rawCropParameters = cropFunction(inputSize.Width, inputSize.Height);
+        CropParameters expectedCropParameters = new(
+            width: Math.Min(inputSize.Width, rawCropParameters.Width),
+            height: Math.Min(inputSize.Height, rawCropParameters.Height),
+            x: rawCropParameters.X,
+            y: rawCropParameters.Y
+        );
 
         CommonTests.CropProvider.GetsCorrectCropParameters(
             cropper: new CustomCropper(cropFunction),
@@ -110,8 +116,8 @@ public class CustomCropperUnitTests
     ) {
         CropParameters rawCropParameters = cropFunction(inputSize.Width, inputSize.Height);
         CropParameters expectedCropParameters = new(
-            width: Math.Max(CropProvider.MinimumCropDimensionSize, rawCropParameters.Width),
-            height: Math.Max(CropProvider.MinimumCropDimensionSize, rawCropParameters.Height),
+            width: Math.Clamp(rawCropParameters.Width, CropProvider.MinimumCropDimensionSize, inputSize.Width),
+            height: Math.Clamp(rawCropParameters.Height, CropProvider.MinimumCropDimensionSize, inputSize.Height),
             x: rawCropParameters.X,
             y: rawCropParameters.Y
         );
