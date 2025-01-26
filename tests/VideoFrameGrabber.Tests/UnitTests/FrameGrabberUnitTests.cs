@@ -265,7 +265,7 @@ public class FrameGrabberUnitTests :
 
         try
         {
-            grabber = new(null!);
+            grabber = new((string)null!);
         }
         catch (Exception except)
         {
