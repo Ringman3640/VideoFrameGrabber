@@ -122,6 +122,21 @@ namespace VideoFrameGrabber.FFmpegServicing
             return new FFmpegServicer(true, foundFFmpegPath);
         }
 
+        public void CallFFmpegWithoutResult(string args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public byte[] CallFFmpegWithResult(string args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public VideoMetadata GetVideoMetadata(string videoPath)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Performs a surface-level validation of an FFmpeg executable file given its path.
         /// </summary>
@@ -156,5 +171,7 @@ namespace VideoFrameGrabber.FFmpegServicing
 
             return false;
         }
+
+        
     }
 }
