@@ -1,5 +1,8 @@
 ﻿namespace VideoFrameGrabber.FFmpegServicing
 {
+    /// <summary>
+    /// Exposes methods for calling FFmpeg.
+    /// </summary>
     internal interface IFFmpegServicer
     {
         /// <summary>
