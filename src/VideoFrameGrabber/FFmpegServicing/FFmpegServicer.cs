@@ -4,7 +4,10 @@ using System.IO;
 
 namespace VideoFrameGrabber.FFmpegServicing
 {
-
+    /// <summary>
+    /// Represents an FFmpeg executable servicer that exposes common FFmpeg operations for frame
+    /// extraction.
+    /// </summary>
     internal class FFmpegServicer : IFFmpegServicer
     {
         private readonly string ffmpegLocation;
