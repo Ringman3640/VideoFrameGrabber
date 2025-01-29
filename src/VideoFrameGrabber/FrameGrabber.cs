@@ -19,10 +19,10 @@ namespace VideoFrameGrabber
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrameGrabber"/> class with a specified
-        /// <see cref="FFmpegServicer"/> instance.
+        /// <see cref="IFFmpegServicer"/> instance.
         /// </summary>
         /// <param name="ffmpegServicer">
-        /// An <see cref="FFmpegServicer"/> instance that will be used by the newly-created
+        /// An <see cref="IFFmpegServicer"/> instance that will be used by the newly-created
         /// <see cref="FrameGrabber"/> instance.
         /// </param>
         /// <exception cref="ArgumentNullException">
@@ -33,7 +33,7 @@ namespace VideoFrameGrabber
         /// by constructor helper methods (like <see cref="FromSystem"/>), or for testing. No
         /// validation checking is performed on <paramref name="ffmpegServicer"/>.
         /// </remarks>
-        internal FrameGrabber(FFmpegServicer ffmpegServicer)
+        internal FrameGrabber(IFFmpegServicer ffmpegServicer)
         {
             if (ffmpegServicer is null)
             {
