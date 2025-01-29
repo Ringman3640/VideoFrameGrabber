@@ -1,16 +1,18 @@
 ﻿using FluentAssertions;
+using Moq;
+using VideoFrameGrabber.FFmpegServicing;
 
 namespace VideoFrameGrabber.Tests.UnitTests;
 
 public class FrameGrabberUnitTests
 {
-    /// <summary>
-    /// Tests if FrameGrabber relinquishes the implementation of FromSystem to its FFmpegServicer.
-    /// </summary>
-    [Fact]
-    public void FromSystem_CallsFFmpegServicerFromSystem()
+    private readonly Mock<IFFmpegServicer> ffmpegServicerMock;
+    private readonly FrameGrabber frameGrabber;
+
+    public FrameGrabberUnitTests()
     {
-        throw new NotImplementedException();
+        ffmpegServicerMock = new Mock<IFFmpegServicer>();
+        frameGrabber = new FrameGrabber(ffmpegServicerMock.Object);
     }
 
     /// <summary>
