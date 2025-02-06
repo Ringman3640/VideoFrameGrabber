@@ -10,4 +10,8 @@
 		<InternalsVisibleTo Include="VideoFrameGrabber.Tests" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ImageFormatting\" />
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,5 @@
 ﻿using System;
 using VideoFrameGrabber.Cropping;
-using VideoFrameGrabber.ImageFormatting;
 using VideoFrameGrabber.Scaling;
 
 namespace VideoFrameGrabber
@@ -38,6 +37,6 @@ namespace VideoFrameGrabber
         /// <summary>
         /// Gets or sets the image format that extracted image frames should be formatted to.
         /// </summary>
-        public IImageFormatProvider? ImageFormat { get; set; }
+        public ImageFormat? ImageFormat { get; set; }
     }
 }
