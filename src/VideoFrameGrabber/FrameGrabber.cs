@@ -90,5 +90,100 @@ namespace VideoFrameGrabber
 
             throw new NotImplementedException(nameof(ExtractFrame));
         }
+
+        /// <summary>
+        /// Exposes static methods for formatting strings needed for FFmpeg operations.
+        /// </summary>
+        /// <remarks>
+        /// This subclass is functionally a private subclass. However, it is marked internal for
+        /// testing accessibility. Other classes within this assembly should not call methods in
+        /// this class.
+        /// </remarks>
+        internal static class FFmpegFormatting
+        {
+            /// <summary>
+            /// Gets the FFmpeg arguments string for extracting a frame at a specific seek time with
+            /// the output piped to stdout.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This method will return an FFmpeg arguments string with the following format:
+            /// </para>
+            /// <para>
+            /// <c>
+            /// -ss [Seek Time] -i "[Video Path]" -v:f "[Filters]" -vframes 1 -f image2pipe -c:v [Codec] -
+            /// </c>
+            /// </para>
+            /// </remarks>
+            internal static string GetFFmpegArgs(TimeSpan seekTime, string videoPath, string filters, ImageFormat format)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Gets the FFmpeg arguments string for extracting a frame at a specific seek time with
+            /// the output saved to a specific path.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This method will return an FFmpeg arguments string with the following format:
+            /// </para>
+            /// <para>
+            /// <c>
+            /// -ss [Seek Time] -i "[Video Path]" -v:f "[Filters]" -vframes 1 "[Output Path]"
+            /// </c>
+            /// </para>
+            /// </remarks>
+            internal static string GetFFmpegArgs(TimeSpan seekTime, string videoPath, string filters, string outputPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Gets the FFmpeg arguments string for extracting the last frame of a video with the
+            /// output piped to stdout.
+            /// </summary>
+            /// <summary>
+            /// Gets the FFmpeg arguments string for extracting a frame at a specific seek time with
+            /// the output saved to a specific path.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This method will return an FFmpeg arguments string with the following format:
+            /// </para>
+            /// <para>
+            /// <c>
+            /// -sseof -3 -i "[Video Path]" -update 1 -v:f "[Filters]" -f image2pipe -c:v [Codec] -
+            /// </c>
+            /// </para>
+            /// </remarks>
+            internal static string GetFFmpegArgs(string videoPath, string filters, ImageFormat format)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Gets the FFmpeg arguments string for extracting the last frame of a video with the
+            /// output saved to a specific path.
+            /// </summary>
+            /// <summary>
+            /// Gets the FFmpeg arguments string for extracting a frame at a specific seek time with
+            /// the output saved to a specific path.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This method will return an FFmpeg arguments string with the following format:
+            /// </para>
+            /// <para>
+            /// <c>
+            /// -sseof -3 -i "[Video Path]" -update 1 -v:f "[Filters]" "[Output Path]"
+            /// </c>
+            /// </para>
+            /// </remarks>
+            internal static string GetFFmpegArgs(string videoPath, string filters, string outputPath)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
