@@ -184,6 +184,26 @@ namespace VideoFrameGrabber
             {
                 throw new NotImplementedException();
             }
+
+            /// <summary>
+            /// Converts a <see cref="TimeSpan"/> seek time into a string representation appropriate
+            /// for an FFmpeg seek time argument string.
+            /// </summary>
+            /// <param name="time">The <see cref="TimeSpan"/> instance to convert.</param>
+            /// <returns>
+            /// An appropriate <see cref="string"/> representation of <paramref name="time"/> for
+            /// FFmpeg.
+            /// </returns>
+            /// <remarks>
+            /// There are two supported formats for the FFmpeg seek time argument. A sexagesimal
+            /// time representation in the form HH:MM:SS:MS, or just seconds with an optional
+            /// decimal place for milliseconds. This method returns the seconds format for
+            /// simplicity.
+            /// </remarks>
+            internal static string FormatSeekTime(TimeSpan time)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
