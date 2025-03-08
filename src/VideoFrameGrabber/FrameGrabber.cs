@@ -195,10 +195,16 @@ namespace VideoFrameGrabber
             /// FFmpeg.
             /// </returns>
             /// <remarks>
+            /// <para>
             /// There are two supported formats for the FFmpeg seek time argument. A sexagesimal
             /// time representation in the form HH:MM:SS:MS, or just seconds with an optional
             /// decimal place for milliseconds. This method returns the seconds format for
             /// simplicity.
+            /// </para>
+            /// <para>
+            /// If the value of <paramref name="time"/> is negative, the returned string will be
+            /// "0".
+            /// </para>
             /// </remarks>
             internal static string FormatSeekTime(TimeSpan time)
             {
