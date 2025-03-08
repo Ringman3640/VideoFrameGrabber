@@ -202,7 +202,8 @@ namespace VideoFrameGrabber
             /// </remarks>
             internal static string FormatSeekTime(TimeSpan time)
             {
-                throw new NotImplementedException();
+                double totalSeconds = Math.Max(0d, time.TotalSeconds);
+                return totalSeconds.ToString();
             }
         }
     }
