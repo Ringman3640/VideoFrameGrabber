@@ -57,7 +57,7 @@ public class FrameGrabberUnitTests
     [InlineData("-00:00:01", "0")]
     [InlineData("-00:01:20", "0")]
     [InlineData("-23:59:59", "0")]
-    [InlineData("-00:40:30.5", "00")]
+    [InlineData("-00:40:30.5", "0")]
     [InlineData("-00:00:00.1", "0")]
     [InlineData("-23:59:59.99", "0")]
     public void FormatSeekTime_TimeSpan_ReturnsExpectedString(string timeSpanValue, string expected)
