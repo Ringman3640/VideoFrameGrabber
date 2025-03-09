@@ -117,7 +117,9 @@ namespace VideoFrameGrabber
             /// </remarks>
             internal static string GetFFmpegArgs(TimeSpan seekTime, string videoPath, string filters, ImageFormat format)
             {
-                throw new NotImplementedException();
+                string seekTimeTerm = FormatSeekTime(seekTime);
+                string codecTerm = format.VideoCodecName;
+                return $"-ss {seekTimeTerm} -i \"{videoPath}\" -v:f \"{filters}\" -vframes 1 -f image2pipe -c:v {codecTerm} -";
             }
 
             /// <summary>
@@ -136,7 +138,8 @@ namespace VideoFrameGrabber
             /// </remarks>
             internal static string GetFFmpegArgs(TimeSpan seekTime, string videoPath, string filters, string outputPath)
             {
-                throw new NotImplementedException();
+                string seekTimeTerm = FormatSeekTime(seekTime);
+                return $"-ss {seekTimeTerm} -i \"{videoPath}\" -v:f \"{filters}\" -vframes 1 \"{outputPath}\"";
             }
 
             /// <summary>
@@ -159,7 +162,8 @@ namespace VideoFrameGrabber
             /// </remarks>
             internal static string GetFFmpegArgs(string videoPath, string filters, ImageFormat format)
             {
-                throw new NotImplementedException();
+                string codecTerm = format.VideoCodecName;
+                return $"-sseof -3 -i \"{videoPath}\" -update 1 -v:f \"{filters}\" -f image2pipe -c:v {codecTerm} -";
             }
 
             /// <summary>
@@ -182,7 +186,7 @@ namespace VideoFrameGrabber
             /// </remarks>
             internal static string GetFFmpegArgs(string videoPath, string filters, string outputPath)
             {
-                throw new NotImplementedException();
+                return $"-sseof -3 -i \"{videoPath}\" -update 1 -v:f \"{filters}\" \"{outputPath}\"";
             }
 
             /// <summary>
