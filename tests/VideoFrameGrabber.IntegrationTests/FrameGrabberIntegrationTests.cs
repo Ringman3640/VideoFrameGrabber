@@ -10,7 +10,6 @@ public class FrameGrabberIntegrationTests
     public FrameGrabberIntegrationTests()
     {
         ffmpeg = FFmpegDependency.Instance;
-        _ = FrameExtractionTestsDependency.Instance;
     }
 
     [Fact]
