@@ -1,5 +1,7 @@
-﻿using System.IO.Compression;
+﻿using System.Diagnostics;
+using System.IO.Compression;
 using System.Net;
+using System.Runtime.InteropServices;
 
 namespace VideoFrameGrabber.IntegrationTests.StaticDependencies;
 
@@ -11,15 +13,13 @@ public class FFmpegDependency
     private static FFmpegDependency? _instance = null;
     private static readonly object instanceLock = new();
 
-    private const string FFMPEG_DEPENDENCY_FOLDER = "./TestResources/FullFFmpeg";
-    private const string FFMPEG_DOWNLOAD_URL = "https://github.com/GyanD/codexffmpeg/releases/download/7.1/ffmpeg-7.1-full_build.zip";
-    private const string FFMPEG_DOWNLOAD_ZIP_NAME = "downloaded-ffmpeg.zip";
-
     /// <summary>
     /// Gets the static global FFmpegDependency instance.
     /// </summary>
     /// <remarks>
-    /// This get operation blocks and may take a while if it needs to download FFmpeg.
+    /// The first class is initialized when <see cref="Instance"/> is first called. During
+    /// initialization, the class assumes that FFmpeg is located on the PATH environment variable
+    /// and gets absolute and relative file and containing folder paths for the FFmpeg executable.
     /// </remarks>
     public static FFmpegDependency Instance
     {
@@ -56,145 +56,97 @@ public class FFmpegDependency
 
     /// <summary>
     /// Initializes an <see cref="FFmpegDependency"/> instance used to provide relative and
-    /// absolute paths to a local FFmpeg executable.
+    /// absolute paths to an FFmpeg executable.
     /// </summary>
     /// <remarks>
     /// Creating an <see cref="FFmpegDependency"/> will attempt to search for an FFmpeg
-    /// executable at a specified dependency folder. If FFmpeg cannot be found, it will download
-    /// FFmpeg 7.1 binaries complied by gyan.dev on GitHub.
+    /// executable on the global PATH environment variable.
     /// </remarks>
     /// <exception cref="InvalidOperationException">
     /// A local FFmpeg executable cannot be found after attempting to download. Check
     /// <see cref="FFmpegDependency"/> implementation.
     /// </exception>
+    /// <inheritdoc cref="FindFFmpegFile" path="/"/>
     private FFmpegDependency()
     {
-        if (InitializeFFmpegPath())
+        AbsoluteFilePath = FindFFmpegFile();
+        RelativeFilePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFilePath);
+        AbsoluteFolderPath = Path.GetDirectoryName(AbsoluteFilePath)!;
+        RelativeFolderPath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFolderPath);
+    }
+
+    /// <summary>
+    /// Gets an absolute path to a system-accessible FFmpeg executable.
+    /// </summary>
+    /// <returns>An absolute file path to FFmpeg.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Attempted to run on an OS that is not Windows or Linux.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Could not find FFmpeg on PATH.
+    /// </exception>
+    private string FindFFmpegFile()
+    {
+        Process process = new();
+        process.StartInfo.RedirectStandardOutput = true;
+
+        // The Process class is used to execute a command to find the absolute path to a global
+        // program. This command is system-dependent and is different for Windows and Linux.
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            return;
+            // The "where" command can be used on Windows to find the file path. It only needs the
+            // name of the executable to find.
+            process.StartInfo.FileName = "where";
+            process.StartInfo.Arguments = "ffmpeg";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            // The "whereis" command is used on Linux to find the file path. It also needs the name
+            // of the executable. The "-b" argument specifies to only return the binary path. It
+            // would also include manuals otherwise.
+            process.StartInfo.FileName = "whereis";
+            process.StartInfo.Arguments = "-b ffmpeg";
+        }
+        else
+        {
+            throw new InvalidOperationException("Only Windows and Linux systems are supported");
         }
 
-        // Try to delete the FFmpeg depedency folder + its contents
-        // This is in case a download attempt was tried before but was stopped mid-way
-        try
+        process.Start();
+        StreamReader reader = process.StandardOutput;
+        string processOutput = reader.ReadToEnd();
+        process.WaitForExit();
+
+        // Since different commands are used for Windows and Linux, the results need to be parsed
+        // differently.
+        string ffmpegPath = "";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Directory.Delete(FFMPEG_DEPENDENCY_FOLDER, true);
-        }
-        catch (Exception except)
-        {
-            // Only ignore the exception if it indicates that the directory was not found (this is
-            // normal behavior). All other exceptions are unintended and should be notified to the
-            // tester.
-            if (except is not DirectoryNotFoundException)
+            // On Windows, the output of "where" is simply the path of the executable if found. If
+            // not found, it returns "INFO: Could not find files for the given pattern(s)."
+            if (!processOutput.StartsWith("INFO:"))
             {
-                throw;
+                ffmpegPath = processOutput.Trim();
             }
         }
-
-        Directory.CreateDirectory(FFMPEG_DEPENDENCY_FOLDER);
-        DownloadFFmpegZip();
-        ExtractFFmpegZip();
-        DeleteFFmpegZip();
-
-        if (!InitializeFFmpegPath())
+        else
         {
-            throw new InvalidOperationException("Failed to get FFmpeg executable path");
-        }
-    }
-
-    /// <summary>
-    /// Attempts to initialize the <see cref="AbsoluteFilePath"/>, <see cref="RelativeFilePath"/>,
-    /// <see cref="AbsoluteFolderPath"/>, and <see cref="RelativeFolderPath"/> variables with a
-    /// valid path to a local FFmpeg executable.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if an FFmpeg executable is successfully found. Otherwise returns <c>false</c>.
-    /// </returns>
-    /// <remarks>
-    /// <para>
-    /// If an FFmpeg executbale program is successfully found, <see cref="AbsoluteFilePath"/> will
-    /// contain an absolute path to the executable, and <see cref="RelativeFilePath"/> will
-    /// contain a relative path to the same executable. If an FFmpeg executable is not found,
-    /// <see cref="AbsoluteFilePath"/> and <see cref="RelativeFilePath"/> will be an empty.
-    /// </para>
-    /// <para>
-    /// This method relies on the <see cref="FFMPEG_DEPENDENCY_FOLDER"/> constant value.
-    /// </para>
-    /// </remarks>
-    private bool InitializeFFmpegPath()
-    {
-        if (!Directory.Exists(FFMPEG_DEPENDENCY_FOLDER))
-        {
-            AbsoluteFilePath = "";
-            return false;
+            // On Linux, the output of "whereis" starts with the requested file name and a colon.
+            // It then displays the file path a space after the colon, if found.
+            // EX:
+            // ~ whereis -b ffmpeg
+            // ~ ffmpeg: [ffmpeg location]
+            //           OR
+            // ~ ffmpeg:
+            int substringStart = processOutput.IndexOf(":") + 2; // +2 to move the start after ": "
+            ffmpegPath = processOutput.Substring(substringStart).Trim();
         }
 
-        IEnumerable<string> dpFolderDirectories = Directory.EnumerateDirectories(FFMPEG_DEPENDENCY_FOLDER);
-        foreach (string directory in dpFolderDirectories)
+        if (string.IsNullOrEmpty(ffmpegPath))
         {
-            string potentialFFmpegPath = Path.GetFullPath(Path.Join(directory, "./bin/ffmpeg.exe"));
-            if (File.Exists(potentialFFmpegPath))
-            {
-                AbsoluteFilePath = potentialFFmpegPath;
-                RelativeFilePath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFilePath);
-                AbsoluteFolderPath = Path.GetDirectoryName(AbsoluteFilePath)!;
-                RelativeFolderPath = "./" + Path.GetRelativePath(AppDomain.CurrentDomain.BaseDirectory, AbsoluteFolderPath);
-                return true;
-            }
+            throw new InvalidOperationException("Could not find FFmpeg in system");
         }
 
-        AbsoluteFilePath = "";
-        return false;
-    }
-
-    /// <summary>
-    /// Downloads a ZIP file of FFmpeg from the resource specified in
-    /// <see cref="FFMPEG_DOWNLOAD_URL"/> The ZIP file will be saved in
-    /// <see cref="FFMPEG_DEPENDENCY_FOLDER"/>.
-    /// </summary>
-    /// <remarks>
-    /// This method relies on the <see cref="FFMPEG_DEPENDENCY_FOLDER"/>,
-    /// <see cref="FFMPEG_DOWNLOAD_URL"/>, and <see cref="FFMPEG_DOWNLOAD_URL"/> constant values.
-    /// </remarks>
-    private void DownloadFFmpegZip()
-    {
-        string downloadToFile = Path.Join(FFMPEG_DEPENDENCY_FOLDER, FFMPEG_DOWNLOAD_ZIP_NAME);
-
-        // WebClient is depricated but I'm using it over HttpClient since HttpClient only
-        // supports async methods. The download operation must the synchronous and implementing
-        // async await behavior for a method that's supposed to be called from the constructor
-        // is a pain in the ass.
-        using (var client = new WebClient())
-        {
-            client.DownloadFile(FFMPEG_DOWNLOAD_URL, downloadToFile);
-        }
-    }
-
-    /// <summary>
-    /// Deletes the FFmpeg ZIP file downloaded from calling <see cref="DownloadFFmpegZip"/>.
-    /// </summary>
-    /// <remarks>
-    /// This method relies on the <see cref="FFMPEG_DEPENDENCY_FOLDER"/> and
-    /// <see cref="FFMPEG_DOWNLOAD_ZIP_NAME"/> constant values.
-    /// </remarks>
-    private void DeleteFFmpegZip()
-    {
-        string downloadedFFmpegZipPath = Path.Join(FFMPEG_DEPENDENCY_FOLDER, FFMPEG_DOWNLOAD_ZIP_NAME);
-        File.Delete(downloadedFFmpegZipPath);
-    }
-
-    /// <summary>
-    /// Extracts the contents of the ZIP file downloaded using <see cref="DownloadFFmpegZip"/> to
-    /// <see cref="FFMPEG_DEPENDENCY_FOLDER"/>.
-    /// </summary>
-    /// <remarks>
-    /// This method relies on the <see cref="FFMPEG_DEPENDENCY_FOLDER"/>,
-    /// <see cref="FFMPEG_DOWNLOAD_URL"/>, and <see cref="FFMPEG_DOWNLOAD_URL"/> constant
-    /// values.
-    /// </remarks>
-    private void ExtractFFmpegZip()
-    {
-        string downloadedFFmpegZipPath = Path.Join(FFMPEG_DEPENDENCY_FOLDER, FFMPEG_DOWNLOAD_ZIP_NAME);
-        ZipFile.ExtractToDirectory(downloadedFFmpegZipPath, FFMPEG_DEPENDENCY_FOLDER);
+        return ffmpegPath;
     }
 }
