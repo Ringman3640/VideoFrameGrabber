@@ -1,11 +1,34 @@
-﻿namespace VideoFrameGrabber.UnitTests.ClassFixtures;
+﻿namespace VideoFrameGrabber.IntegrationTests.StaticDependencies;
 
 /// <summary>
 /// Provides fake FFmpeg dependencies for xUnit tests.
 /// </summary>
-public class FakeFFmpegDependencyFixture
+/// <remarks>
+/// The <see cref="FakeFFmpegDependency"/> is a singleton class that provides absolute and relative
+/// paths to a fake FFmpeg executable, or a directory containing a fake FFmpeg executable. This
+/// is intended to be used for testing how <see cref="FrameGrabber"/> handles potentially
+/// incorrect FFmpeg files.
+public class FakeFFmpegDependency
 {
     private const string FAKE_FFMPEG_DEPENDENCY_FOLDER = "./TestResources/FakeFFmpeg";
+
+    private static FakeFFmpegDependency? _instance = null;
+    private static readonly object instanceLock = new();
+
+    /// <summary>
+    /// Gets the static global <see cref="FakeFFmpegDependency"/> instance.
+    /// </summary>
+    public static FakeFFmpegDependency Instance
+    {
+        get
+        {
+            lock (instanceLock)
+            {
+                _instance ??= new();
+                return _instance;
+            }
+        }
+    }
 
     /// <summary>
     /// Gets an absolute file path to a fake FFmpeg executable.
@@ -29,19 +52,19 @@ public class FakeFFmpegDependencyFixture
     public string RelativeFolderPath { get; private set; }
 
     /// <summary>
-    /// Initializes a <see cref="FakeFFmpegDependencyFixture"/> instance used to provide absolute
+    /// Initializes a <see cref="FakeFFmpegDependency"/> instance used to provide absolute
     /// and relative paths to a fake FFmpeg executable.
     /// </summary>
     /// <remarks>
-    /// <see cref="FakeFFmpegDependencyFixture"/> will provide paths to a fake FFmpeg executable.
+    /// <see cref="FakeFFmpegDependency"/> will provide paths to a fake FFmpeg executable.
     /// Specifically, the fake FFmpeg executable is an invalid executable file that will not
     /// properly execute on any Windows system. Use this executbale to test for FFmpeg validation.
     /// </remarks>
     /// <exception cref="InvalidOperationException">
     /// A local FFmpeg executable cannot be found after attempting to download. Check
-    /// <see cref="FakeFFmpegDependencyFixture"/> implementation.
+    /// <see cref="FakeFFmpegDependency"/> implementation.
     /// </exception>
-    public FakeFFmpegDependencyFixture()
+    private FakeFFmpegDependency()
     {
         string relativeUnformattedPath = Path.Join(FAKE_FFMPEG_DEPENDENCY_FOLDER, "./ffmpeg.exe");
         AbsoluteFilePath = Path.GetFullPath(relativeUnformattedPath);
