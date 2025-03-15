@@ -1,0 +1,3 @@
+This directory will contain other directories created by the TestDirectoryDependency class.
+
+This file needs to exist so that the TestDirectories directory is copied to the bin on compilation.

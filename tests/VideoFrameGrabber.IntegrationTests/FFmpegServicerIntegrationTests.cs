@@ -9,6 +9,7 @@ public class FFmpegServicerIntegrationTests
     private readonly FFmpegDependency ffmpeg = FFmpegDependency.Instance;
     private readonly FakeFFmpegDependency fakeFFmpeg = FakeFFmpegDependency.Instance;
     private readonly WrongFFmpegPathDependency wrongFFmpegPath = WrongFFmpegPathDependency.Instance;
+    private readonly FrameExtractionTestsDependency frameExtractionTests = FrameExtractionTestsDependency.Instance;
 
     /// <summary>
     /// Tests if <see cref="FFmpegServicer"/> can successfully initialize given an absolute path to
@@ -175,6 +176,42 @@ public class FFmpegServicerIntegrationTests
         catch { }
 
         ffmpegServicer.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void CallFFmpegWithoutResult_ExtractFrameArgs_GeneratesImageFile()
+    {
+        using TestDirectoryDependency testDirectory = new();
+        string videoPath = frameExtractionTests.EldenRingGameplay.VideoPath;
+        string outputPath = Path.Join(testDirectory.Path, "out.jpg");
+        string args = $"-ss 00:00:00 -i \"{videoPath}\" -vframes 1 \"{outputPath}\"";
+        FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+
+        try
+        {
+            ffmpegServicer.CallFFmpegWithoutResult(args);
+        }
+        catch { }
+
+        File.Exists(outputPath).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CallFFmpegWithResult_ExtractFrameArgs_ReturnsImageBytes()
+    {
+        string videoPath = frameExtractionTests.EldenRingGameplay.VideoPath;
+        string args = $"-ss 00:00:00 -i \"{videoPath}\" -vframes 1 -f image2pipe -";
+        FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        byte[]? results = null;
+
+        try
+        {
+            results = ffmpegServicer.CallFFmpegWithResult(args);
+        }
+        catch { }
+
+        results.Should().NotBeNull();
+        results.Should().NotBeEmpty();
     }
 
     private static class TestHelpers
