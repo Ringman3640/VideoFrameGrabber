@@ -125,11 +125,31 @@ namespace VideoFrameGrabber.FFmpegServicing
             return new FFmpegServicer(true, foundFFmpegPath);
         }
 
+        /// <summary>
+        /// Call FFmpeg with the given argument string to perform an action.
+        /// </summary>
+        /// <param name="args">The argument string to provide FFmpeg.</param>
+        /// <remarks>
+        /// This method does not expect FFmpeg to return any results to standard output and thus
+        /// does not return anything. This method is effectively an optimization of
+        /// <see cref="CallFFmpegWithResult(string)"/> if the execution is not expected to return
+        /// anything.
+        /// </remarks>
         public void CallFFmpegWithoutResult(string args)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Call FFmpeg with the given argument string to perform an action with an expected return
+        /// value.
+        /// </summary>
+        /// <inheritdoc cref="CallFFmpegWithoutResult(string)" path="/param[@name='args']"/>
+        /// <returns>The standard output of FFmpeg as a <see cref="byte"/> array.</returns>
+        /// <remarks>
+        /// If FFmpeg does not return any output to standard output, an empty <see cref="byte"/>
+        /// array will be returned.
+        /// </remarks>
         public byte[] CallFFmpegWithResult(string args)
         {
             throw new NotImplementedException();
