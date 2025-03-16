@@ -186,13 +186,18 @@ public class FFmpegServicerIntegrationTests
         string outputPath = Path.Join(testDirectory.Path, "out.jpg");
         string args = $"-ss 00:00:00 -i \"{videoPath}\" -vframes 1 \"{outputPath}\"";
         FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        Exception? exception = null;
 
         try
         {
             ffmpegServicer.CallFFmpegWithoutResult(args);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
+        exception.Should().BeNull();
         File.Exists(outputPath).Should().BeTrue();
     }
 
@@ -222,14 +227,19 @@ public class FFmpegServicerIntegrationTests
         string videoPath = frameExtractionTests.EldenRingGameplay.VideoPath;
         string args = $"-ss 00:00:00 -i \"{videoPath}\" -vframes 1 -f image2pipe -";
         FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        Exception? exception = null;
         byte[]? results = null;
 
         try
         {
             results = ffmpegServicer.CallFFmpegWithResult(args);
         }
-        catch { }
+        catch (Exception except)
+        {
+            exception = except;
+        }
 
+        exception.Should().BeNull();
         results.Should().NotBeNull();
         results.Should().NotBeEmpty();
     }
