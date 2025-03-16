@@ -148,7 +148,20 @@ namespace VideoFrameGrabber.FFmpegServicing
         /// </remarks>
         public void CallFFmpegWithoutResult(string args)
         {
-            throw new NotImplementedException();
+            Process process = new();
+            process.StartInfo.FileName = ffmpegLocation;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.Arguments = $"{LOGLEVEL_STATEMENT} {args}";
+
+            process.Start();
+            string error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            if (error.Length > 0)
+            {
+                throw new FFmpegErrorException(error);
+            }
         }
 
         /// <summary>
