@@ -10,6 +10,8 @@ namespace VideoFrameGrabber.FFmpegServicing
     /// </summary>
     internal class FFmpegServicer : IFFmpegServicer
     {
+        private const string LOGLEVEL_STATEMENT = "-loglevel error";
+
         private readonly string ffmpegLocation;
 
         /// <summary>
@@ -129,11 +131,20 @@ namespace VideoFrameGrabber.FFmpegServicing
         /// Call FFmpeg with the given argument string to perform an action.
         /// </summary>
         /// <param name="args">The argument string to provide FFmpeg.</param>
+        /// <exception cref="FFmpegErrorException">
+        /// The FFmoeg execution threw an error.
+        /// </exception>
         /// <remarks>
+        /// <para>
         /// This method does not expect FFmpeg to return any results to standard output and thus
         /// does not return anything. This method is effectively an optimization of
         /// <see cref="CallFFmpegWithResult(string)"/> if the execution is not expected to return
         /// anything.
+        /// </para>
+        /// <para>
+        /// Any FFmpeg execution called with the method will automatically have its loglevel set
+        /// to 'error'. This means that FFmpeg will only output error-level statements or above.
+        /// </para>
         /// </remarks>
         public void CallFFmpegWithoutResult(string args)
         {
@@ -145,10 +156,17 @@ namespace VideoFrameGrabber.FFmpegServicing
         /// value.
         /// </summary>
         /// <inheritdoc cref="CallFFmpegWithoutResult(string)" path="/param[@name='args']"/>
+        /// <inheritdoc cref="CallFFmpegWithoutResult(string)" path="/exception"/>
         /// <returns>The standard output of FFmpeg as a <see cref="byte"/> array.</returns>
         /// <remarks>
+        /// <para>
         /// If FFmpeg does not return any output to standard output, an empty <see cref="byte"/>
         /// array will be returned.
+        /// </para>
+        /// <para>
+        /// Any FFmpeg execution called with the method will automatically have its loglevel set
+        /// to 'error'. This means that FFmpeg will only output error-level statements or above.
+        /// </para>
         /// </remarks>
         public byte[] CallFFmpegWithResult(string args)
         {
