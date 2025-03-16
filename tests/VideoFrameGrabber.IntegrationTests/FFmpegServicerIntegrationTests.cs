@@ -197,6 +197,26 @@ public class FFmpegServicerIntegrationTests
     }
 
     [Fact]
+    public void CallFFmpegWithoutResult_InvalidArgs_ThrowsFFmpegErrorException()
+    {
+        string args = "ermm... what the sigma";
+        FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        Exception? exception = null;
+
+        try
+        {
+            ffmpegServicer.CallFFmpegWithoutResult(args);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<FFmpegErrorException>();
+    }
+
+    [Fact]
     public void CallFFmpegWithResult_ExtractFrameArgs_ReturnsImageBytes()
     {
         string videoPath = frameExtractionTests.EldenRingGameplay.VideoPath;
@@ -212,6 +232,26 @@ public class FFmpegServicerIntegrationTests
 
         results.Should().NotBeNull();
         results.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public void CallFFmpegWithResult_InvalidArgs_ThrowsFFmpegErrorException()
+    {
+        string args = "this is an invalid args string";
+        FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        Exception? exception = null;
+
+        try
+        {
+            _ = ffmpegServicer.CallFFmpegWithResult(args);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<FFmpegErrorException>();
     }
 
     private static class TestHelpers
