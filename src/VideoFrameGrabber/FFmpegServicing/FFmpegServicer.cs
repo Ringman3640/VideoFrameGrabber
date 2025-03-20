@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace VideoFrameGrabber.FFmpegServicing
 {
@@ -183,7 +184,43 @@ namespace VideoFrameGrabber.FFmpegServicing
         /// </remarks>
         public byte[] CallFFmpegWithResult(string args)
         {
-            throw new NotImplementedException();
+            Process process = new();
+            process.StartInfo.FileName = ffmpegLocation;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.Arguments = $"{LOGLEVEL_STATEMENT} {args}";
+
+            process.Start();
+
+            // Reading the std error needs to be asynchronous since reading from out and error
+            // synchronously in series may result in a deadlock.
+            Task<string> readErrorTask = process.StandardError.ReadToEndAsync();
+
+            // Here, the std out is read synchronously
+            byte[] output;
+            using (MemoryStream memoryStream = new())
+            {
+                Stream outputStream = process.StandardOutput.BaseStream;
+
+                // TODO: FIX
+                // CopyTo might not complete a copy if started before the process can finish
+                // writing. Reimplement just using Read and byte arrays
+                process.StandardOutput.BaseStream.CopyTo(memoryStream);
+            }
+
+            // Result of async std error read is collected. This may block if the FFmpeg process is
+            // not done writing to std error.
+            string error = readErrorTask.Result;
+
+            process.WaitForExit();
+
+            if (error.Length > 0)
+            {
+                throw new FFmpegErrorException(error);
+            }
+
+            return output;
         }
 
         public VideoMetadata GetVideoMetadata(string videoPath)
