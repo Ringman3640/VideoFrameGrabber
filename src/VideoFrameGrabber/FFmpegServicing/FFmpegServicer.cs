@@ -201,12 +201,11 @@ namespace VideoFrameGrabber.FFmpegServicing
             byte[] output;
             using (MemoryStream memoryStream = new())
             {
-                Stream outputStream = process.StandardOutput.BaseStream;
-
                 // TODO: FIX
                 // CopyTo might not complete a copy if started before the process can finish
                 // writing. Reimplement just using Read and byte arrays
                 process.StandardOutput.BaseStream.CopyTo(memoryStream);
+                output = memoryStream.ToArray();
             }
 
             // Result of async std error read is collected. This may block if the FFmpeg process is
