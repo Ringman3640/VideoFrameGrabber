@@ -199,12 +199,16 @@ namespace VideoFrameGrabber.FFmpegServicing
 
             // Here, the std out is read synchronously
             byte[] output;
+            int readBufferSize = 4096; // TODO: add mechanism for users to specify buffer size
             using (MemoryStream memoryStream = new())
             {
-                // TODO: FIX
-                // CopyTo might not complete a copy if started before the process can finish
-                // writing. Reimplement just using Read and byte arrays
-                process.StandardOutput.BaseStream.CopyTo(memoryStream);
+                byte[] readBuffer = new byte[readBufferSize];
+                Stream outputStream = process.StandardOutput.BaseStream;
+                int readCount = 0;
+                while ((readCount = outputStream.Read(readBuffer, 0, readBufferSize)) != 0)
+                {
+                    memoryStream.Write(readBuffer, 0, readCount);
+                }
                 output = memoryStream.ToArray();
             }
 
