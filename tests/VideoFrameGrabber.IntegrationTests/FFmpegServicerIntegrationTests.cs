@@ -181,6 +181,9 @@ public class FFmpegServicerIntegrationTests
         ffmpegServicer.Should().NotBeNull();
     }
 
+    /// <summary>
+    /// Tests if <see cref="FFmpegServicer"/> can successfully call FFmpeg.
+    /// </summary>
     [Fact]
     public void CallFFmpegWithoutResult_ExtractFrameArgs_GeneratesImageFile()
     {
@@ -204,6 +207,9 @@ public class FFmpegServicerIntegrationTests
         File.Exists(outputPath).Should().BeTrue();
     }
 
+    /// <summary>
+    /// Tests if <see cref="FFmpegServicer"/> correctly throws an exception given invalid arguments.
+    /// </summary>
     [Fact]
     public void CallFFmpegWithoutResult_InvalidArgs_ThrowsFFmpegErrorException()
     {
@@ -224,6 +230,10 @@ public class FFmpegServicerIntegrationTests
         exception.Should().BeOfType<FFmpegErrorException>();
     }
 
+    /// <summary>
+    /// Tests if <see cref="FFmpegServicer"/> can successfully return a valid image as bytes given
+    /// an args string.
+    /// </summary>
     [Fact]
     public void CallFFmpegWithResult_ExtractFrameArgs_ReturnsValidImageBytes()
     {
@@ -245,7 +255,7 @@ public class FFmpegServicerIntegrationTests
         exception.Should().BeNull();
         TestHelpers.BytesAreValidImage(result!).Should().BeTrue();
     }
-
+    /// <inheritdoc cref="CallFFmpegWithoutResult_InvalidArgs_ThrowsFFmpegErrorException"/>
     [Fact]
     public void CallFFmpegWithResult_InvalidArgs_ThrowsFFmpegErrorException()
     {
