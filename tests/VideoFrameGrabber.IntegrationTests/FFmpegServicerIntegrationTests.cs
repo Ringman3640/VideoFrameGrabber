@@ -1,4 +1,7 @@
 ﻿using FluentAssertions;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using System.IO;
 using VideoFrameGrabber.FFmpegServicing;
 using VideoFrameGrabber.IntegrationTests.StaticDependencies;
 
@@ -222,17 +225,17 @@ public class FFmpegServicerIntegrationTests
     }
 
     [Fact]
-    public void CallFFmpegWithResult_ExtractFrameArgs_ReturnsImageBytes()
+    public void CallFFmpegWithResult_ExtractFrameArgs_ReturnsValidImageBytes()
     {
         string videoPath = frameExtractionTests.EldenRingGameplay.VideoPath;
         string args = $"-ss 00:00:00 -i \"{videoPath}\" -vframes 1 -f image2pipe -";
         FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
         Exception? exception = null;
-        byte[]? results = null;
+        byte[]? result = null;
 
         try
         {
-            results = ffmpegServicer.CallFFmpegWithResult(args);
+            result = ffmpegServicer.CallFFmpegWithResult(args);
         }
         catch (Exception except)
         {
@@ -240,8 +243,7 @@ public class FFmpegServicerIntegrationTests
         }
 
         exception.Should().BeNull();
-        results.Should().NotBeNull();
-        results.Should().NotBeEmpty();
+        TestHelpers.BytesAreValidImage(result!).Should().BeTrue();
     }
 
     [Fact]
@@ -291,6 +293,25 @@ public class FFmpegServicerIntegrationTests
 
             exception.Should().BeOfType(exceptionType);
             ffmpegServicer.Should().BeNull();
+        }
+
+        public static bool BytesAreValidImage(byte[] bytes)
+        {
+            try
+            {
+                using (Image.Load<Rgba32>(bytes))
+                {
+                    // Do nothing here
+                    // The 'using' statement just makes sure the image is discarded immediately if
+                    // the Image successfully loads.
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
