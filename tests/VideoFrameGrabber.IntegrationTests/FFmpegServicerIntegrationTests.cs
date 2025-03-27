@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using System.IO;
 using VideoFrameGrabber.FFmpegServicing;
 using VideoFrameGrabber.IntegrationTests.StaticDependencies;
 
