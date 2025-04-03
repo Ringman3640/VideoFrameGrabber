@@ -83,13 +83,6 @@ public class FrameExtractionTestsDependency
 
         TestGroups = tempTestGroups.ToFrozenDictionary();
     }
-
-    /// <summary>
-    /// Indicates that a property of <see cref="FrameExtractionTestsDependency"/> is a test group
-    /// property and that it should be included when reflection searching.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    private class TestGroupPropertyAttribute : System.Attribute { }
 }
 
 /// <summary>
