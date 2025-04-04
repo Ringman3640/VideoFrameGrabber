@@ -30,9 +30,9 @@ namespace VideoFrameGrabber.FFmpegServicing
         }
 
         /// <summary>
-        /// Gets the duration of the video.
+        /// Gets the length of the video.
         /// </summary>
-        public TimeSpan VideoDuration
+        public TimeSpan VideoLength
         {
             get;
 #if NET5_0_OR_GREATER
@@ -42,16 +42,16 @@ namespace VideoFrameGrabber.FFmpegServicing
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VideoMetadata"/> structure to a specified
-        /// video width, height, and duration value.
+        /// video width, height, and length value.
         /// </summary>
         /// <param name="videoWidth">The pixel width of the video dimensions.</param>
         /// <param name="videoHeight">The pixel height of the video dimensions.</param>
-        /// <param name="videoDuration">The duration of the video.</param>
-        public VideoMetadata(int videoWidth, int videoHeight, TimeSpan videoDuration)
+        /// <param name="videoLength">The length of the video.</param>
+        public VideoMetadata(int videoWidth, int videoHeight, TimeSpan videoLength)
         {
             VideoWidth = videoWidth;
             VideoHeight = videoHeight;
-            VideoDuration = videoDuration;
+            VideoLength = videoLength;
         }
     }
 }
