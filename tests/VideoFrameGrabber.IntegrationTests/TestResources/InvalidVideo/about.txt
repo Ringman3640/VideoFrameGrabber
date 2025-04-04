@@ -1,0 +1,1 @@
+This test resource provides a fake MP4 video file. The "video" file provided is literally just a text file with an among us in it and then renamed with the 'mp4' extension.
