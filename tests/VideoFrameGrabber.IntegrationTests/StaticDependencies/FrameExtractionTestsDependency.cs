@@ -91,6 +91,7 @@ public class FrameExtractionTestsDependency
 public class FrameExtractionTestGroup
 {
     private const string VIDEO_FILE_NAME = "video";
+    private const string VIDEO_INFO_FILE_NAME = "video_info.json";
     private const string GENERATED_TIMESTAMP_FILE_NAME = "generated_timestamp";
     private const string GENERATED_FRAMES_DIRECTORY_NAME = "frames";
     private const string RESULT_FRAME_EXTENSION = ".jpg";
@@ -125,6 +126,21 @@ public class FrameExtractionTestGroup
     /// Gets the path of the video file assigned to the test group.
     /// </summary>
     public string VideoPath { get; private set; }
+
+    /// <summary>
+    /// Gets the length of the video file assigned to this test group.
+    /// </summary>
+    public TimeSpan VideoLength { get; private set; }
+
+    /// <summary>
+    /// Gets the horizontal resolution of the video file assigned to this test group.
+    /// </summary>
+    public int VideoWidth { get; private set; }
+
+    /// <summary>
+    /// Gets the vertical resolution of the video file assigned to this test group.
+    /// </summary>
+    public int VideoHeight { get; private set; }
 
     /// <summary>
     /// Gets a dictionary of all supported tests for this test group mapped by the test's name.
@@ -182,12 +198,53 @@ public class FrameExtractionTestGroup
         }
         VideoPath = tempVideoPath;
 
+        LoadVideoInfo(TestGroupDirectory);
+
         if (NeedToGenerateTestFrames())
         {
             GenerateAllTestFrames();
         }
 
         LoadTestFrames();
+    }
+
+    /// <summary>
+    /// Loads information about the video into the test group.
+    /// </summary>
+    /// <param name="testGroupDirectory">A path to the test group directory.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Could not find the video info JSON file.
+    /// </exception>
+    /// <remarks>
+    /// <para>
+    /// This method retrieves information about the test group's video file and initializes
+    /// properties of the test group object with this information. These properties are:
+    /// <list type="bullet">
+    /// <item><see cref="VideoLength"/></item>
+    /// <item><see cref="VideoWidth"/></item>
+    /// <item><see cref="VideoHeight"/></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// This information should be listed in a JSON file with the name specified by
+    /// <see cref="VIDEO_INFO_FILE_NAME"/>. This file should be in the test group directory with the
+    /// corresponding video file.
+    /// </para>
+    /// </remarks>
+    private void LoadVideoInfo(string testGroupDirectory)
+    {
+        string videoInfoFilePath = Path.Join(testGroupDirectory, VIDEO_INFO_FILE_NAME);
+        if (!File.Exists(videoInfoFilePath))
+        {
+            throw new InvalidOperationException($"Could not find video info JSON file in directory {testGroupDirectory}");
+        }
+
+        string videoInfoFileContents = File.ReadAllText(videoInfoFilePath);
+        VideoInfoFileJson videoInfo = JsonSerializer.Deserialize<VideoInfoFileJson>(videoInfoFileContents)!;
+
+        VideoLength = TimeSpan.Parse(videoInfo.VideoLength);
+        VideoWidth = videoInfo.VideoWidth;
+        VideoHeight = videoInfo.VideoHeight;
     }
 
     /// <summary>
