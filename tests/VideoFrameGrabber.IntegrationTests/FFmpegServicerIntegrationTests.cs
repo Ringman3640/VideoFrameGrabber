@@ -12,6 +12,7 @@ public class FFmpegServicerIntegrationTests
     private readonly FakeFFmpegDependency fakeFFmpeg = FakeFFmpegDependency.Instance;
     private readonly WrongFFmpegPathDependency wrongFFmpegPath = WrongFFmpegPathDependency.Instance;
     private readonly FrameExtractionTestsDependency frameExtractionTests = FrameExtractionTestsDependency.Instance;
+    private readonly FakeVideoDependency fakeVideo = FakeVideoDependency.Instance;
 
     /// <summary>
     /// Tests if <see cref="FFmpegServicer"/> can successfully initialize given an absolute path to
@@ -274,6 +275,82 @@ public class FFmpegServicerIntegrationTests
 
         exception.Should().NotBeNull();
         exception.Should().BeOfType<FFmpegErrorException>();
+    }
+
+    /// <summary>
+    /// Tests if <see cref="FFmpegServicer"/> can correctly extract metadata information from a
+    /// video.
+    /// </summary>
+    [Fact]
+    public void GetVideoMetadata_FrameExtractionVideos_ReturnsExpectedMetadataValues()
+    {
+        foreach (var (_, testGroup) in frameExtractionTests.TestGroups)
+        {
+            string videoPath = testGroup.VideoPath;
+            TimeSpan expectedLength = testGroup.VideoLength;
+            int expectedWidth = testGroup.VideoWidth;
+            int expectedHeight = testGroup.VideoHeight;
+
+            FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+            VideoMetadata? metadata = null;
+
+            metadata = ffmpegServicer.GetVideoMetadata(videoPath);
+
+            metadata.Should().NotBeNull();
+            metadata.Value.VideoLength.Should().Be(expectedLength);
+            metadata.Value.VideoWidth.Should().Be(expectedWidth);
+            metadata.Value.VideoHeight.Should().Be(expectedHeight);
+        }
+    }
+
+    /// <summary>
+    /// Tests if <see cref="FFmpegServicer"/> correctly throws an exception when trying to extract
+    /// metadata from an invalid video file.
+    /// </summary>
+    [Fact]
+    public void GetVideoMetadata_InvalidVideoFile_ThrowsArgumentException()
+    {
+        FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        Exception? exception = null;
+
+        try
+        {
+            _ = ffmpegServicer.GetVideoMetadata(fakeVideo.FakeVideoPath);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<ArgumentException>();
+    }
+
+    /// <summary>
+    /// Tests if <see cref="FFmpegServicer.GetVideoMetadata(string)"/> correctly throws an exception
+    /// an invalid file path (like <c>null</c> or whitespace only).
+    /// </summary>
+    /// <param name="pathArgument"></param>
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void GetVideoMetadata_InvalidPathArgument_ThrowsArgumentException(string? pathArgument)
+    {
+        FFmpegServicer ffmpegServicer = FFmpegServicer.FromSystem();
+        Exception? exception = null;
+
+        try
+        {
+            _ = ffmpegServicer.GetVideoMetadata(pathArgument!);
+        }
+        catch (Exception except)
+        {
+            exception = except;
+        }
+
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<ArgumentException>();
     }
 
     private static class TestHelpers
