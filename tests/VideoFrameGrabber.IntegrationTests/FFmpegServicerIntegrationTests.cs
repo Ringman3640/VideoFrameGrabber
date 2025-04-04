@@ -254,6 +254,7 @@ public class FFmpegServicerIntegrationTests
         exception.Should().BeNull();
         TestHelpers.BytesAreValidImage(result!).Should().BeTrue();
     }
+
     /// <inheritdoc cref="CallFFmpegWithoutResult_InvalidArgs_ThrowsFFmpegErrorException"/>
     [Fact]
     public void CallFFmpegWithResult_InvalidArgs_ThrowsFFmpegErrorException()
