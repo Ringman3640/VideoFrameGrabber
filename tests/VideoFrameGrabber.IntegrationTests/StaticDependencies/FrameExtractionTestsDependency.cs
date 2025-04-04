@@ -90,7 +90,7 @@ public class FrameExtractionTestsDependency
 /// </summary>
 public class FrameExtractionTestGroup
 {
-    private const string VIDEO_FILE_NAME = "video.mp4";
+    private const string VIDEO_FILE_NAME = "video";
     private const string GENERATED_TIMESTAMP_FILE_NAME = "generated_timestamp";
     private const string GENERATED_FRAMES_DIRECTORY_NAME = "frames";
     private const string RESULT_FRAME_EXTENSION = ".jpg";
@@ -152,7 +152,7 @@ public class FrameExtractionTestGroup
     /// <see cref="TestFilePath"/> is empty.
     /// </exception>
     /// <exception cref="InvalidOperationException">
-    /// The indicated test group does not have a video file.
+    /// The indicated test group does not have a lone video file.
     /// </exception>
     /// <exception cref="ArgumentException">
     /// <paramref name="testGroupName"/> does not exist.
@@ -175,11 +175,12 @@ public class FrameExtractionTestGroup
             throw new ArgumentException($"The {testGroupName} test group directory does not exist.");
         }
 
-        VideoPath = Path.Join(TestGroupDirectory, VIDEO_FILE_NAME);
-        if (!File.Exists(VideoPath))
+        string? tempVideoPath = FindVideoPath(TestGroupDirectory);
+        if (tempVideoPath is null)
         {
-            throw new InvalidOperationException($"The {testGroupName} test group does not have a {VIDEO_FILE_NAME} file.");
+            throw new InvalidOperationException($"The {testGroupName} test group does not have a lone {VIDEO_FILE_NAME} file.");
         }
+        VideoPath = tempVideoPath;
 
         if (NeedToGenerateTestFrames())
         {
@@ -187,6 +188,35 @@ public class FrameExtractionTestGroup
         }
 
         LoadTestFrames();
+    }
+
+    /// <summary>
+    /// Finds the video file of a test group given the test group directory.
+    /// </summary>
+    /// <param name="testGroupDirectory">A path to the test group directory.</param>
+    /// <returns>
+    /// A <see cref="string"/> path to the video file if found. Returns <c>null</c> if a video file
+    /// is not found.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method is used to find the video file associated with a test group. Given the test
+    /// group directory, it will search for a file with the name specified in
+    /// <see cref="VIDEO_FILE_NAME"/>. Since a video file can be in various different formats, the
+    /// method only searches for the file given the file name, not including the extension.
+    /// </para>
+    /// <para>
+    /// If there are several file named 'video' in <paramref name="testGroupDirectory"/>, this
+    /// method will fail and return <c>null</c>.
+    /// </para>
+    /// </remarks>
+    private static string? FindVideoPath(string testGroupDirectory)
+    {
+        string[] videoFiles = Directory.EnumerateFiles(testGroupDirectory)
+            .Where(filePath => Path.GetFileNameWithoutExtension(filePath) == VIDEO_FILE_NAME)
+            .ToArray();
+
+        return videoFiles.Length == 1 ? videoFiles[0] : null;
     }
 
     /// <summary>
