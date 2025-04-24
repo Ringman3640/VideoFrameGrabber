@@ -226,6 +226,21 @@ namespace VideoFrameGrabber.FFmpegServicing
             return output;
         }
 
+        /// <summary>
+        /// Gets the metadata information of a video file.
+        /// </summary>
+        /// <param name="videoPath">Path to the video file.</param>
+        /// <returns>
+        /// A <see cref="VideoMetadata"/> struct that contains metadata information about the
+        /// specified video file.
+        /// </returns>
+        /// <exception cref="FFmpegErrorException">
+        /// <paramref name="videoPath"/> could not be found or accessed.
+        /// </exception>
+        /// <exception cref="FFmpegErrorException">
+        /// FFmpeg could not pull the metadata from the video specified in
+        /// <paramref name="videoPath"/>.
+        /// </exception>
         public VideoMetadata GetVideoMetadata(string videoPath)
         {
             throw new NotImplementedException();
