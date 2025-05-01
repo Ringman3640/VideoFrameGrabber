@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace VideoFrameGrabber.FFmpegServicing
@@ -243,7 +244,43 @@ namespace VideoFrameGrabber.FFmpegServicing
         /// </exception>
         public VideoMetadata GetVideoMetadata(string videoPath)
         {
-            throw new NotImplementedException();
+            Process process = new();
+            process.StartInfo.FileName = ffmpegLocation;
+
+            // TODO: This is vulnerable to command injection, sanitize later
+            process.StartInfo.Arguments = $"-hide_banner -i \"{videoPath}\" -f ffmetadata -";
+            process.StartInfo.RedirectStandardError = true;
+
+            TimeSpan? videoDuration = null;
+            Tuple<int, int>? videoResolution = null;
+
+            process.Start();
+            StreamReader outputStream = process.StandardError; // Read from error since FFmpeg outputs to console through std::err
+            string? outputLine = null;
+            while ((outputLine = outputStream.ReadLine()?.Trim()) is not null)
+            {
+                if (outputLine.StartsWith("Duration"))
+                {
+                    videoDuration = ExtractDurationFromFFmpegLine(outputLine);
+                }
+                if (outputLine.StartsWith("Stream"))
+                {
+                    videoResolution = ExtractResolutionFromFFmpegLine(outputLine);
+                }
+
+                if (videoDuration is not null && videoResolution is not null)
+                {
+                    break;
+                }
+            }
+            process.WaitForExit();
+
+            if (videoDuration is null || videoResolution is null)
+            {
+                throw new ArgumentException($"Could not get metadata info from the video at {videoPath}");
+            }
+
+            return new VideoMetadata(videoResolution.Item1, videoResolution.Item2, videoDuration.Value);
         }
 
         /// <summary>
@@ -281,6 +318,74 @@ namespace VideoFrameGrabber.FFmpegServicing
             return false;
         }
 
-        
+        /// <summary>
+        /// Extracts the duration value of a video from an FFmpeg output line as a
+        /// <see cref="TimeSpan"/> instance.
+        /// </summary>
+        /// <param name="line">The FFmpeg output line that contains the video duration.</param>
+        /// <returns>
+        /// A <see cref="TimeSpan"/> corresponding to the video duration if successful. Otherwise
+        /// returns <c>null</c>.
+        /// </returns>
+        private static TimeSpan? ExtractDurationFromFFmpegLine(string line)
+        {
+            // This Regex pattern searches for the "00:00:00.00" duration format. From what I
+            // observed from calling FFmpeg, the millisecond value place always seems to be included
+            // even if the duration does not have milliseconds. It also seems to always have exactly
+            // two decimals.
+            const string pattern = @"\d\d:\d\d:\d\d.\d\d";
+
+            Match match = Regex.Match(line, pattern);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            try
+            {
+                return TimeSpan.Parse(line.Substring(match.Index, match.Length));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Extracts the resolution values of a video from an FFmpeg output line as a
+        /// <see cref="Tuple"/> pair of integers.
+        /// </summary>
+        /// <param name="line">The FFmpeg output line that contains the video resolution.</param>
+        /// <returns>
+        /// A <see cref="Tuple"/> corresponding to the video resolution if successful (horizontal
+        /// resolution as the first value, vertical resolution as the second value). Otherwise
+        /// returns <c>null</c>.
+        /// </returns>
+        private static Tuple<int, int>? ExtractResolutionFromFFmpegLine(string line)
+        {
+            // This regex pattern searches for the "0000x0000" resolution format. Specifically, it
+            // searches for two integer values separated by an 'x' character. Each integer value
+            // represents a size for each dimension of the video resolution. The integers must have
+            // 2 - 5 digits (inclusive). The lower-bounds 2 is because some output from FFmpeg
+            // includes integer numbers prepended with '0x'. The 2 is to ignore these values. The
+            // upper bounds 5 is really just there since what fucking video file needs to have a
+            // dimension larger than 99,999 pixel that would be insane.
+            const string pattern = @"\d{2,5}x\d{2,5}";
+            Match match = Regex.Match(line, pattern);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            string resolutionString = line.Substring(match.Index, match.Length);
+            int separatorIdx = resolutionString.IndexOf('x');
+
+            // Don't need to check parse values since these are guaranteed to be digit characters
+            // from the Regex above.
+            int horizontalResolution = int.Parse(resolutionString.Substring(0, separatorIdx));
+            int verticalResolution = int.Parse(resolutionString.Substring(separatorIdx + 1));
+
+            return new Tuple<int, int>(horizontalResolution, verticalResolution);
+        }
     }
 }
