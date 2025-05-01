@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using VideoFrameGrabber.IntegrationTests.StaticDependencies;
 
-namespace VideoFrameGrabber.IntegrationTests.IntegrationTests;
+namespace VideoFrameGrabber.IntegrationTests;
 
 public class FrameGrabberIntegrationTests
 {
