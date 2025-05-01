@@ -235,10 +235,10 @@ namespace VideoFrameGrabber.FFmpegServicing
         /// A <see cref="VideoMetadata"/> struct that contains metadata information about the
         /// specified video file.
         /// </returns>
-        /// <exception cref="FFmpegErrorException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="videoPath"/> could not be found or accessed.
         /// </exception>
-        /// <exception cref="FFmpegErrorException">
+        /// <exception cref="ArgumentException">
         /// FFmpeg could not pull the metadata from the video specified in
         /// <paramref name="videoPath"/>.
         /// </exception>
