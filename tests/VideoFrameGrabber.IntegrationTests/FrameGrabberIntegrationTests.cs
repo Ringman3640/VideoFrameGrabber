@@ -31,7 +31,7 @@ public class FrameGrabberIntegrationTests
     }
 
     [Fact]
-    public void ExtractFrame_AllVideosAndArgumentsInFrameExtractionTests_AtLeastNinetyPercentSimilarToReferenceImage()
+    public void ExtractFrame_AllVideosAndArgumentsInFrameExtractionTests_ReturnsImageBytesSimilarToExpected()
     {
         throw new NotImplementedException();
     }
