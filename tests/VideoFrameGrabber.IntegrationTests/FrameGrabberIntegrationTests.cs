@@ -6,6 +6,7 @@ namespace VideoFrameGrabber.IntegrationTests;
 public class FrameGrabberIntegrationTests
 {
     private FFmpegDependency ffmpeg;
+    private readonly FrameExtractionTestsDependency frameExtractionTests = FrameExtractionTestsDependency.Instance;
 
     public FrameGrabberIntegrationTests()
     {
