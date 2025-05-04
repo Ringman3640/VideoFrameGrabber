@@ -8,11 +8,11 @@ namespace VideoFrameGrabber.IntegrationTests;
 
 public class FFmpegServicerIntegrationTests
 {
-    private readonly FFmpegDependency ffmpeg = FFmpegDependency.Instance;
-    private readonly FakeFFmpegDependency fakeFFmpeg = FakeFFmpegDependency.Instance;
-    private readonly WrongFFmpegPathDependency wrongFFmpegPath = WrongFFmpegPathDependency.Instance;
-    private readonly FrameExtractionTestsDependency frameExtractionTests = FrameExtractionTestsDependency.Instance;
-    private readonly FakeVideoDependency fakeVideo = FakeVideoDependency.Instance;
+    private static readonly FFmpegDependency ffmpeg = FFmpegDependency.Instance;
+    private static readonly FakeFFmpegDependency fakeFFmpeg = FakeFFmpegDependency.Instance;
+    private static readonly WrongFFmpegPathDependency wrongFFmpegPath = WrongFFmpegPathDependency.Instance;
+    private static readonly FrameExtractionTestsDependency frameExtractionTests = FrameExtractionTestsDependency.Instance;
+    private static readonly FakeVideoDependency fakeVideo = FakeVideoDependency.Instance;
 
     /// <summary>
     /// Tests if <see cref="FFmpegServicer"/> can successfully initialize given an absolute path to
