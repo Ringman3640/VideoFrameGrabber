@@ -5,13 +5,8 @@ namespace VideoFrameGrabber.IntegrationTests;
 
 public class FrameGrabberIntegrationTests
 {
-    private FFmpegDependency ffmpeg;
+    private readonly FFmpegDependency ffmpeg = FFmpegDependency.Instance;
     private readonly FrameExtractionTestsDependency frameExtractionTests = FrameExtractionTestsDependency.Instance;
-
-    public FrameGrabberIntegrationTests()
-    {
-        ffmpeg = FFmpegDependency.Instance;
-    }
 
     [Fact]
     public void ExtractFrame_NullString_ThrowsArgumentNullException()
