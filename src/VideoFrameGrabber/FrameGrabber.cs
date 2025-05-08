@@ -8,6 +8,12 @@ namespace VideoFrameGrabber
         private readonly IFFmpegServicer ffmpegServicer;
 
         /// <summary>
+        /// Gets or sets the <see cref="FrameExtractionModifiers"/> instance that this
+        /// <see cref="FrameGrabber"/> uses by default when extracting a frame.
+        /// </summary>
+        public FrameExtractionModifiers Modifiers { get; set; } = new();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FrameGrabber"/> class given a valid
         /// FFmpeg executable file.
         /// </summary>
