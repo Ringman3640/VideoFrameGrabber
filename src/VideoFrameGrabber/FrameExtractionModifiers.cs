@@ -85,24 +85,24 @@ namespace VideoFrameGrabber
         /// <summary>
         /// Indicates the order of scaling and cropping applied to an extracted image frame.
         /// </summary>
-        public ScaleCropOrder ModifierOrder
+        public ScaleCropOrder Order
         {
             get
             {
                 lock (mutex)
                 {
-                    return modifierOrder;
+                    return order;
                 }
             }
             set
             {
                 lock (mutex)
                 {
-                    modifierOrder = value;
+                    order = value;
                 }
             }
         }
-        ScaleCropOrder modifierOrder;
+        ScaleCropOrder order;
 
         /// <summary>
         /// Gets or sets the image format that extracted image frames should be formatted to.
@@ -155,7 +155,7 @@ namespace VideoFrameGrabber
                 shallowCopy.seekTime = seekTime;
                 shallowCopy.scaling = scaling;
                 shallowCopy.cropping = cropping;
-                shallowCopy.modifierOrder = modifierOrder;
+                shallowCopy.order = order;
                 shallowCopy.imageFormat = imageFormat;
 
                 return shallowCopy;
